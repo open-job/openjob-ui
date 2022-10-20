@@ -71,7 +71,7 @@
 
         .app-loading .app-loading-logo {
           display: block;
-          width: 90px;
+          width: 45%;
           margin: 0 auto;
           margin-bottom: 20px;
         }
@@ -93,7 +93,7 @@
           display: block;
           width: 20px;
           height: 20px;
-          background-color: #0065cc;
+          background-color: #072448;
           border-radius: 100%;
           opacity: 30%;
           transform: scale(0.75);
@@ -146,11 +146,12 @@
       </style>
       <div class="app-loading">
         <div class="app-loading-wrap">
-          <img src="/resource/img/logo.png" class="app-loading-logo" alt="Logo" />
           <div class="app-loading-dots">
             <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
           </div>
-          <div class="app-loading-title"><%= title %></div>
+          <div class="app-loading-title">
+            <img src="/resource/img/logo-font.svg" class="app-loading-logo" alt="Logo" />
+          </div>
         </div>
       </div>
     </div>
