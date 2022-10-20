@@ -1,4 +1,11 @@
 <template>
+  <AppLogo
+    class="m-auto mb-4"
+    style="position: relative; top: 0; border: none"
+    :theme="theme"
+    :showLogoBackground="isDark"
+  />
+
   <h2 class="mb-3 text-2xl font-bold text-center xl:text-3xl enter-x xl:text-left">
     {{ getFormTitle }}
   </h2>
@@ -7,6 +14,15 @@
   import { computed, unref } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { LoginStateEnum, useLoginState } from './useLogin';
+  import { AppLogo } from '/@/components/Application';
+  import { useRootSetting } from '/@/hooks/setting/useRootSetting';
+  import { ThemeEnum } from '/@/enums/appEnum';
+
+  const { getDarkMode } = useRootSetting();
+
+  const isDark = computed(() => getDarkMode.value === ThemeEnum.DARK);
+
+  const theme = computed(() => (isDark.value ? 'dark' : 'light'));
 
   const { t } = useI18n();
 

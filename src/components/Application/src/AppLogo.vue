@@ -4,15 +4,25 @@
 -->
 <template>
   <div class="anticon" :class="getAppLogoClass" @click="goHome">
-    <img src="../../../assets/images/logo.png" />
+    <img src="../../../assets/images/logo.png" alt="Logo" />
     <div class="ml-2 truncate md:opacity-100" :class="getTitleClass" v-show="showTitle">
-      {{ title }}
+      <img
+        src="../../../assets/images/font-logo-dark.png"
+        class="min-w-40"
+        alt="logo"
+        v-show="logoThemeDark"
+      />
+      <img
+        src="../../../assets/images/font-logo.png"
+        class="min-w-40"
+        alt="logo"
+        v-show="!logoThemeDark"
+      />
     </div>
   </div>
 </template>
 <script lang="ts" setup>
   import { computed, unref } from 'vue';
-  import { useGlobSetting } from '/@/hooks/setting';
   import { useGo } from '/@/hooks/web/usePage';
   import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
   import { useDesign } from '/@/hooks/web/useDesign';
@@ -32,18 +42,22 @@
      * The title is also displayed when the menu is collapsed
      */
     alwaysShowTitle: { type: Boolean },
+
+    showLogoBackground: { type: Boolean },
   });
 
   const { prefixCls } = useDesign('app-logo');
   const { getCollapsedShowTitle } = useMenuSetting();
   const userStore = useUserStore();
-  const { title } = useGlobSetting();
   const go = useGo();
+
+  const logoThemeDark = computed(() => props.theme === 'dark');
 
   const getAppLogoClass = computed(() => [
     prefixCls,
     props.theme,
     { 'collapsed-show-title': unref(getCollapsedShowTitle) },
+    props.showLogoBackground ? 'logoBackground' : '',
   ]);
 
   const getTitleClass = computed(() => [
@@ -81,6 +95,12 @@
 
     &.dark &__title {
       color: @white;
+    }
+
+    &.logoBackground > img {
+      background-color: white;
+      border-radius: 6px;
+      padding: 3px;
     }
 
     &__title {
