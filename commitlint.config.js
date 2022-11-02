@@ -68,45 +68,45 @@ module.exports = {
     useEmoji: true,
     emojiAlign: 'center',
     types: [
-      { value: 'feat', name: 'feat:     ✨  A new feature', emoji: ':sparkles:' },
-      { value: 'fix', name: 'fix:      🐛  A bug fix', emoji: ':bug:' },
-      { value: 'docs', name: 'docs:     📝  Documentation only changes', emoji: ':memo:' },
+      { value: 'feat', name: 'feat:     ✨  新增功能', emoji: ':sparkles:' },
+      { value: 'fix', name: 'fix:      🐛  错误修复', emoji: ':bug:' },
+      { value: 'docs', name: 'docs:     📝  仅记录更改', emoji: ':memo:' },
       {
         value: 'style',
-        name: 'style:    💄  Changes that do not affect the meaning of the code',
+        name: 'style:    💄  不影响代码含义的更改',
         emoji: '💄',
       },
       {
         value: 'refactor',
-        name: 'refactor: ♻️   A code change that neither fixes a bug nor adds a feature',
+        name: 'refactor: ♻️   既不修复错误也不添加功能的代码更改',
         emoji: '♻️',
       },
       {
         value: 'perf',
-        name: 'perf:     ⚡️  A code change that improves performance',
+        name: 'perf:     ⚡️  提高性能的代码更改',
         emoji: '⚡️',
       },
       {
         value: 'test',
-        name: 'test:     ✅  Adding missing tests or correcting existing tests',
+        name: 'test:     ✅  添加丢失的测试或更正现有测试',
         emoji: '✅',
       },
       {
         value: 'build',
-        name: 'build:    📦️   Changes that affect the build system or external dependencies',
+        name: 'build:    📦️   影响生成系统或外部依赖项的更改',
         emoji: '📦️',
       },
       {
         value: 'ci',
-        name: 'ci:       🎡  Changes to our CI configuration files and scripts',
+        name: 'ci:       🎡  对配置项配置文件和脚本的更改',
         emoji: '🎡',
       },
       {
         value: 'chore',
-        name: "chore:    🔨  Other changes that don't modify src or test files",
+        name: 'chore:    🔨  其他不修改src或测试文件的更改',
         emoji: '🔨',
       },
-      { value: 'revert', name: 'revert:   ⏪️  Reverts a previous commit', emoji: '⏪️' },
+      { value: 'revert', name: 'revert:   ⏪️  恢复以前的提交', emoji: '⏪️' },
     ],
 
     // English
@@ -117,18 +117,18 @@ module.exports = {
     ],
 
     // 中英文对照版
-    // messages: {
-    //   type: '选择你要提交的类型 :',
-    //   scope: '选择一个提交范围 (可选):',
-    //   customScope: '请输入自定义的提交范围 :',
-    //   subject: '填写简短精炼的变更描述 :\n',
-    //   body: '填写更加详细的变更描述 (可选)。使用 "|" 换行 :\n',
-    //   breaking: '列举非兼容性重大的变更 (可选)。使用 "|" 换行 :\n',
-    //   footerPrefixsSelect: '选择关联issue前缀 (可选):',
-    //   customFooterPrefixs: '输入自定义issue前缀 :',
-    //   footer: '列举关联issue (可选) 例如: #31, #I3244 :\n',
-    //   confirmCommit: '是否提交或修改commit ?',
-    // },
+    messages: {
+      type: '选择你要提交的类型 :',
+      scope: '选择一个提交范围 (可选):',
+      customScope: '请输入自定义的提交范围 :',
+      subject: '填写简短精炼的变更描述 :\n',
+      body: '填写更加详细的变更描述 (可选)。使用 "|" 换行 :\n',
+      breaking: '列举非兼容性重大的变更 (可选)。使用 "|" 换行 :\n',
+      footerPrefixsSelect: '选择关联issue前缀 (可选):',
+      customFooterPrefixs: '输入自定义issue前缀 :',
+      footer: '列举关联issue (可选) 例如: #31, #I3244 :\n',
+      confirmCommit: '是否提交或修改commit ?',
+    },
     // types: [
     //   { value: 'feat', name: 'feat:     新增功能' },
     //   { value: 'fix', name: 'fix:      修复缺陷' },
