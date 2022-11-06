@@ -1,12 +1,11 @@
 <template>
-  <AppLogo
-    class="m-auto mb-4"
-    style="position: relative; top: 0; border: none"
-    :theme="theme"
-    :showLogoBackground="isDark"
-  />
-
   <h2 class="mb-3 text-2xl font-bold text-center xl:text-3xl enter-x xl:text-left">
+    <AppLogo
+      class="m-auto mb-4"
+      style="position: relative; top: 0; border: none"
+      :theme="theme"
+      :showLogoBackground="isDark"
+    />
     {{ getFormTitle }}
   </h2>
 </template>
