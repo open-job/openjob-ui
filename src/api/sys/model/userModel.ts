@@ -3,7 +3,8 @@
  */
 export interface LoginParams {
   username: string;
-  password: string;
+  passwd: string;
+  keepLogin: boolean;
 }
 
 export interface RoleInfo {
