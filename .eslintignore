@@ -1,15 +1,18 @@
 
 *.sh
 node_modules
+lib
 *.md
+*.scss
 *.woff
 *.ttf
 .vscode
 .idea
 dist
-/public
-/docs
-.husky
-.local
-/bin
-Dockerfile
+mock
+public
+bin
+build
+config
+index.html
+src/assets
