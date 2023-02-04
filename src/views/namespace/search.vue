@@ -26,9 +26,9 @@
         <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
           <el-form-item class="table-form-btn" :label-width="search.length <= 1 ? '10px' : '100px'">
             <div>
-              <el-button size="default" type="primary" @click="onSearch(tableSearchRef)">查询 </el-button>
-              <el-button size="default" type="info" class="ml10" @click="onReset(tableSearchRef)"> 重置 </el-button>
-              <el-button size="default" type="success" class="ml10" @click="onReset(tableSearchRef)"> + 新增 </el-button>
+              <el-button size="default" type="primary" @click="onSearch(tableSearchRef)">{{ $t('message.commonBtn.query') }}</el-button>
+              <el-button size="default" type="info" class="ml10" @click="onReset(tableSearchRef)"> {{ $t('message.commonBtn.reset') }} </el-button>
+              <el-button size="default" type="success" class="ml10" @click="onReset(tableSearchRef)"> + {{ $t('message.commonBtn.add') }} </el-button>
             </div>
           </el-form-item>
         </el-col>

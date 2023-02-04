@@ -1,5 +1,13 @@
 // 定义内容
 export default {
+  commonBtn: {
+    query: "Query",
+    reset: "Reset",
+    view: "View",
+    update: "Update",
+    delete: "Delete",
+    add: "Add",
+  },
 	router: {
 		home: 'home',
 		system: 'system',
@@ -189,4 +197,10 @@ export default {
 		btnTwo: 'Update now',
 		btnTwoLoading: 'Updating',
 	},
+  namespace:{
+    nsId: 'id',
+    nsName: 'Name',
+    nsUniqueId: 'Unique id',
+    nsCreateTime: 'Create time'
+  }
 };

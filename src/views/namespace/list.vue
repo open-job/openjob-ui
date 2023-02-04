@@ -17,6 +17,10 @@
 <script setup lang="ts" name="makeTableDemo">
 import { defineAsyncComponent, reactive, ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n';
+
+// 定义变量内容
+const { t } = useI18n();
 
 // 引入组件
 const Table = defineAsyncComponent(() => import('/@/components/table/index.vue'));
@@ -30,10 +34,10 @@ const state = reactive<TableDemoState>({
     data: [],
     // 表头内容（必传，注意格式）
     header: [
-      { key: 'namespaceId', colWidth: '100', title: '空间ID', type: 'text', isCheck: true },
-      { key: 'name', colWidth: '', title: '空间名称', type: 'text', isCheck: true },
-      { key: 'phone', colWidth: '200', title: '空间标识', type: 'text', isCheck: true },
-      { key: 'address', colWidth: '200', title: '创建时间', type: 'text', isCheck: true },
+      { key: 'namespaceId', colWidth: '100', title: t('message.namespace.nsId'), type: 'text', isCheck: true },
+      { key: 'name', colWidth: '', title: t('message.namespace.nsName'), type: 'text', isCheck: true },
+      { key: 'phone', colWidth: '200', title: t('message.namespace.nsUniqueId'), type: 'text', isCheck: true },
+      { key: 'address', colWidth: '200', title: t('message.namespace.nsCreateTime'), type: 'text', isCheck: true },
     ],
     // 配置项（必传）
     config: {
@@ -46,7 +50,7 @@ const state = reactive<TableDemoState>({
     },
     // 搜索表单，动态生成（传空数组时，将不显示搜索，注意格式）
     search: [
-      { label: '空间名称', prop: 'name', placeholder: '请输入空间名称', required: true, type: 'input' },
+      { label: t('message.namespace.nsName'), prop: 'name', placeholder: '请输入空间名称', required: true, type: 'input' },
     ],
     // 搜索参数（不用传，用于分页、搜索时传给后台的值，`getTableData` 中使用）
     param: {

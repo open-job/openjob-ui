@@ -29,10 +29,10 @@
 					</template>
 				</template>
 			</el-table-column>
-			<el-table-column label="操作" width="260" v-if="config.isOperate">
-            <el-button type="info" size="default">查看</el-button>
-            <el-button type="primary" size="default">编辑</el-button>
-            <el-button type="danger" size="default">删除</el-button>
+			<el-table-column label="操作" width="300" v-if="config.isOperate">
+            <el-button type="info" size="default">{{ $t('message.commonBtn.view') }}</el-button>
+            <el-button type="primary" size="default">{{ $t('message.commonBtn.update') }}</el-button>
+            <el-button type="danger" size="default">{{ $t('message.commonBtn.delete') }}</el-button>
 			</el-table-column>
 			<template #empty>
 				<el-empty description="暂无数据" />
