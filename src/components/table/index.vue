@@ -11,7 +11,7 @@
 			@selection-change="onSelectionChange"
 		>
 			<el-table-column type="selection" :reserve-selection="true" width="30" v-if="config.isSelection" />
-			<el-table-column type="index" label="序号" width="60" v-if="config.isSerialNo" />
+			<el-table-column type="index" label="ID" width="60" v-if="config.isSerialNo" />
 			<el-table-column
 				v-for="(item, index) in setHeader"
 				:key="index"
@@ -29,14 +29,10 @@
 					</template>
 				</template>
 			</el-table-column>
-			<el-table-column label="操作" width="100" v-if="config.isOperate">
-				<template v-slot="scope">
-					<el-popconfirm title="确定删除吗？" @confirm="onDelRow(scope.row)">
-						<template #reference>
-							<el-button text type="primary">删除</el-button>
-						</template>
-					</el-popconfirm>
-				</template>
+			<el-table-column label="操作" width="260" v-if="config.isOperate">
+            <el-button type="info" size="default">查看</el-button>
+            <el-button type="primary" size="default">编辑</el-button>
+            <el-button type="danger" size="default">删除</el-button>
 			</el-table-column>
 			<template #empty>
 				<el-empty description="暂无数据" />
