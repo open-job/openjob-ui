@@ -30,10 +30,12 @@
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" width="300" v-if="config.isOperate">
-            <el-button type="info" size="default">{{ $t('message.commonBtn.view') }}</el-button>
-            <el-button type="primary" size="default">{{ $t('message.commonBtn.update') }}</el-button>
-            <el-button type="danger" size="default">{{ $t('message.commonBtn.delete') }}</el-button>
-			</el-table-column>
+        <template v-slot="scope">
+            <el-button type="info" size="default" v-if="config.isOpView" @click="onViewRow(scope.row)">{{ $t('message.commonBtn.view') }}</el-button>
+            <el-button type="primary" size="default" v-if="config.isOpUpdate" @click="onUpdateRow(scope.row)">{{ $t('message.commonBtn.update') }}</el-button>
+            <el-button type="danger" size="default" v-if="config.isOpDelete" @click="onDelRow(scope.row)">{{ $t('message.commonBtn.delete') }}</el-button>
+        </template>
+      </el-table-column>
 			<template #empty>
 				<el-empty description="暂无数据" />
 			</template>
@@ -125,7 +127,7 @@ const props = defineProps({
 });
 
 // 定义子组件向父组件传值/事件
-const emit = defineEmits(['delRow', 'pageChange', 'sortHeader']);
+const emit = defineEmits(['delRow', 'updateRow', 'viewRow', 'pageChange', 'sortHeader']);
 
 // 定义变量内容
 const toolSetRef = ref();
@@ -173,6 +175,15 @@ const onSelectionChange = (val: EmptyObjectType[]) => {
 const onDelRow = (row: EmptyObjectType) => {
 	emit('delRow', row);
 };
+
+const onUpdateRow = (row: EmptyObjectType) => {
+  emit('updateRow', row);
+};
+
+const onViewRow = (row: EmptyObjectType) => {
+  emit('viewRow', row);
+};
+
 // 分页改变
 const onHandleSizeChange = (val: number) => {
 	state.page.pageSize = val;

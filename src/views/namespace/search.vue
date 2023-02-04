@@ -26,9 +26,19 @@
         <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
           <el-form-item class="table-form-btn" :label-width="search.length <= 1 ? '10px' : '100px'">
             <div>
-              <el-button size="default" type="primary" @click="onSearch(tableSearchRef)">{{ $t('message.commonBtn.query') }}</el-button>
+              <el-button size="default" type="primary" @click="onSearch(tableSearchRef)">
+                <el-icon>
+                  <ele-Search />
+                </el-icon>
+                {{ $t('message.commonBtn.query') }}
+              </el-button>
               <el-button size="default" type="info" class="ml10" @click="onReset(tableSearchRef)"> {{ $t('message.commonBtn.reset') }} </el-button>
-              <el-button size="default" type="success" class="ml10" @click="onReset(tableSearchRef)"> + {{ $t('message.commonBtn.add') }} </el-button>
+              <el-button size="default" type="success" class="ml10" @click="onAdd()">
+                <el-icon>
+                  <ele-FolderAdd />
+                </el-icon>
+                {{ $t('message.commonBtn.add') }}
+              </el-button>
             </div>
           </el-form-item>
         </el-col>
@@ -51,7 +61,7 @@ const props = defineProps({
 });
 
 // 定义子组件向父组件传值/事件
-const emit = defineEmits(['search']);
+const emit = defineEmits(['search', 'add']);
 
 // 定义变量内容
 const tableSearchRef = ref<FormInstance>();
@@ -77,6 +87,11 @@ const onReset = (formEl: FormInstance | undefined) => {
   formEl.resetFields();
   emit('search', state.form);
 };
+
+const onAdd = () => {
+  emit('add', state.form);
+};
+
 // 初始化 form 字段，取自父组件 search.prop
 const initFormField = () => {
   if (props.search.length <= 0) return false;
