@@ -1,10 +1,13 @@
 // 定义内容
 export default {
+  commonMsg:{
+    notEmpty: "不能为空"
+  },
   commonBtn: {
     query: "查询",
     reset: "重置",
     view: "查看",
-    update: "编辑",
+    update: "更新",
     delete: "删除",
     add: "新增",
   },
@@ -201,6 +204,9 @@ export default {
     nsId: '空间ID',
     nsName: '空间名称',
     nsUniqueId: '空间标识',
-    nsCreateTime: '创建时间'
+    nsStatus: "状态",
+    nsCreateTime: '创建时间',
+    addTitle: '新增命名空间',
+    editTitle: '编辑命名空间',
   }
 };

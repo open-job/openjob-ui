@@ -1,19 +1,19 @@
 <template>
   <div class="table-demo-container layout-padding">
     <div class="table-demo-padding layout-padding-view layout-padding-auto">
-      <el-dialog v-model="dialogState.dialogTableVisible" title="编辑命名空间" width="600px">
+      <el-dialog v-model="dialogState.dialogTableVisible" :title="dialogState.dialogTitle" width="600px">
         <el-form ref="roleDialogFormRef" :model="state.ruleForm" size="default" label-width="90px">
           <el-row :gutter="35">
             <el-col :xs="24" :sm="23" :md="23" :lg="23" :xl="23" class="mb20">
-              <el-form-item label="空间名称">
-                <el-input v-model="formState.ruleForm.nsName" placeholder="请输入角色名称" clearable></el-input>
+              <el-form-item :label="t('message.namespace.nsName')">
+                <el-input v-model="formState.ruleForm.nsName" clearable></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="35" v-if="dialogState.isUpdate">
             <el-col :xs="24" :sm="23" :md="23" :lg="23" :xl="23" class="mb20">
-              <el-form-item label="空间标识">
-                <el-input v-model="formState.ruleForm.nsUniqueId" placeholder="请输入角色名称" clearable disabled></el-input>
+              <el-form-item :label="t('message.namespace.nsUniqueId')">
+                <el-input v-model="formState.ruleForm.nsUniqueId" clearable disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -37,6 +37,7 @@
         class="table-demo"
         @delRow="onTableDelRow"
         @updateRow="onTableUpRow"
+        @switchCol = "onSwitchCol"
         @pageChange="onTablePageChange"
         @sortHeader="onSortHeader"
       />
@@ -48,15 +49,24 @@
 import { defineAsyncComponent, reactive, ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
+import { useNamespaceApi } from '/@/api/namespace/index';
+
+const nsApi = useNamespaceApi();
 
 // 定义变量内容
 const { t } = useI18n();
 
 const dialogState = reactive({
+  dialogTitle: "",
   isUpdate: false,
   dialogTableVisible: false,
 });
 
+const listData = reactive({
+  name: "",
+  page: 1,
+  size: 10,
+});
 
 // 引入组件
 const Table = defineAsyncComponent(() => import('/@/components/table/index.vue'));
@@ -80,8 +90,9 @@ const state = reactive<TableDemoState>({
     header: [
       { key: 'nsId', colWidth: '100', title: t('message.namespace.nsId'), type: 'text', isCheck: true },
       { key: 'nsName', colWidth: '', title: t('message.namespace.nsName'), type: 'text', isCheck: true },
-      { key: 'nsUniqueId', colWidth: '200', title: t('message.namespace.nsUniqueId'), type: 'text', isCheck: true },
-      { key: 'createTime', colWidth: '200', title: t('message.namespace.nsCreateTime'), type: 'text', isCheck: true },
+      { key: 'nsUniqueId', colWidth: '', title: t('message.namespace.nsUniqueId'), type: 'text', isCheck: true },
+      { key: 'nsStatus', colWidth: '', title: t('message.namespace.nsStatus'), type: 'switch', isCheck: true },
+      { key: 'createTime', colWidth: '', title: t('message.namespace.nsCreateTime'), type: 'text', isCheck: true },
     ],
     // 配置项（必传）
     config: {
@@ -98,28 +109,33 @@ const state = reactive<TableDemoState>({
     },
     // 搜索表单，动态生成（传空数组时，将不显示搜索，注意格式）
     search: [
-      { label: t('message.namespace.nsName'), prop: 'name', placeholder: '请输入空间名称', required: true, type: 'input' },
+      { label: t('message.namespace.nsName'), prop: 'name', placeholder: '', required: true, type: 'input' },
     ],
     // 搜索参数（不用传，用于分页、搜索时传给后台的值，`getTableData` 中使用）
     param: {
-      pageNum: 1,
-      pageSize: 10,
+      pageNum: listData.page,
+      pageSize: listData.size,
     },
   },
 });
 
 // 初始化列表数据
-const getTableData = () => {
+const getTableData = async (params: object) => {
   state.tableData.config.loading = true;
-  state.tableData.data = [];
-  for (let i = 0; i < 20; i++) {
+  let data = await nsApi.getNamespaceList(params);
+  listData.page =data.page;
+  listData.size = data.size;
+
+  data.list.forEach(function (item :Object){
     state.tableData.data.push({
-      nsId: `${i + 1}`,
-      nsName: `莲塘别墅广场莲塘别墅广场莲塘别墅广场莲塘别墅广场莲塘别墅广场莲塘别墅广场莲塘别墅广场莲塘别墅广场莲塘别墅广场莲塘别墅广场莲塘别墅广场莲塘别墅广场莲塘别墅广场${i + 1}`,
-      nsUniqueId: `0592-6081259${i + 1}`,
-      createTime: `中沧公寓中庭榕树下${i + 1}`,
-    });
-  }
+          nsId: item['id'],
+          nsName: item['name'],
+          nsStatus: item['status'] == 1,
+          nsUniqueId: item['uuid'],
+          createTime: item['createTime'],
+    })
+  });
+
   // 数据总数（模拟，真实从接口取）
   state.tableData.config.total = state.tableData.data.length;
   setTimeout(() => {
@@ -134,12 +150,19 @@ const onSearch = (data: EmptyObjectType) => {
 // 删除当前项回调
 const onTableDelRow = (row: EmptyObjectType) => {
   ElMessage.success(`删除${row.nsId}成功！`);
-  getTableData();
+  getTableData(listData);
 };
+
+const onSwitchCol = (event: object, row: EmptyObjectType, colName: string) => {
+  ElMessage.success(`${event}删除${row.nsId}成功！ ${colName}`);
+};
+
+
 
 const onTableUpRow = (row: EmptyObjectType) => {
   formState.ruleForm.nsName = row.nsName;
   formState.ruleForm.nsUniqueId = row.nsUniqueId;
+  dialogState.dialogTitle = t("message.namespace.editTitle");
   dialogState.dialogTableVisible = true;
   dialogState.isUpdate = true;
 };
@@ -147,6 +170,7 @@ const onTableUpRow = (row: EmptyObjectType) => {
 const onTableAddRow = () => {
   formState.ruleForm.nsName = '';
   dialogState.isUpdate = false;
+  dialogState.dialogTitle = t("message.namespace.addTitle");
   dialogState.dialogTableVisible = true;
 };
 
@@ -158,14 +182,14 @@ const onTableConfirmRow = () => {
   }
 
   dialogState.dialogTableVisible = false;
-  getTableData();
+  getTableData(listData);
 };
 
 // 分页改变时回调
 const onTablePageChange = (page: TableDemoPageType) => {
   state.tableData.param.pageNum = page.pageNum;
   state.tableData.param.pageSize = page.pageSize;
-  getTableData();
+  getTableData(listData);
 };
 // 拖动显示列排序回调
 const onSortHeader = (data: TableHeaderType[]) => {
@@ -173,7 +197,7 @@ const onSortHeader = (data: TableHeaderType[]) => {
 };
 // 页面加载时
 onMounted(() => {
-  getTableData();
+  getTableData(listData);
 });
 </script>
 

@@ -24,16 +24,37 @@
 					<template v-if="item.type === 'image'">
 						<img :src="scope.row[item.key]" :width="item.width" :height="item.height" />
 					</template>
+          <template v-else-if="item.type === 'switch'">
+            <el-switch
+              v-model="scope.row[item.key]"
+              class="ml-2"
+              size="default"
+              @change="onChangeRow($event, scope.row,item.key)"
+              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
+            />
+          </template>
 					<template v-else>
 						{{ scope.row[item.key] }}
 					</template>
 				</template>
+
 			</el-table-column>
 			<el-table-column label="操作" width="300" v-if="config.isOperate">
         <template v-slot="scope">
             <el-button type="info" size="default" v-if="config.isOpView" @click="onViewRow(scope.row)">{{ $t('message.commonBtn.view') }}</el-button>
-            <el-button type="primary" size="default" v-if="config.isOpUpdate" @click="onUpdateRow(scope.row)">{{ $t('message.commonBtn.update') }}</el-button>
-            <el-button type="danger" size="default" v-if="config.isOpDelete" @click="onDelRow(scope.row)">{{ $t('message.commonBtn.delete') }}</el-button>
+
+          <el-button type="primary" size="default" v-if="config.isOpUpdate" @click="onUpdateRow(scope.row)">
+            <el-icon>
+              <ele-Edit/>
+            </el-icon>
+            {{ $t('message.commonBtn.update') }}
+          </el-button>
+            <el-button type="danger" size="default" v-if="config.isOpDelete" @click="onDelRow(scope.row)">
+              <el-icon>
+                <ele-Delete/>
+              </el-icon>
+              {{ $t('message.commonBtn.delete') }}
+            </el-button>
         </template>
       </el-table-column>
 			<template #empty>
@@ -127,7 +148,7 @@ const props = defineProps({
 });
 
 // 定义子组件向父组件传值/事件
-const emit = defineEmits(['delRow', 'updateRow', 'viewRow', 'pageChange', 'sortHeader']);
+const emit = defineEmits(['delRow', 'updateRow', 'viewRow', 'switchCol','pageChange', 'sortHeader']);
 
 // 定义变量内容
 const toolSetRef = ref();
@@ -178,6 +199,10 @@ const onDelRow = (row: EmptyObjectType) => {
 
 const onUpdateRow = (row: EmptyObjectType) => {
   emit('updateRow', row);
+};
+
+const onChangeRow = (event: object, row: EmptyObjectType, colName: string) => {
+  emit('switchCol',event, row, colName)
 };
 
 const onViewRow = (row: EmptyObjectType) => {

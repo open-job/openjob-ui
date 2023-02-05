@@ -7,7 +7,7 @@
             <el-form-item
               :label="val.label"
               :prop="val.prop"
-              :rules="[{ required: val.required, message: `${val.label}不能为空`, trigger: val.type === 'input' ? 'blur' : 'change' }]"
+              :rules="[{ required: val.required, message: `${val.label}${t('message.commonMsg.notEmpty')}`, trigger: val.type === 'input' ? 'blur' : 'change' }]"
             >
               <el-input v-model="state.form[val.prop]" :placeholder="val.placeholder" clearable v-if="val.type === 'input'" style="width: 100%" />
               <el-date-picker
@@ -50,6 +50,9 @@
 <script setup lang="ts" name="makeTableDemoSearch">
 import { reactive, ref, onMounted } from 'vue';
 import type { FormInstance } from 'element-plus';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 // 定义父组件传过来的值
 const props = defineProps({

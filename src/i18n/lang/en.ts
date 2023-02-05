@@ -1,5 +1,8 @@
 // 定义内容
 export default {
+  commonMsg:{
+    notEmpty: "can not empty!"
+  },
   commonBtn: {
     query: "Query",
     reset: "Reset",
@@ -200,7 +203,10 @@ export default {
   namespace:{
     nsId: 'id',
     nsName: 'Name',
-    nsUniqueId: 'Unique id',
-    nsCreateTime: 'Create time'
+    nsUniqueId: 'UUID',
+    nsStatus: "status",
+    nsCreateTime: 'Create time',
+    addTitle: 'Add Namespace',
+    editTitle: "Edit Namespace",
   }
 };
