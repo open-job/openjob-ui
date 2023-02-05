@@ -65,7 +65,7 @@ const dialogState = reactive({
 const listData = reactive({
   name: "",
   page: 1,
-  size: 10,
+  size: 1,
 });
 
 // 引入组件
@@ -109,7 +109,7 @@ const state = reactive<TableDemoState>({
     },
     // 搜索表单，动态生成（传空数组时，将不显示搜索，注意格式）
     search: [
-      { label: t('message.namespace.nsName'), prop: 'name', placeholder: '', required: true, type: 'input' },
+      { label: t('message.namespace.nsName'), prop: 'queryName', placeholder: '', required: true, type: 'input' },
     ],
     // 搜索参数（不用传，用于分页、搜索时传给后台的值，`getTableData` 中使用）
     param: {
@@ -126,26 +126,33 @@ const getTableData = async (params: object) => {
   listData.page =data.page;
   listData.size = data.size;
 
+  // Reset and request data
+  state.tableData.data = [];
   data.list.forEach(function (item :Object){
     state.tableData.data.push({
           nsId: item['id'],
           nsName: item['name'],
-          nsStatus: item['status'] == 1,
+          nsStatus: item['status'] === 1,
           nsUniqueId: item['uuid'],
           createTime: item['createTime'],
     })
   });
 
   // 数据总数（模拟，真实从接口取）
-  state.tableData.config.total = state.tableData.data.length;
+  state.tableData.config.total = data.total;
   setTimeout(() => {
     state.tableData.config.loading = false;
   }, 500);
 };
 // 搜索点击时表单回调
 const onSearch = (data: EmptyObjectType) => {
-  state.tableData.param = Object.assign({}, state.tableData.param, { ...data });
-  tableRef.value.pageReset();
+  // state.tableData.param = Object.assign({}, state.tableData.param, { ...data });
+  // tableRef.value.pageReset();
+  getTableData({
+    name: data.queryName,
+    page: 1,
+    size: 10,
+  });
 };
 // 删除当前项回调
 const onTableDelRow = (row: EmptyObjectType) => {
@@ -156,8 +163,6 @@ const onTableDelRow = (row: EmptyObjectType) => {
 const onSwitchCol = (event: object, row: EmptyObjectType, colName: string) => {
   ElMessage.success(`${event}删除${row.nsId}成功！ ${colName}`);
 };
-
-
 
 const onTableUpRow = (row: EmptyObjectType) => {
   formState.ruleForm.nsName = row.nsName;
@@ -187,9 +192,10 @@ const onTableConfirmRow = () => {
 
 // 分页改变时回调
 const onTablePageChange = (page: TableDemoPageType) => {
-  state.tableData.param.pageNum = page.pageNum;
-  state.tableData.param.pageSize = page.pageSize;
-  getTableData(listData);
+  getTableData({
+    page: page.pageNum,
+    size: page.pageSize,
+  });
 };
 // 拖动显示列排序回调
 const onSortHeader = (data: TableHeaderType[]) => {

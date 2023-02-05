@@ -1,7 +1,7 @@
 // 定义内容
 export default {
   commonMsg:{
-    notEmpty: "can not empty!"
+    notEmpty: " can not empty!"
   },
   commonBtn: {
     query: "Query",
