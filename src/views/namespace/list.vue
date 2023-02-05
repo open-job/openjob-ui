@@ -62,6 +62,10 @@ const dialogState = reactive({
   dialogTableVisible: false,
 });
 
+const searchData = reactive({
+  queryName: "",
+});
+
 const listData = reactive({
   name: "",
   page: 1,
@@ -113,8 +117,8 @@ const state = reactive<TableDemoState>({
     ],
     // 搜索参数（不用传，用于分页、搜索时传给后台的值，`getTableData` 中使用）
     param: {
-      pageNum: listData.page,
-      pageSize: listData.size,
+      pageNum: 0,
+      pageSize: 0,
     },
   },
 });
@@ -148,10 +152,12 @@ const getTableData = async (params: object) => {
 const onSearch = (data: EmptyObjectType) => {
   // state.tableData.param = Object.assign({}, state.tableData.param, { ...data });
   // tableRef.value.pageReset();
+  searchData.queryName = data.queryName;
+
   getTableData({
     name: data.queryName,
     page: 1,
-    size: 10,
+    size: 1,
   });
 };
 // 删除当前项回调
@@ -193,6 +199,7 @@ const onTableConfirmRow = () => {
 // 分页改变时回调
 const onTablePageChange = (page: TableDemoPageType) => {
   getTableData({
+    name: searchData.queryName,
     page: page.pageNum,
     size: page.pageSize,
   });
