@@ -48,8 +48,8 @@ const { t } = useI18n();
 const props = defineProps({
   // 搜索表单
   search: {
-    type: Array<TableSearchType>,
     default: () => [],
+    type: Array<TableSearchType>
   },
 });
 

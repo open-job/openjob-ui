@@ -66,10 +66,10 @@ const searchData = reactive({
   queryName: "",
 });
 
-const listData = reactive({
+const requestListData = reactive({
   name: "",
   page: 1,
-  size: 1,
+  size: 10,
 });
 
 // 引入组件
@@ -127,8 +127,7 @@ const state = reactive<TableDemoState>({
 const getTableData = async (params: object) => {
   state.tableData.config.loading = true;
   let data = await nsApi.getNamespaceList(params);
-  listData.page =data.page;
-  listData.size = data.size;
+  requestListData.page =data.page;
 
   // Reset and request data
   state.tableData.data = [];
@@ -156,20 +155,23 @@ const onSearch = (data: EmptyObjectType) => {
 
   getTableData({
     name: data.queryName,
-    page: 1,
-    size: 1,
+    page: requestListData.page,
+    size: requestListData.size,
   });
 };
-// 删除当前项回调
+
+// 删除
 const onTableDelRow = (row: EmptyObjectType) => {
   ElMessage.success(`删除${row.nsId}成功！`);
-  getTableData(listData);
+  getTableData(requestListData);
 };
 
+// 状态切换
 const onSwitchCol = (event: object, row: EmptyObjectType, colName: string) => {
   ElMessage.success(`${event}删除${row.nsId}成功！ ${colName}`);
 };
 
+// 更新
 const onTableUpRow = (row: EmptyObjectType) => {
   formState.ruleForm.nsName = row.nsName;
   formState.ruleForm.nsUniqueId = row.nsUniqueId;
@@ -178,6 +180,7 @@ const onTableUpRow = (row: EmptyObjectType) => {
   dialogState.isUpdate = true;
 };
 
+// 新增
 const onTableAddRow = () => {
   formState.ruleForm.nsName = '';
   dialogState.isUpdate = false;
@@ -193,7 +196,7 @@ const onTableConfirmRow = () => {
   }
 
   dialogState.dialogTableVisible = false;
-  getTableData(listData);
+  getTableData(requestListData);
 };
 
 // 分页改变时回调
@@ -210,7 +213,7 @@ const onSortHeader = (data: TableHeaderType[]) => {
 };
 // 页面加载时
 onMounted(() => {
-  getTableData(listData);
+  getTableData(requestListData);
 });
 </script>
 
