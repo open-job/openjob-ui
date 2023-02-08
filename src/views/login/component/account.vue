@@ -69,8 +69,9 @@ import { initBackEndControlRoutes } from '/@/router/backEnd';
 import { Session } from '/@/utils/storage';
 import { formatAxis } from '/@/utils/formatTime';
 import { NextLoading } from '/@/utils/loading';
-import { TOKEN_NAME } from '/@/consts';
+import { TOKEN_NAME, USER_INFO } from '/@/consts';
 import { useLoginApi } from '/@/api/login/index';
+import { useUserInfo } from '/@/stores/userInfo';
 
 // 引入 api 请求接口
 const loginApi = useLoginApi();
@@ -113,27 +114,33 @@ const onSignIn = async () => {
 		const data = await loginApi.login(formData);
 		console.log(data)
 
-		// 存储 token 到浏览器缓存
-		Session.set(TOKEN_NAME, data.sessionKey);
-		// 模拟数据，对接接口时，记得删除多余代码及对应依赖的引入。
-		// 用于 `/src/stores/userInfo.ts` 中不同用户登录判断（模拟数据）
-		Cookies.set('username', data.username);
-
+		// 存储 token 和用户信息到浏览器缓存
+    useUserInfo().saveToSession(data.username, data.sessionKey, {
+			userName: data.username,
+			photo: 'https://img2.baidu.com/it/u=1978192862,2048448374&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500',
+			time: 1800,
+			roles: [],
+      isAdmin: data.supperAdmin,
+			authBtnList: [],
+			perms: data.permNames,
+		})
 	} catch (error) {
-		console.log(error)
+		// console.log(error)
 		state.loading.signIn = false;
 		return;
 	}
 
-	// 加载菜单路由列表
+	// 登录后 - 加载菜单路由列表
+
+  // 前端控制路由，2、请注意执行顺序
 	if (!themeConfig.value.isRequestRoutes) {
-		// 前端控制路由，2、请注意执行顺序
 		const isNoPower = await initFrontEndControlRoutes();
 		signInSuccess(isNoPower);
 	} else {
-		// 模拟后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
+		// 后端控制路由 - isRequestRoutes 为 true，则开启后端控制路由
 		// 添加完动态路由，再进行 router 跳转，否则可能报错 No match found for location with path "/"
 		const isNoPower = await initBackEndControlRoutes();
+
 		// 执行完 initBackEndControlRoutes，再执行 signInSuccess
 		signInSuccess(isNoPower);
 	}
