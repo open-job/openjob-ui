@@ -322,6 +322,10 @@ declare type TableDemoState = {
 			isSelection: boolean;
 			isSerialNo: boolean;
 			isOperate: boolean;
+      isOpView: boolean,
+      isOpUpdate:boolean
+      isOpDelete:boolean
+      isOpMore:boolean
 		};
 		search: TableSearchType[];
 		param: EmptyObjectType;

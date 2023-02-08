@@ -45,6 +45,10 @@ const state = reactive<TableDemoState>({
 			isSerialNo: true, // 是否显示表格序号
 			isSelection: true, // 是否显示表格多选
 			isOperate: true, // 是否显示表格操作栏
+      isOpView: false, // 是否线上 view 操作
+      isOpUpdate: false,
+      isOpDelete: true,
+      isOpMore: false,
 		},
 		// 搜索表单，动态生成（传空数组时，将不显示搜索，注意格式）
 		search: [
@@ -105,6 +109,7 @@ const onTableDelRow = (row: EmptyObjectType) => {
 	ElMessage.success(`删除${row.name}成功！`);
 	getTableData();
 };
+
 // 分页改变时回调
 const onTablePageChange = (page: TableDemoPageType) => {
 	state.tableData.param.pageNum = page.pageNum;

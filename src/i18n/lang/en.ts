@@ -1,5 +1,16 @@
 // 定义内容
 export default {
+  commonMsg:{
+    notEmpty: " can not empty!"
+  },
+  commonBtn: {
+    query: "Query",
+    reset: "Reset",
+    view: "View",
+    update: "Update",
+    delete: "Delete",
+    add: "Add",
+  },
 	router: {
 		home: 'home',
 		system: 'system',
@@ -189,4 +200,13 @@ export default {
 		btnTwo: 'Update now',
 		btnTwoLoading: 'Updating',
 	},
+  namespace:{
+    nsId: 'id',
+    nsName: 'Name',
+    nsUniqueId: 'UUID',
+    nsStatus: "status",
+    nsCreateTime: 'Create time',
+    addTitle: 'Add Namespace',
+    editTitle: "Edit Namespace",
+  }
 };

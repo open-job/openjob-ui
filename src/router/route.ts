@@ -47,6 +47,21 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			isKeepAlive: true,
 		},
 		children: [
+      {
+        path: '/test',
+        name: 'test',
+        component: () => import('/@/views/namespace/list.vue'),
+        meta: {
+          title: 'message.router.home',
+          isLink: '',
+          isHide: false,
+          isKeepAlive: true,
+          isAffix: true,
+          isIframe: false,
+          roles: ['admin', 'common'],
+          icon: 'iconfont icon-shouye',
+        },
+      },
 			{
 				path: '/home',
 				name: 'home',
