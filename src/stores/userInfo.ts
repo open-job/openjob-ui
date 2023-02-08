@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import Cookies from 'js-cookie';
 import { Session } from '/@/utils/storage';
-import { USER_INFO } from '/@/consts';
+import { TOKEN_NAME, USER_INFO } from '/@/consts';
+import { treeEmits } from 'element-plus/es/components/tree-v2/src/virtual-tree';
 
 /**
  * 用户信息
@@ -14,10 +15,34 @@ export const useUserInfo = defineStore('userInfo', {
 			photo: '',
 			time: 0,
 			roles: [],
+      isAdmin: false,
 			authBtnList: [],
+			perms: [],
 		},
 	}),
 	actions: {
+    isSupperAdmin(): boolean {
+      return this.userInfos.isAdmin;
+    },
+    hasPermission(key: string): boolean {
+      if (this.userInfos.isAdmin) {
+        return true;
+      }
+
+      if (!this.userInfos.perms) {
+        return false;
+      }
+
+      return this.userInfos.perms.indexOf(key) > -1;
+    },
+    // 登录后 存储用户信息到浏览器缓存
+    saveToSession(username: string, token: string, data: object) {
+      // 存储 token 到浏览器缓存
+      Session.set(TOKEN_NAME, token);
+      Cookies.set('username', username);
+      Session.set(USER_INFO, data);
+    },
+    // 加载登录用户信息
 		async setUserInfos() {
 			// 存储用户信息到浏览器缓存
 			if (Session.get(USER_INFO)) {
@@ -53,6 +78,7 @@ export const useUserInfo = defineStore('userInfo', {
 						defaultRoles = testRoles;
 						defaultAuthBtnList = testAuthBtnList;
 					}
+
 					// 用户信息模拟数据
 					const userInfos = {
 						userName: userName,

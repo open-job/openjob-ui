@@ -10,6 +10,11 @@ export const USER_APIS = {
     delete: '/admin/users/delete',
 }
 
+export const MENU_APIS = {
+  userMenus: '/admin/user-info',
+  // userMenus: '/admin/menus/current',
+}
+
 export const JOB_APIS = {
 
 }

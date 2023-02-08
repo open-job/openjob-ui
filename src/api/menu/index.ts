@@ -1,3 +1,4 @@
+import { MENU_APIS } from '../serverApis';
 import request from '/@/utils/request';
 
 /**
@@ -12,6 +13,13 @@ import request from '/@/utils/request';
  */
 export function useMenuApi() {
 	return {
+		getUserMenus: (params?: object) => {
+			return request({
+				url: MENU_APIS.userMenus,
+				method: 'get',
+				params,
+			});
+		},
 		getAdminMenu: (params?: object) => {
 			return request({
 				url: '/gitee/lyt-top/vue-next-admin-images/raw/master/menu/adminMenu.json',
