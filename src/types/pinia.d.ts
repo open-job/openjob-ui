@@ -6,9 +6,11 @@
 declare interface UserInfosState<T = any> {
 	userInfos: {
 		authBtnList: string[];
+		perms: string[]; // eg: ['user.add', 'user.update']
 		photo: string;
 		roles: string[];
 		time: number;
+		isAdmin: boolean; // 超级管理员
 		userName: string;
 		[key: string]: T;
 	};

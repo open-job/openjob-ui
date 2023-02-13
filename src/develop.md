@@ -37,7 +37,7 @@ cnpm run build
 
 ## 登录
 
-- src/router/index.ts 检查是否登录
+- `src/router/index.ts` 检查是否登录
   - 未登录，跳转登录页面
     - `views/login/index.vue` 进行登录
     - 账号登录 `views/login/component/account.vue`
@@ -70,3 +70,25 @@ cnpm run build
 
 - src/layout/navBars/breadcrumb/user.vue
 - TODO 调用后端API退出登录
+
+## 菜单
+
+参考 `src/router/reoute.ts`
+
+```ts
+{
+  path: '/home',
+  name: 'home',
+  component: () => import('/@/views/home/index.vue'),
+  meta: {
+    title: 'message.router.home',
+    isLink: '',
+    isHide: false,
+    isKeepAlive: true,
+    isAffix: true,
+    isIframe: false,
+    roles: ['admin', 'common'],
+    icon: 'iconfont icon-shouye',
+  },
+}
+```

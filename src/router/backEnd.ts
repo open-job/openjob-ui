@@ -38,7 +38,6 @@ export async function initBackEndControlRoutes() {
 	// 界面 loading 动画开始执行
 	if (window.nextLoading === undefined) NextLoading.start();
 	// 无 token 停止执行下一步
-	// if (!Session.get('token')) return false;
 	if (!Session.get(ROLE_ADMIN)) return false;
 
 	// 触发初始化用户信息 pinia
@@ -46,14 +45,16 @@ export async function initBackEndControlRoutes() {
 	await useUserInfo().setUserInfos();
 
 	// 获取路由菜单数据
-	const res = await getBackEndControlRoutes();
+	const data = await getBackEndControlRoutes();
+
 	// 无登录权限时，添加判断
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I64HVO
-	if (res.data.length <= 0) return Promise.resolve(true);
+	if (data.length <= 0) return Promise.resolve(true);
+
 	// 存储接口原始路由（未处理component），根据需求选择使用
-	useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res.data)));
+	useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(data)));
 	// 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
-	dynamicRoutes[0].children = await backEndComponent(res.data);
+	dynamicRoutes[0].children = await backEndComponent(data);
 	// 添加动态路由
 	await setAddRoute();
 	// 设置路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
@@ -114,13 +115,15 @@ export function getBackEndControlRoutes() {
 	// 模拟 admin 与 test
 	const stores = useUserInfo(pinia);
 	const { userInfos } = storeToRefs(stores);
-	const auth = userInfos.value.roles[0];
+	const role0 = userInfos.value.roles[0];
 
-	// TODO 获取菜单信息
+	// 获取菜单信息
+  return menuApi.getUserMenus();
+
 	// 管理员 admin
-	if (auth === 'admin') return menuApi.getAdminMenu();
+	// if (role0 === 'admin') return menuApi.getAdminMenu();
 	// 其它用户 test
-	else return menuApi.getTestMenu();
+	// else return menuApi.getTestMenu();
 }
 
 /**
