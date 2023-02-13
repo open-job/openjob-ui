@@ -1,32 +1,44 @@
 <template>
 	<div class="system-role-container layout-padding">
 		<div class="system-role-padding layout-padding-auto layout-padding-view">
-			<div class="system-user-search mb15">
-				<el-input v-model="state.tableData.param.search" size="default" placeholder="" style="max-width: 180px"> </el-input>
-				<el-button size="default" type="primary" class="ml10">
-					<el-icon>
-						<ele-Search />
-					</el-icon>
-          {{ $t('message.commonBtn.query') }}
-				</el-button>
-				<el-button size="default" type="success" class="ml10" @click="onOpenAddRole('add')">
-					<el-icon>
-						<ele-FolderAdd />
-					</el-icon>
-          {{ $t('message.commonBtn.add') }}
-				</el-button>
-			</div>
+      <div class="system-user-search mb15">
+        <el-form :model="searchState.form" :rules="searchState.rules">
+          <el-row>
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+              <el-form-item :label="t('message.namespace.nsName')" prop="name">
+                <el-input v-model="searchState.form.name" size="default" style="width: 90%"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+              <el-button size="default" type="primary" class="ml10">
+                <el-icon>
+                  <ele-Search/>
+                </el-icon>
+                {{ $t('message.commonBtn.query') }}
+              </el-button>
+              <el-button size="default" type="success" class="ml10" @click="onOpenAddRole('add')">
+                <el-icon>
+                  <ele-FolderAdd/>
+                </el-icon>
+                {{ $t('message.commonBtn.add') }}
+              </el-button>
+            </el-col>
+          </el-row>
+        </el-form>
+      </div>
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
 				<el-table-column prop="nsId" :label="t('message.namespace.nsId')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="nsName" :label="t('message.namespace.nsName')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="nsUniqueId" :label="t('message.namespace.nsUniqueId')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="nsStatus" :label="t('message.namespace.nsStatus')" show-overflow-tooltip>
-          <el-switch
-            v-model="xxx"
-            class="ml-2"
-            size="default"
-            style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-          />
+          <template #default="scope">
+            <el-switch
+              v-model="scope.row.nsStatus"
+              class="ml-2"
+              size="default"
+              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
+            />
+          </template>
         </el-table-column>
 				<el-table-column prop="createTime" :label="t('message.namespace.nsCreateTime')" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="300">
@@ -82,13 +94,20 @@ const NsDialog = defineAsyncComponent(() => import('/@/views/namespace/dialog.vu
 
 // 定义变量内容
 const nsDialogRef = ref();
+
+const searchState = reactive({
+  form: { name: '22' },
+  rules: {
+    name: { required: true, message: '请输入姓名', trigger: 'blur' },
+  },
+});
+
 const state = reactive<NamespaceState>({
-	tableData: {
+  tableData: {
 		data: [],
 		total: 0,
 		loading: false,
 		param: {
-			search: '',
 			pageNum: 1,
 			pageSize: 10,
 		},
