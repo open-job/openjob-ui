@@ -1,7 +1,8 @@
 <template>
   <div class="table-demo-container layout-padding">
     <div class="table-demo-padding layout-padding-view layout-padding-auto">
-      <el-dialog v-model="dialogState.dialogTableVisible" :title="dialogState.dialogTitle" width="600px">
+      <el-dialog v-model="dialogState.dialogTableVisible" :title="dialogState.dialogTitle"
+                 width="600px">
         <el-form ref="roleDialogFormRef" :model="state.ruleForm" size="default" label-width="90px">
           <el-row :gutter="35">
             <el-col :xs="24" :sm="23" :md="23" :lg="23" :xl="23" class="mb20">
@@ -37,7 +38,7 @@
         class="table-demo"
         @delRow="onTableDelRow"
         @updateRow="onTableUpRow"
-        @switchCol = "onSwitchCol"
+        @switchCol="onSwitchCol"
         @pageChange="onTablePageChange"
         @sortHeader="onSortHeader"
       />
@@ -46,15 +47,15 @@
 </template>
 
 <script setup lang="ts" name="makeTableDemo">
-import { defineAsyncComponent, reactive, ref, onMounted } from 'vue';
-import { ElMessage } from 'element-plus';
-import { useI18n } from 'vue-i18n';
-import { useNamespaceApi } from '/@/api/namespace/index';
+import {defineAsyncComponent, reactive, ref, onMounted} from 'vue';
+import {ElMessage} from 'element-plus';
+import {useI18n} from 'vue-i18n';
+import {useNamespaceApi} from '/@/api/namespace/index';
 
 const nsApi = useNamespaceApi();
 
 // 定义变量内容
-const { t } = useI18n();
+const {t} = useI18n();
 
 const dialogState = reactive({
   dialogTitle: "",
@@ -92,11 +93,41 @@ const state = reactive<TableDemoState>({
     data: [],
     // 表头内容（必传，注意格式）
     header: [
-      { key: 'nsId', colWidth: '100', title: t('message.namespace.nsId'), type: 'text', isCheck: true },
-      { key: 'nsName', colWidth: '', title: t('message.namespace.nsName'), type: 'text', isCheck: true },
-      { key: 'nsUniqueId', colWidth: '', title: t('message.namespace.nsUniqueId'), type: 'text', isCheck: true },
-      { key: 'nsStatus', colWidth: '', title: t('message.namespace.nsStatus'), type: 'switch', isCheck: true },
-      { key: 'createTime', colWidth: '', title: t('message.namespace.nsCreateTime'), type: 'text', isCheck: true },
+      {
+        key: 'nsId',
+        colWidth: '100',
+        title: t('message.namespace.nsId'),
+        type: 'text',
+        isCheck: true
+      },
+      {
+        key: 'nsName',
+        colWidth: '',
+        title: t('message.namespace.nsName'),
+        type: 'text',
+        isCheck: true
+      },
+      {
+        key: 'nsUniqueId',
+        colWidth: '',
+        title: t('message.namespace.nsUniqueId'),
+        type: 'text',
+        isCheck: true
+      },
+      {
+        key: 'nsStatus',
+        colWidth: '',
+        title: t('message.namespace.nsStatus'),
+        type: 'switch',
+        isCheck: true
+      },
+      {
+        key: 'createTime',
+        colWidth: '',
+        title: t('message.namespace.nsCreateTime'),
+        type: 'text',
+        isCheck: true
+      },
     ],
     // 配置项（必传）
     config: {
@@ -113,7 +144,13 @@ const state = reactive<TableDemoState>({
     },
     // 搜索表单，动态生成（传空数组时，将不显示搜索，注意格式）
     search: [
-      { label: t('message.namespace.nsName'), prop: 'queryName', placeholder: '', required: true, type: 'input' },
+      {
+        label: t('message.namespace.nsName'),
+        prop: 'queryName',
+        placeholder: '',
+        required: true,
+        type: 'input'
+      },
     ],
     // 搜索参数（不用传，用于分页、搜索时传给后台的值，`getTableData` 中使用）
     param: {
@@ -126,18 +163,18 @@ const state = reactive<TableDemoState>({
 // 初始化列表数据
 const getTableData = async (params: object) => {
   state.tableData.config.loading = true;
-  let data = await nsApi.getNamespaceList(params);
-  requestListData.page =data.page;
+  let data = await nsApi.getList(params);
+  requestListData.page = data.page;
 
   // Reset and request data
   state.tableData.data = [];
-  data.list.forEach(function (item :Object){
+  data.list.forEach(function (item: Object) {
     state.tableData.data.push({
-          nsId: item['id'],
-          nsName: item['name'],
-          nsStatus: item['status'] === 1,
-          nsUniqueId: item['uuid'],
-          createTime: item['createTime'],
+      nsId: item['id'],
+      nsName: item['name'],
+      nsStatus: item['status'] === 1,
+      nsUniqueId: item['uuid'],
+      createTime: item['createTime'],
     })
   });
 
@@ -188,15 +225,22 @@ const onTableAddRow = () => {
   dialogState.dialogTableVisible = true;
 };
 
-const onTableConfirmRow = () => {
-  if (dialogState.isUpdate){
-    ElMessage.success(`更新${formState.ruleForm.nsName}成功！`);
-  }else{
-    ElMessage.success(`新增${formState.ruleForm.nsName}成功！`);
+const onTableConfirmRow = async () => {
+  if (dialogState.isUpdate) {
+    await nsApi.add({
+      "name": formState.ruleForm.nsName
+    });
+    ElMessage.success(`更新成功！`);
+    return;
   }
 
+  await nsApi.add({
+    "name": formState.ruleForm.nsName
+  });
+
+  ElMessage.success(`新增成功！`);
   dialogState.dialogTableVisible = false;
-  getTableData(requestListData);
+  await getTableData(requestListData);
 };
 
 // 分页改变时回调
@@ -221,6 +265,7 @@ onMounted(() => {
 .table-demo-container {
   .table-demo-padding {
     padding: 15px;
+
     .table-demo {
       flex: 1;
       overflow: hidden;

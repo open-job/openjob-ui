@@ -75,6 +75,22 @@ declare interface SysRoleState {
 	tableData: SysRoleTableType;
 }
 
+declare interface RowNamespaceType {
+  nsId: number;
+  nsName: string;
+  nsUniqueId: string;
+  nsStatus: boolean;
+  createTime: string;
+}
+
+interface NamespaceTableType extends TableType {
+  data: RowNamespaceType[];
+}
+
+declare interface NamespaceState {
+  tableData: NamespaceTableType;
+}
+
 declare type TreeType = {
 	id: number;
 	label: string;

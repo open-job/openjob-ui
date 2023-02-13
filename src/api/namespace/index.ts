@@ -1,4 +1,5 @@
 import request from '/@/utils/request';
+import {NAMESPACE_APIS} from "/@/api/serverApis";
 
 /**
  * 以下为模拟接口地址，gitee 的不通，就换自己的真实接口地址
@@ -12,9 +13,30 @@ import request from '/@/utils/request';
  */
 export function useNamespaceApi() {
   return {
-    getNamespaceList: (data: object) => {
+    getList: (data: object) => {
       return request({
-        url: '/admin/namespace/list',
+        url: NAMESPACE_APIS.list,
+        method: 'post',
+        data,
+      });
+    },
+    add: (data: object) => {
+      return request({
+        url: NAMESPACE_APIS.add,
+        method: 'post',
+        data,
+      });
+    },
+    update: (data: object) => {
+      return request({
+        url: NAMESPACE_APIS.update,
+        method: 'post',
+        data,
+      });
+    },
+    updateStatus: (data: object) => {
+      return request({
+        url: NAMESPACE_APIS.update,
         method: 'post',
         data,
       });

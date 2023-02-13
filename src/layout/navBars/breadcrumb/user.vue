@@ -1,5 +1,21 @@
 <template>
 	<div class="layout-navbars-breadcrumb-user pr15" :style="{ flex: layoutUserFlexNum }">
+    <el-dropdown>
+    <span class="el-dropdown-link">
+      产品线A
+      <el-icon class="el-icon--right">
+        <arrow-down />
+      </el-icon>
+    </span>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item>产品线 A</el-dropdown-item>
+          <el-dropdown-item>产品线 A</el-dropdown-item>
+          <el-dropdown-item>产品线 A</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+
 		<el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onComponentSizeChange">
 			<div class="layout-navbars-breadcrumb-user-icon">
 				<i class="iconfont icon-ziti" :title="$t('message.user.title0')"></i>
@@ -57,6 +73,7 @@
 				:class="!state.isScreenfull ? 'icon-fullscreen' : 'icon-tuichuquanping'"
 			></i>
 		</div>
+
 		<el-dropdown :show-timeout="70" :hide-timeout="50" @command="onHandleCommandClick">
 			<span class="layout-navbars-breadcrumb-user-link">
 				<img :src="userInfos.photo" class="layout-navbars-breadcrumb-user-link-photo mr5" />
@@ -93,6 +110,8 @@ import other from '/@/utils/other';
 import mittBus from '/@/utils/mitt';
 import { Session, Local } from '/@/utils/storage';
 import { useLoginApi } from '/@/api/login/index';
+import { ArrowDown } from '@element-plus/icons-vue'
+
 
 // 引入 api 请求接口
 const loginApi = useLoginApi();

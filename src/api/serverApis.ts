@@ -13,3 +13,11 @@ export const USER_APIS = {
 export const JOB_APIS = {
 
 }
+
+export const NAMESPACE_APIS = {
+  // list
+  list: '/admin/namespace/list',
+  add: '/admin/namespace/add',
+  update: '/admin/namespace/update',
+  updateStatus: '/admin/namespace/update-status',
+}
