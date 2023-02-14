@@ -76,10 +76,10 @@ declare interface SysRoleState {
 }
 
 declare interface RowNamespaceType {
-  nsId: number;
-  nsName: string;
-  nsUniqueId: string;
-  nsStatus: boolean;
+  id: number;
+  name: string;
+  uniqueId: string;
+  status: boolean;
   createTime: string;
 }
 

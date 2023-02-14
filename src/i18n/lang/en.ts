@@ -1,7 +1,7 @@
 // 定义内容
 export default {
   commonMsg:{
-    notEmpty: " can not empty!"
+    emptyInput: "Please enter",
   },
   commonBtn: {
     query: "Query",
@@ -201,11 +201,11 @@ export default {
 		btnTwoLoading: 'Updating',
 	},
   namespace:{
-    nsId: 'id',
-    nsName: 'Name',
-    nsUniqueId: 'UUID',
-    nsStatus: "status",
-    nsCreateTime: 'Create time',
+    id: 'id',
+    name: 'Name',
+    uniqueId: 'UUID',
+    status: "Status",
+    createTime: 'Create time',
     addTitle: 'Add Namespace',
     editTitle: "Edit Namespace",
   }

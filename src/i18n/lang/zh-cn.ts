@@ -1,7 +1,7 @@
 // 定义内容
 export default {
   commonMsg:{
-    notEmpty: "不能为空"
+    emptyInput: "请输入",
   },
   commonBtn: {
     query: "查询",
@@ -201,11 +201,11 @@ export default {
     btnTwoLoading: '更新中',
   },
   namespace: {
-    nsId: '空间ID',
-    nsName: '空间名称',
-    nsUniqueId: '空间标识',
-    nsStatus: "状态",
-    nsCreateTime: '创建时间',
+    id: '空间ID',
+    name: '空间名称',
+    uniqueId: '空间标识',
+    status: "空间状态",
+    createTime: '创建时间',
     addTitle: '新增命名空间',
     editTitle: '编辑命名空间',
   }

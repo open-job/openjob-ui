@@ -2,15 +2,15 @@
 	<div class="system-role-container layout-padding">
 		<div class="system-role-padding layout-padding-auto layout-padding-view">
       <div class="system-user-search mb15">
-        <el-form :model="searchState.form" :rules="searchState.rules">
+        <el-form ref="tableSearchRef" :model="searchState.form" :rules="searchState.rules">
           <el-row>
-            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
-              <el-form-item :label="t('message.namespace.nsName')" prop="name">
-                <el-input v-model="searchState.form.name" size="default" style="width: 90%"></el-input>
+            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+              <el-form-item :label="t('message.namespace.name')" prop="name">
+                <el-input v-model="searchState.form.name" size="default" style="width: 95%"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
-              <el-button size="default" type="primary" class="ml10">
+            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+              <el-button size="default" type="primary" class="ml10" @click="onSearch(tableSearchRef)">
                 <el-icon>
                   <ele-Search/>
                 </el-icon>
@@ -27,20 +27,20 @@
         </el-form>
       </div>
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
-				<el-table-column prop="nsId" :label="t('message.namespace.nsId')" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="nsName" :label="t('message.namespace.nsName')" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="nsUniqueId" :label="t('message.namespace.nsUniqueId')" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="nsStatus" :label="t('message.namespace.nsStatus')" show-overflow-tooltip>
+				<el-table-column prop="id" :label="t('message.namespace.id')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="name" :label="t('message.namespace.name')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="uniqueId" :label="t('message.namespace.uniqueId')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="status" :label="t('message.namespace.status')" show-overflow-tooltip>
           <template #default="scope">
             <el-switch
-              v-model="scope.row.nsStatus"
+              v-model="scope.row.status"
               class="ml-2"
               size="default"
               style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
             />
           </template>
         </el-table-column>
-				<el-table-column prop="createTime" :label="t('message.namespace.nsCreateTime')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="createTime" :label="t('message.namespace.createTime')" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="300">
 					<template #default="scope">
             <el-button type="primary" size="default" @click="onOpenEditRole('update',scope.row)">
@@ -78,7 +78,7 @@
 
 <script setup lang="ts" name="systemRole">
 import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
-import { ElMessageBox, ElMessage } from 'element-plus';
+import {ElMessageBox, ElMessage, FormInstance} from 'element-plus';
 import {useI18n} from 'vue-i18n';
 import {useNamespaceApi} from "/@/api/namespace";
 
@@ -86,7 +86,11 @@ import {useNamespaceApi} from "/@/api/namespace";
 // 定义变量内容
 const {t} = useI18n();
 
+// 定义接口
 const nsApi = useNamespaceApi();
+
+// 定义变量内容
+const tableSearchRef = ref<FormInstance>();
 
 
 // 引入组件
@@ -96,9 +100,15 @@ const NsDialog = defineAsyncComponent(() => import('/@/views/namespace/dialog.vu
 const nsDialogRef = ref();
 
 const searchState = reactive({
-  form: { name: '22' },
+  form: {
+    name: ''
+  },
   rules: {
-    name: { required: true, message: '请输入姓名', trigger: 'blur' },
+    name: {
+      required: true,
+      message: t("message.commonMsg.emptyInput") + t('message.namespace.name'),
+      trigger: 'blur'
+    },
   },
 });
 
@@ -124,10 +134,10 @@ const getTableData = () => {
 	const data = [];
 	for (let i = 0; i < 20; i++) {
 		data.push({
-      nsId: i+1,
-      nsName: i === 0 ? 'admin' : 'common',
-      nsUniqueId: 'uid',
-      nsStatus: true,
+      id: i+1,
+      name: i === 0 ? 'admin' : 'common',
+      uniqueId: 'uid',
+      status: true,
       createTime: "2023-2-13",
 		});
 	}
@@ -139,6 +149,18 @@ const getTableData = () => {
 		state.tableData.loading = false;
 	}, 500);
 };
+
+const onSearch = (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  formEl.validate((valid: boolean) => {
+    if (valid) {
+      ElMessage.success('search'+searchState.form.name);
+    } else {
+      return false;
+    }
+  });
+};
+
 // 打开新增角色弹窗
 const onOpenAddRole = (type: string) => {
 	nsDialogRef.value.openDialog(type);
