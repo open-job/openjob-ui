@@ -25,4 +25,5 @@ export const NAMESPACE_APIS = {
   add: '/admin/namespace/add',
   update: '/admin/namespace/update',
   updateStatus: '/admin/namespace/update-status',
+  delete: '/admin/namespace/delete',
 }

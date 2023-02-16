@@ -36,7 +36,14 @@ export function useNamespaceApi() {
     },
     updateStatus: (data: object) => {
       return request({
-        url: NAMESPACE_APIS.update,
+        url: NAMESPACE_APIS.updateStatus,
+        method: 'post',
+        data,
+      });
+    },
+    delete: (data: object) => {
+      return request({
+        url: NAMESPACE_APIS.delete,
         method: 'post',
         data,
       });
