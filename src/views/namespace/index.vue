@@ -18,6 +18,13 @@
                 </el-icon>
                 {{ $t('message.commonBtn.query') }}
               </el-button>
+              <el-button size="default" type="primary" class="ml10"
+                         @click="onReset()">
+                <el-icon>
+                  <ele-RefreshRight/>
+                </el-icon>
+                {{ $t('message.commonBtn.reset') }}
+              </el-button>
               <el-button size="default" type="success" class="ml10" @click="onOpenAddRole('add')">
                 <el-icon>
                   <ele-FolderAdd/>
@@ -176,6 +183,11 @@ const onSearch = (formEl: FormInstance | undefined) => {
       return false;
     }
   });
+};
+
+const onReset = () => {
+  searchState.form.name = '';
+  getTableData();
 };
 
 // 打开新增角色弹窗

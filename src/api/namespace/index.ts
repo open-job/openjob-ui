@@ -13,11 +13,11 @@ import {NAMESPACE_APIS} from "/@/api/serverApis";
  */
 export function useNamespaceApi() {
   return {
-    getList: (data: object) => {
+    getList: (params?: object) => {
       return request({
         url: NAMESPACE_APIS.list,
-        method: 'post',
-        data,
+        method: 'get',
+        params,
       });
     },
     add: (data: object) => {
