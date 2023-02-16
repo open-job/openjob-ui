@@ -27,3 +27,8 @@ export const NAMESPACE_APIS = {
   updateStatus: '/admin/namespace/update-status',
   delete: '/admin/namespace/delete',
 }
+
+export const SERVER_APIS = {
+  serverList: '/admin/server/list-server',
+  slotsList: '/admin/server/list-job-slots',
+}

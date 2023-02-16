@@ -10,6 +10,8 @@ export default {
     update: "更新",
     delete: "删除",
     add: "新增",
+    online: "在线",
+    offline: "离线",
   },
   router: {
     home: '首页',
@@ -208,5 +210,15 @@ export default {
     createTime: '创建时间',
     addTitle: '新增命名空间',
     editTitle: '编辑命名空间',
+  },
+  server: {
+    slots: {
+      "id": 'ID',
+      "serverId":'节点编号',
+      "serverAddress":"节点地址",
+      "serverStatus":"节点状态",
+      "createTime":"创建时间",
+      "updateTime":"更新时间",
+    }
   }
 };
