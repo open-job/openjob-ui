@@ -1,17 +1,14 @@
 <template>
 	<div class="layout-navbars-breadcrumb-user pr15" :style="{ flex: layoutUserFlexNum }">
-    <el-dropdown>
-    <span class="el-dropdown-link">
-      产品线A
-      <el-icon class="el-icon--right">
-        <arrow-down />
-      </el-icon>
-    </span>
+    <el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onComponentSizeChange">
+      <div class="layout-navbars-breadcrumb-user-icon">
+        基础服务 <el-icon class="el-icon--right"><arrow-down /></el-icon>
+      </div>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>产品线 A</el-dropdown-item>
-          <el-dropdown-item>产品线 A</el-dropdown-item>
-          <el-dropdown-item>产品线 A</el-dropdown-item>
+          <el-dropdown-item command="default">基础服务</el-dropdown-item>
+          <el-dropdown-item command="default">产品服务</el-dropdown-item>
+          <el-dropdown-item command="default">产品服务</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
