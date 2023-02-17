@@ -213,12 +213,20 @@ export default {
   },
   server: {
     slots: {
-      "id": 'ID',
-      "serverId":'节点编号',
-      "serverAddress":"节点地址",
-      "serverStatus":"节点状态",
-      "createTime":"创建时间",
-      "updateTime":"更新时间",
+      id: 'ID',
+      serverId:'节点编号',
+      serverAddress:"节点地址",
+      serverStatus:"节点状态",
+      createTime:"创建时间",
+      updateTime:"更新时间",
+    },
+    node:{
+      id: 'ID',
+      ip: "节点IP",
+      akkaAddress: "节点地址",
+      status: "节点状态",
+      createTime: "创建时间",
+      updateTime: "更新时间",
     }
   }
 };

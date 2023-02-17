@@ -91,7 +91,7 @@ declare interface NamespaceState {
   tableData: NamespaceTableType;
 }
 
-declare interface RowServerType {
+declare interface RowServerSlotsType {
   id: number;
   serverId: number;
 
@@ -102,12 +102,29 @@ declare interface RowServerType {
   updateTime: string;
 }
 
-interface ServerTableType extends TableType {
-  data: RowServerType[];
+interface ServerSlotsTableType extends TableType {
+  data: RowServerSlotsType[];
 }
 
-declare interface ServerState {
-  tableData: ServerTableType;
+declare interface ServerSlotsState {
+  tableData: ServerSlotsTableType;
+}
+
+declare interface RowServerNodeType {
+  id: number;
+  ip: string;
+  akkaAddress: string;
+  status: boolean;
+  createTime: string;
+  updateTime: string;
+}
+
+interface ServerNodeTableType extends TableType {
+  data: RowServerNodeType[];
+}
+
+declare interface ServerNodeState {
+  tableData: ServerNodeTableType;
 }
 
 declare type TreeType = {

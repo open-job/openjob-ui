@@ -213,12 +213,20 @@ export default {
   },
   server: {
     slots: {
-      "id": 'ID',
-      "serverId": 'Server id',
-      "serverAddress": "Server address",
-      "serverStatus": "Server status",
-      "createTime": "Create time",
-      "updateTime": "Update time",
+      id: 'ID',
+      serverId: 'Server id',
+      serverAddress: "Server address",
+      serverStatus: "Server status",
+      createTime: "Create time",
+      updateTime: "Update time",
+    },
+    node:{
+      id: 'ID',
+      ip: "Ip",
+      akkaAddress: "Address",
+      status: "Status",
+      createTime: "Create time",
+      updateTime: "Update time",
     }
   }
 };

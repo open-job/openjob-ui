@@ -12,7 +12,6 @@
         <el-table-column prop="serverStatus" :label="t('message.server.slots.serverStatus')"
                          show-overflow-tooltip>
           <template #default="scope">
-
             <el-tag type="success" v-if="scope.row.serverStatus">{{t('message.commonBtn.online')}}</el-tag>
             <el-tag type="info" v-else>{{t('message.commonBtn.offline')}}</el-tag>
           </template>
@@ -51,7 +50,7 @@ const {t} = useI18n();
 // 定义接口
 const serverApi = useServerApi();
 
-const state = reactive<ServerState>({
+const state = reactive<ServerSlotsState>({
   tableData: {
     data: [],
     total: 0,
