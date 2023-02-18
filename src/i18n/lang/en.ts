@@ -211,6 +211,18 @@ export default {
     addTitle: 'Add Namespace',
     editTitle: "Edit Namespace",
   },
+  app:{
+    id : "ID",
+    namespace: "Namespace",
+    name: "Name",
+    desc: "Desc",
+    status: "Status",
+    createTime: "Create time",
+    updateTime: "Update time",
+    addTitle: 'Add Application',
+    editTitle: "Edit Application",
+    validateName: "Format letters or number or . or _ or -"
+  },
   server: {
     slots: {
       id: 'ID',

@@ -211,6 +211,18 @@ export default {
     addTitle: '新增命名空间',
     editTitle: '编辑命名空间',
   },
+  app:{
+    id : "ID",
+    namespace: "命名空间",
+    name: "应用名称",
+    desc: "应用描述",
+    status: "应用状态",
+    createTime:"创建时间",
+    updateTime:"更新时间",
+    addTitle: '新增应用',
+    editTitle: "更新应用",
+    validateName: "格式为英文字母、数字、.、_或-"
+  },
   server: {
     slots: {
       id: 'ID',
