@@ -1,14 +1,12 @@
 <template>
 	<div class="layout-navbars-breadcrumb-user pr15" :style="{ flex: layoutUserFlexNum }">
-    <el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onComponentSizeChange">
+    <el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onNamespaceChange">
       <div class="layout-navbars-breadcrumb-user-icon">
-        基础服务 <el-icon class="el-icon--right"><arrow-down /></el-icon>
+        {{namespaceState.current}} <el-icon class="el-icon--right"><arrow-down /></el-icon>
       </div>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item command="default">基础服务</el-dropdown-item>
-          <el-dropdown-item command="default">产品服务</el-dropdown-item>
-          <el-dropdown-item command="default">产品服务</el-dropdown-item>
+          <el-dropdown-item v-for="ns in namespaceState.list" :key="ns.id" :command="ns.id">{{ns.name}}</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -108,10 +106,12 @@ import mittBus from '/@/utils/mitt';
 import { Session, Local } from '/@/utils/storage';
 import { useLoginApi } from '/@/api/login/index';
 import { ArrowDown } from '@element-plus/icons-vue'
+import {useNamespaceApi} from "/@/api/namespace";
 
 
 // 引入 api 请求接口
 const loginApi = useLoginApi();
+const nsApi = useNamespaceApi();
 
 // 引入组件
 const UserNews = defineAsyncComponent(() => import('/@/layout/navBars/breadcrumb/userNews.vue'));
@@ -125,6 +125,12 @@ const storesThemeConfig = useThemeConfig();
 const { userInfos } = storeToRefs(stores);
 const { themeConfig } = storeToRefs(storesThemeConfig);
 const searchRef = ref();
+
+const namespaceState = reactive<NamespaceMenuState>({
+  current: 'default',
+  list: []
+});
+
 const state = reactive({
 	isScreenfull: false,
 	disabledI18n: 'zh-cn',
@@ -140,6 +146,12 @@ const layoutUserFlexNum = computed(() => {
 	else num = '';
 	return num;
 });
+
+// 加载命名空间数据
+onMounted(()=>{
+  initNamespace();
+});
+
 // 全屏点击时
 const onScreenfullClick = () => {
 	if (!screenfull.isEnabled) {
@@ -203,6 +215,52 @@ const onHandleCommandClick = (path: string) => {
 const onSearchClick = () => {
 	searchRef.value.openSearch();
 };
+
+// 初始化命名空间
+const initNamespace = async ()=>{
+  let data = await nsApi.getList({
+    page: 1,
+    size: 30,
+  });
+
+
+  // 清空列表数据
+  namespaceState.list = [];
+
+  // 初始化数据
+  let index = 0;
+  let nid = Local.get("nid");
+  data.list.forEach(function (item: Object) {
+    // 首次选择第一个
+    if (index === 0 && nid == null) {
+      namespaceState.current = data.list[0].name;
+    }
+
+    // 列表数据
+    namespaceState.list.push({
+      id: item['id'],
+      name: item['name'],
+      status: item['status'] === 1,
+      uniqueId: item['uuid'],
+      createTime: item['createTime'],
+    })
+
+    // 匹配当前选择的
+    if (nid != null && nid === item['id']) {
+      namespaceState.current = item['name'];
+    }
+    index++;
+  });
+};
+
+// 命名空间切换
+const onNamespaceChange = (nid: number) => {
+  Local.remove("nid");
+  Local.set("nid", nid);
+
+  window.location.reload();
+};
+
 // 组件大小改变
 const onComponentSizeChange = (size: string) => {
 	Local.remove('themeConfig');

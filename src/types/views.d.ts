@@ -91,6 +91,11 @@ declare interface NamespaceState {
   tableData: NamespaceTableType;
 }
 
+declare interface NamespaceMenuState {
+  current: string
+  list: RowNamespaceType[]
+}
+
 declare interface RowServerSlotsType {
   id: number;
   serverId: number;
