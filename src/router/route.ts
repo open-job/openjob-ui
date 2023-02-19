@@ -48,9 +48,24 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		},
 		children: [
       {
+        path: '/job/page',
+        name: 'job_add',
+        component: () => import('/@/views/job/job/page.vue'),
+        meta: {
+          title: 'message.router.home',
+          isLink: '',
+          isHide: false,
+          isKeepAlive: true,
+          isAffix: true,
+          isIframe: false,
+          roles: ['admin', 'common'],
+          icon: 'iconfont icon-shouye',
+        },
+      },
+      {
         path: '/test',
         name: 'test',
-        component: () => import('/@/views/app/index.vue'),
+        component: () => import('/@/views/job/job/index.vue'),
         meta: {
           title: 'message.router.home',
           isLink: '',

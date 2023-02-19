@@ -224,6 +224,13 @@ export default {
     editTitle: "Edit Application",
     validateName: "Format letters or number or . or _ or -"
   },
+  job:{
+    job:{
+      name: 'Name',
+      description: 'Description',
+      status: 'Status',
+    }
+  },
   server: {
     slots: {
       id: 'ID',

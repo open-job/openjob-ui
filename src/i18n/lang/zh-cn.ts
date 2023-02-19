@@ -224,6 +224,13 @@ export default {
     editTitle: "更新应用",
     validateName: "格式为英文字母、数字、.、_或-"
   },
+  job:{
+    job:{
+      name: '任务名称',
+      description: '任务描述',
+      status: '任务状态',
+    }
+  },
   server: {
     slots: {
       id: 'ID',
