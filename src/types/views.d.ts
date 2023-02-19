@@ -91,6 +91,24 @@ declare interface NamespaceState {
   tableData: NamespaceTableType;
 }
 
+declare interface RowAppType {
+  id: number;
+  namespaceId: number
+  namespaceName: string
+  name: string;
+  desc: string;
+  status: boolean;
+  createTime: string;
+}
+
+interface AppTableType extends TableType {
+  data: RowAppType[];
+}
+
+declare interface AppState {
+  tableData: AppTableType;
+}
+
 declare interface NamespaceMenuState {
   current: string
   list: RowNamespaceType[]

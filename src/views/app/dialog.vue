@@ -1,7 +1,21 @@
 <template>
   <div class="system-role-dialog-container">
     <el-dialog :title="state.dialog.title" v-model="state.dialog.isShowDialog" width="769px">
-      <el-form ref="roleDialogFormRef" :model="state.ruleForm" size="default">
+      <el-form ref="appDialogFormRef" :model="state.ruleForm" size="default">
+        <el-row>
+          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item :label="t('message.app.namespace')" prop="namespaceName">
+                <el-select v-model="state.ruleForm.namespaceId" class="m-2" :placeholder="t('message.commonMsg.emptySelect')">
+                <el-option
+                  v-for="ns in state.namespaceList"
+                  :key="ns.id"
+                  :label="ns.name"
+                  :value="ns.id"
+                />
+                </el-select>
+              </el-form-item>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.app.name')" prop="name">
@@ -12,7 +26,7 @@
         <el-row>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.app.desc')" prop="name">
-              <el-input v-model="state.ruleForm.name" clearable></el-input>
+              <el-input v-model="state.ruleForm.desc" clearable></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -46,11 +60,14 @@
 import {reactive, ref} from 'vue';
 import {useI18n} from "vue-i18n";
 import {useNamespaceApi} from "/@/api/namespace";
+import {Local} from "/@/utils/storage";
+import {useAppApi} from "/@/api/app";
 
 const {t} = useI18n();
 
 // 定义接口
 const nsApi = useNamespaceApi();
+const appApi = useAppApi();
 
 // 定义子组件向父组件传值/事件
 const emit = defineEmits(['refresh']);
@@ -58,11 +75,13 @@ const emit = defineEmits(['refresh']);
 // 定义变量内容
 const roleDialogFormRef = ref();
 const state = reactive({
+  namespaceList:<any>[],
   ruleForm: {
+    namespaceId: 0,
     id: 0,
     name: '',
     status: true,
-    uniqueId: '',
+    desc: '',
   },
   menuData: [] as TreeType[],
   menuProps: {
@@ -78,19 +97,36 @@ const state = reactive({
 });
 
 // 打开弹窗
-const openDialog = (type: string, row: RowNamespaceType) => {
+const openDialog = async (type: string, row: RowAppType) => {
+  // 初始化命名空间
+  let data = await nsApi.getList({
+    page: 1,
+    size: 30,
+  });
+
+  // 清空列表数据
+  state.namespaceList = [];
+  data.list.forEach(function (item: Object) {
+    state.namespaceList.push({
+      id: item['id'],
+      name: item['name'],
+    })
+  });
+
   if (type === 'update') {
     // state.ruleForm=row 这种方式会导致，弹窗状态切换，列表里面数据状态也切换了
     state.ruleForm.name = row.name;
-    state.ruleForm.uniqueId = row.uniqueId;
+    state.ruleForm.desc = row.desc;
     state.ruleForm.status = row.status;
     state.ruleForm.id = row.id;
+    state.ruleForm.namespaceId = row.namespaceId
     state.dialog.title = t("message.app.editTitle");
     state.dialog.submitTxt = t("message.commonBtn.update");
   } else {
     state.ruleForm.name = '';
-    state.ruleForm.uniqueId = '';
+    state.ruleForm.desc = '';
     state.ruleForm.status = true;
+    state.ruleForm.namespaceId = Local.get("nid");
     state.dialog.title = t("message.app.addTitle");
     state.dialog.submitTxt = t("message.commonBtn.add");
   }
@@ -109,21 +145,24 @@ const onCancel = () => {
 const onSubmit = async () => {
   const statusValue = state.ruleForm.status ? 1 : 2;
   if (state.dialog.type === 'update') {
-    await nsApi.update({
+    await appApi.update({
       "id": state.ruleForm.id,
+      "namespaceId": state.ruleForm.namespaceId,
+      "desc": state.ruleForm.desc,
       "name": state.ruleForm.name,
-      "status": statusValue,
+      "status": statusValue
     });
   } else {
-    await nsApi.add({
+    await appApi.add({
+      "namespaceId": state.ruleForm.namespaceId,
+      "desc": state.ruleForm.desc,
       "name": state.ruleForm.name,
-      "status": statusValue,
+      "status": statusValue
     });
   }
 
   closeDialog();
   emit('refresh');
-
 };
 
 // 暴露变量

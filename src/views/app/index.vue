@@ -39,11 +39,11 @@
                 style="width: 100%">
         <el-table-column prop="id" :label="t('message.app.id')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="namespace" :label="t('message.app.namespace')"
+        <el-table-column prop="namespaceName" :label="t('message.app.namespace')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="name" :label="t('message.app.name')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="uniqueId" :label="t('message.app.desc')"
+        <el-table-column prop="desc" :label="t('message.app.desc')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" :label="t('message.app.status')" show-overflow-tooltip>
           <template #default="scope">
@@ -97,14 +97,15 @@
 import {defineAsyncComponent, reactive, onMounted, ref} from 'vue';
 import {ElMessageBox, ElMessage, FormInstance} from 'element-plus';
 import {useI18n} from 'vue-i18n';
-import {useNamespaceApi} from "/@/api/namespace";
+import {Local} from '/@/utils/storage';
+import {useAppApi} from "/@/api/app";
 
 
 // 定义变量内容
 const {t} = useI18n();
 
 // 定义接口
-const nsApi = useNamespaceApi();
+const appApi = useAppApi()
 
 // 定义变量内容
 const tableSearchRef = ref<FormInstance>();
@@ -130,7 +131,7 @@ const searchState = reactive({
   },
 });
 
-const state = reactive<NamespaceState>({
+const state = reactive<AppState>({
   tableData: {
     data: [],
     total: 0,
@@ -143,9 +144,9 @@ const state = reactive<NamespaceState>({
 });
 // 初始化表格数据
 const getTableData = async () => {
-
   state.tableData.loading = true;
-  let data = await nsApi.getList({
+  let data = await appApi.getList({
+    namespaceId: Local.get("nid"),
     name: searchState.form.name,
     page: state.tableData.param.pageNum,
     size: state.tableData.param.pageSize,
@@ -157,8 +158,10 @@ const getTableData = async () => {
     state.tableData.data.push({
       id: item['id'],
       name: item['name'],
+      namespaceId: item['namespaceId'],
+      namespaceName: item['namespaceName'],
       status: item['status'] === 1,
-      uniqueId: item['uuid'],
+      desc: item['desc'],
       createTime: item['createTime'],
     })
   });
@@ -171,7 +174,7 @@ const getTableData = async () => {
 
 const onSwitch = async (event: object, row: EmptyObjectType) => {
   const statusValue = event ? 1 : 2;
-  await nsApi.updateStatus({
+  await appApi.updateStatus({
     "id": row.id,
     "status": statusValue,
   });
@@ -209,7 +212,7 @@ const onDel = (row: RowNamespaceType) => {
     type: 'warning',
   })
     .then(async () => {
-      await nsApi.delete({
+      await appApi.delete({
         "id": row.id,
       });
 

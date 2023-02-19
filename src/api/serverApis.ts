@@ -28,6 +28,14 @@ export const NAMESPACE_APIS = {
   delete: '/admin/namespace/delete',
 }
 
+export const APP_APIS = {
+  add: '/admin/app/add',
+  update: '/admin/app/update',
+  updateStatus: '/admin/app/update-status',
+  delete: '/admin/app/delete',
+  list: '/admin/app/list',
+}
+
 export const SERVER_APIS = {
   serverList: '/admin/server/list-server',
   slotsList: '/admin/server/list-job-slots',

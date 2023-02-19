@@ -1,7 +1,8 @@
 // 定义内容
 export default {
   commonMsg:{
-    emptyInput: "请输入",
+    emptyInput: '请输入',
+    emptySelect: '请选择',
   },
   commonBtn: {
     query: "查询",

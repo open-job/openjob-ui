@@ -2,6 +2,7 @@
 export default {
   commonMsg: {
     emptyInput: "Please enter",
+    emptySelect: 'Select',
   },
   commonBtn: {
     query: "Query",
