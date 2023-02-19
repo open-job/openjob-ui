@@ -138,7 +138,7 @@ const state = reactive<AppState>({
     loading: false,
     param: {
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 20,
     },
   },
 });

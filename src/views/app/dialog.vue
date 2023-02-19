@@ -1,7 +1,7 @@
 <template>
   <div class="system-role-dialog-container">
     <el-dialog :title="state.dialog.title" v-model="state.dialog.isShowDialog" width="769px">
-      <el-form ref="appDialogFormRef" :model="state.ruleForm" size="default">
+      <el-form ref="appDialogFormRef" :model="state.ruleForm" label-width="80px" :rules="state.fromRules" size="default">
         <el-row>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item :label="t('message.app.namespace')" prop="namespaceName">
@@ -25,7 +25,7 @@
         </el-row>
         <el-row>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item :label="t('message.app.desc')" prop="name">
+            <el-form-item :label="t('message.app.desc')" prop="desc">
               <el-input v-model="state.ruleForm.desc" clearable></el-input>
             </el-form-item>
           </el-col>
@@ -47,9 +47,9 @@
       <template #footer>
 				<span class="dialog-footer">
 					<el-button @click="onCancel" size="default">取 消</el-button>
-					<el-button type="primary" @click="onSubmit" size="default">{{
-              state.dialog.submitTxt
-            }}</el-button>
+					<el-button type="primary" @click="onSubmit(appDialogFormRef)" size="default">
+            {{ state.dialog.submitTxt }}
+          </el-button>
 				</span>
       </template>
     </el-dialog>
@@ -62,6 +62,7 @@ import {useI18n} from "vue-i18n";
 import {useNamespaceApi} from "/@/api/namespace";
 import {Local} from "/@/utils/storage";
 import {useAppApi} from "/@/api/app";
+import {FormInstance} from "element-plus";
 
 const {t} = useI18n();
 
@@ -73,8 +74,21 @@ const appApi = useAppApi();
 const emit = defineEmits(['refresh']);
 
 // 定义变量内容
-const roleDialogFormRef = ref();
+const appDialogFormRef = ref<FormInstance>();
 const state = reactive({
+  fromRules: {
+    name: {
+      required: true,
+      message: t('message.app.validateName'),
+      pattern: /^[0-9a-zA-Z_.-]*$/,
+      trigger: 'blur'
+    },
+    desc: {
+      required: true,
+      message: t('message.app.desc'),
+      trigger: 'blur'
+    },
+  },
   namespaceList:<any>[],
   ruleForm: {
     namespaceId: 0,
@@ -98,6 +112,9 @@ const state = reactive({
 
 // 打开弹窗
 const openDialog = async (type: string, row: RowAppType) => {
+  // Clear
+  appDialogFormRef.value?.clearValidate();
+
   // 初始化命名空间
   let data = await nsApi.getList({
     page: 1,
@@ -142,7 +159,18 @@ const onCancel = () => {
   closeDialog();
 };
 // 提交
-const onSubmit = async () => {
+const onSubmit = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  await formEl.validate((valid: boolean) => {
+    if (valid) {
+      onSubmitApp();
+    } else {
+      return false;
+    }
+  });
+};
+
+const onSubmitApp = async ()=>{
   const statusValue = state.ruleForm.status ? 1 : 2;
   if (state.dialog.type === 'update') {
     await appApi.update({
@@ -163,7 +191,7 @@ const onSubmit = async () => {
 
   closeDialog();
   emit('refresh');
-};
+}
 
 // 暴露变量
 defineExpose({
