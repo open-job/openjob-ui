@@ -203,7 +203,7 @@ const onReset = () => {
 // 打开新增角色弹窗
 const onOpenAddRole = (type: string) => {
   router.push({
-    path: '/job/page',
+    path: '/admin/job/page',
     params: {
       type: type
     }
