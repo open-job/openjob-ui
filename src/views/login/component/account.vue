@@ -125,12 +125,13 @@ const onSignIn = async () => {
 			perms: data.permNames,
 		})
 	} catch (error) {
-		// console.log(error)
+		console.log(error)
 		state.loading.signIn = false;
 		return;
 	}
 
 	// 登录后 - 加载菜单路由列表
+  console.log('登录后 - 加载菜单路由列表')
 
   // 前端控制路由，2、请注意执行顺序
 	if (!themeConfig.value.isRequestRoutes) {
@@ -140,6 +141,7 @@ const onSignIn = async () => {
 		// 后端控制路由 - isRequestRoutes 为 true，则开启后端控制路由
 		// 添加完动态路由，再进行 router 跳转，否则可能报错 No match found for location with path "/"
 		const isNoPower = await initBackEndControlRoutes();
+    console.log('加载菜单路由列表', isNoPower)
 
 		// 执行完 initBackEndControlRoutes，再执行 signInSuccess
 		signInSuccess(isNoPower);
