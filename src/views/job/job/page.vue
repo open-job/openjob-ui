@@ -5,7 +5,7 @@
         <template #header>
           <div class="card-header">
             <span>新增定时任务</span>
-            <el-button type="primary">返回</el-button>
+            <el-button type="primary" size="default">返回</el-button>
           </div>
         </template>
         <el-form ref="appDialogFormRef" :model="state.ruleForm" label-width="90px" :rules="state.fromRules" size="default">
