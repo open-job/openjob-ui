@@ -11,7 +11,11 @@ export const USER_APIS = {
 }
 
 export const MENU_APIS = {
-  userMenus: '/admin/user-info',
+  // userMenus: '/admin/user-info',
+  userMenus: '/admin/perms/menus', // current login user menus
+}
+
+export const PERM_APIS = {
   // userMenus: '/admin/menus/current',
 }
 

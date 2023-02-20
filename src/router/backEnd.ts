@@ -10,7 +10,7 @@ import { formatTwoStageRoutes, formatFlatteningRoutes, router } from '/@/router/
 import { useRoutesList } from '/@/stores/routesList';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import { useMenuApi } from '/@/api/menu/index';
-import { ROLE_ADMIN } from '/@/consts';
+import { ROLE_ADMIN, TOKEN_NAME } from '/@/consts';
 
 // 后端控制路由
 
@@ -38,7 +38,10 @@ export async function initBackEndControlRoutes() {
 	// 界面 loading 动画开始执行
 	if (window.nextLoading === undefined) NextLoading.start();
 	// 无 token 停止执行下一步
-	if (!Session.get(ROLE_ADMIN)) return false;
+	if (!Session.get(TOKEN_NAME)) {
+    console.log("error: 无 token 停止执行下一步")
+    return false;
+  }
 
 	// 触发初始化用户信息 pinia
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I5F1HP
@@ -111,15 +114,21 @@ export async function setAddRoute() {
  * @description isRequestRoutes 为 true，则开启后端控制路由
  * @returns 返回后端路由菜单数据
  */
-export function getBackEndControlRoutes() {
+export async function getBackEndControlRoutes() {
 	// 模拟 admin 与 test
 	const stores = useUserInfo(pinia);
 	const { userInfos } = storeToRefs(stores);
 	const role0 = userInfos.value.roles[0];
 
 	// 获取菜单信息
-  return menuApi.getUserMenus();
+  const data = await menuApi.getUserMenus();
+  console.log("menus data", data)
 
+  if (data && data.hasOwnProperty('list')) {
+    return data.list;
+  }
+
+  return [];
 	// 管理员 admin
 	// if (role0 === 'admin') return menuApi.getAdminMenu();
 	// 其它用户 test
