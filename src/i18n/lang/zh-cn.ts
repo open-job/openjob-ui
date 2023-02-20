@@ -15,6 +15,24 @@ export default {
     offline: "离线",
   },
   router: {
+    // 路由
+    dashboard: '首页',
+    namespace: '命名空间',
+    application: '应用管理',
+    cronJob: '定时任务',
+    cronJobJob: '任务管理',
+    cronJobInstance: '任务实例',
+    delayJob: '延时任务',
+    delayJobJob: '任务管理',
+    delayJobInstance: '任务实例',
+    clusterManager: '集群管理',
+    clusterNode: '集群节点',
+    clusterWorker: '工作节点',
+    systemManager: '系统管理',
+    systemConfiguration: '系统配置',
+    systemSlots: '系统分片',
+
+    // 框架默认路由
     home: '首页',
     system: '系统设置',
     systemMenu: '菜单管理',

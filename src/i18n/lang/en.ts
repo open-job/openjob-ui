@@ -15,6 +15,24 @@ export default {
     offline: "off-line",
   },
   router: {
+    // 路由
+    dashboard: 'Dashboard',
+    namespace: 'Namespace',
+    application: 'Application',
+    cronJob: 'Cron Job',
+    cronJobJob: 'Job',
+    cronJobInstance: 'Job Instance',
+    delayJob: 'Delay Job',
+    delayJobJob: 'Delay',
+    delayJobInstance: 'Delay Instance',
+    clusterManager: 'Cluster',
+    clusterNode: 'Cluster Node',
+    clusterWorker: 'Cluster Worker',
+    systemManager: 'System',
+    systemConfiguration: 'Configuration',
+    systemSlots: 'Slots',
+
+    // 框架默认路由
     home: 'home',
     system: 'system',
     systemMenu: 'systemMenu',
