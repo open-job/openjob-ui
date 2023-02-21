@@ -43,4 +43,5 @@ export const APP_APIS = {
 export const SERVER_APIS = {
   serverList: '/admin/server/list-server',
   slotsList: '/admin/server/list-job-slots',
+  workerList: '/admin/worker/list',
 }

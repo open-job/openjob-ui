@@ -150,6 +150,24 @@ declare interface ServerNodeState {
   tableData: ServerNodeTableType;
 }
 
+declare interface RowWorkerNodeType {
+  appName: string;
+  address: string;
+  protocolType: string;
+  version: string;
+  status: boolean;
+  lastHeartbeatTime: string;
+  createTime: string;
+}
+
+interface ServerWorkerTableType extends TableType {
+  data: RowWorkerNodeType[];
+}
+
+declare interface ServerWorkerState {
+  tableData: ServerWorkerTableType;
+}
+
 declare type TreeType = {
   id: number;
   label: string;

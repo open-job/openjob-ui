@@ -265,6 +265,15 @@ export default {
       status: "节点状态",
       createTime: "创建时间",
       updateTime: "更新时间",
+    },
+    worker:{
+      appName: '应用名称',
+      address: '节点地址',
+      protocolType: '节点协议',
+      version: '节点版本',
+      lastHeartbeatTime: '上次心跳',
+      status: '节点状态',
+      createTime: "创建时间",
     }
   }
 };

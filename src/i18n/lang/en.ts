@@ -258,13 +258,22 @@ export default {
       createTime: "Create time",
       updateTime: "Update time",
     },
-    node:{
+    node: {
       id: 'ID',
       ip: "Ip",
       akkaAddress: "Address",
       status: "Status",
       createTime: "Create time",
       updateTime: "Update time",
+    },
+    worker: {
+      appName: 'Application name',
+      address: 'Address',
+      protocolType: 'Protocol',
+      version: 'Version',
+      lastHeartbeatTime: 'Last Heartbeat',
+      status: 'Status',
+      createTime: "Create time",
     }
   }
 };

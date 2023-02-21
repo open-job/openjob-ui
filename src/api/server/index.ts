@@ -27,5 +27,12 @@ export function useServerApi() {
         params,
       });
     },
+    getWorkerList: (params?: object) => {
+      return request({
+        url: SERVER_APIS.workerList,
+        method: 'get',
+        params,
+      });
+    },
   };
 }
