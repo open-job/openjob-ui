@@ -168,7 +168,7 @@ const getTableData = async () => {
   state.tableData.loading = true;
   let data = await serverApi.getWorkerList({
     namespaceId: searchState.form.namespaceId,
-    appId: searchState.form.appId,
+    address: searchState.form.address,
     page: state.tableData.param.pageNum,
     size: state.tableData.param.pageSize,
   });
