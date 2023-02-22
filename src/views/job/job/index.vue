@@ -108,6 +108,7 @@
       </el-pagination>
     </div>
     <NsDialog ref="nsDialogRef" @refresh="getTableData()"/>
+    <JobDrawer ref="JobDrawerRef" @refresh="getTableData()"/>
   </div>
 </template>
 
@@ -120,6 +121,7 @@ import {useAppApi} from "/@/api/app";
 import {useRouter} from "vue-router";
 import {useJobApi} from "/@/api/job";
 import {formatDateByTimestamp} from "/@/utils/formatTime";
+
 
 // router
 const router = useRouter();
@@ -137,10 +139,12 @@ const tableSearchRef = ref<FormInstance>();
 
 
 // 引入组件
-const NsDialog = defineAsyncComponent(() => import('/@/views/app/dialog.vue'));
+const NsDialog = defineAsyncComponent(() => import('/@/views/job/job/dialog.vue'));
+const JobDrawer = defineAsyncComponent(() => import('/@/views/job/job/drawer.vue'));
 
 // 定义变量内容
 const nsDialogRef = ref();
+const JobDrawerRef = ref();
 
 onMounted(()=>{
   initAppList();
@@ -263,12 +267,13 @@ const onReset = () => {
 
 // 打开新增角色弹窗
 const onOpenAddRole = (type: string) => {
-  router.push({
-    path: '/admin/job/page',
-    params: {
-      type: type
-    }
-  })
+  JobDrawerRef.value.openDrawer();
+  // router.push({
+  //   path: '/admin/job/page',
+  //   params: {
+  //     type: type
+  //   }
+  // })
 };
 // 打开修改角色弹窗
 const onOpenEditRole = (type: string, row: Object) => {
