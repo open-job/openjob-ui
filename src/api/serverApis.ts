@@ -20,7 +20,12 @@ export const PERM_APIS = {
 }
 
 export const JOB_APIS = {
-
+  // list
+  list: '/admin/job/list',
+  add: '/admin/job/add',
+  update: '/admin/job/update',
+  updateStatus: '/admin/job/update-status',
+  delete: '/admin/job/delete',
 }
 
 export const NAMESPACE_APIS = {

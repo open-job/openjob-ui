@@ -93,8 +93,8 @@ declare interface NamespaceState {
 
 declare interface RowAppType {
   id: number;
-  namespaceId: number
-  namespaceName: string
+  namespaceId: number;
+  namespaceName: string;
   name: string;
   desc: string;
   status: boolean;
@@ -107,6 +107,38 @@ interface AppTableType extends TableType {
 
 declare interface AppState {
   tableData: AppTableType;
+}
+
+declare interface RowJobType {
+  id: number;
+  namespaceId: number;
+  appId: number;
+  workflowId: number;
+  name: string;
+  description: string;
+  processorType: string;
+  processorInfo: string;
+  executeType: string;
+  paramsType: string;
+  params: string;
+  extendParamsType: string;
+  extendParams: string;
+  timeExpressionType: string;
+  timeExpression: string;
+  executeStrategy: string;
+  failRetryTimes: number;
+  failRetryInterval: number;
+  concurrency: number;
+  status: boolean;
+  createTime: string;
+}
+
+interface AppJobType extends TableType {
+  data: RowJobType[];
+}
+
+declare interface JobState {
+  tableData: AppJobType;
 }
 
 declare interface NamespaceMenuState {

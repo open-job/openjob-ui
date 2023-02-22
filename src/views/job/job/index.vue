@@ -5,6 +5,19 @@
         <el-form ref="tableSearchRef" :model="searchState.form" :rules="searchState.rules">
           <el-row>
             <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+              <el-form-item :label="t('message.app.name')" prop="appName">
+                <el-select v-model="searchState.form.appId" filterable placeholder="" size="default" style="width: 90%">
+                  <el-option
+                    v-for="item in appState.list"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.id"
+                    @click="onSearch(tableSearchRef)"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
               <el-form-item :label="t('message.app.name')" prop="name">
                 <el-input v-model="searchState.form.name" size="default"
                           style="width: 95%"></el-input>
@@ -37,14 +50,19 @@
       </div>
       <el-table :data="state.tableData.data" v-loading="state.tableData.loading"
                 style="width: 100%">
-        <el-table-column prop="id" :label="t('message.app.id')"
-                         show-overflow-tooltip></el-table-column>
-        <el-table-column prop="namespaceName" :label="t('message.app.namespace')"
-                         show-overflow-tooltip></el-table-column>
-        <el-table-column prop="name" :label="t('message.job.job.name')"
-                         show-overflow-tooltip></el-table-column>
-        <el-table-column prop="desc" :label="t('message.job.job.description')"
-                         show-overflow-tooltip></el-table-column>
+        <el-table-column prop="name" label="任务名称" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="processorInfo" label="执行器" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="executeType" label="任务类型/执行方式" show-overflow-tooltip>
+          <template #default="scope">
+            <el-row>[{{scope.row.processorType}}] {{scope.row.executeType}}</el-row>
+          </template>
+        </el-table-column>
+        <el-table-column prop="timeExpression" label="类型/表达式" show-overflow-tooltip>
+          <template #default="scope">
+             <el-row style="font-weight: bold;">{{scope.row.timeExpressionType}}</el-row>
+             <el-row>{{scope.row.timeExpression}}</el-row>
+          </template>
+        </el-table-column>
         <el-table-column prop="status" :label="t('message.job.job.status')" show-overflow-tooltip>
           <template #default="scope">
             <el-switch
@@ -100,6 +118,8 @@ import {useI18n} from 'vue-i18n';
 import {Local} from '/@/utils/storage';
 import {useAppApi} from "/@/api/app";
 import {useRouter} from "vue-router";
+import {useJobApi} from "/@/api/job";
+import {formatDateByTimestamp} from "/@/utils/formatTime";
 
 // router
 const router = useRouter();
@@ -109,7 +129,8 @@ const router = useRouter();
 const {t} = useI18n();
 
 // 定义接口
-const appApi = useAppApi()
+const jobApi = useJobApi();
+const appApi = useAppApi();
 
 // 定义变量内容
 const tableSearchRef = ref<FormInstance>();
@@ -121,21 +142,25 @@ const NsDialog = defineAsyncComponent(() => import('/@/views/app/dialog.vue'));
 // 定义变量内容
 const nsDialogRef = ref();
 
+onMounted(()=>{
+  initAppList();
+});
+
+const appState = reactive<any>({
+  list: [],
+});
+
 const searchState = reactive({
   form: {
+    appId: 0,
+    namespaceId: Local.get("nid"),
     name: ''
   },
   rules: {
-    name: {
-      required: true,
-      message: t('message.app.validateName'),
-      pattern: /^[0-9a-zA-Z_.-]*$/,
-      trigger: 'blur'
-    },
   },
 });
 
-const state = reactive<AppState>({
+const state = reactive<JobState>({
   tableData: {
     data: [],
     total: 0,
@@ -149,8 +174,9 @@ const state = reactive<AppState>({
 // 初始化表格数据
 const getTableData = async () => {
   state.tableData.loading = true;
-  let data = await appApi.getList({
+  let data = await jobApi.getList({
     namespaceId: Local.get("nid"),
+    appId: searchState.form.appId,
     name: searchState.form.name,
     page: state.tableData.param.pageNum,
     size: state.tableData.param.pageSize,
@@ -161,12 +187,26 @@ const getTableData = async () => {
   data.list.forEach(function (item: Object) {
     state.tableData.data.push({
       id: item['id'],
-      name: item['name'],
       namespaceId: item['namespaceId'],
-      namespaceName: item['namespaceName'],
+      appId: item['appId'],
+      workflowId: item['workflowId'],
+      name: item['name'],
+      description: item['description'],
+      processorType: item['processorType'],
+      processorInfo: item['processorInfo'],
+      executeType: item['executeType'],
+      paramsType: item['paramsType'],
+      params: item['params'],
+      extendParamsType: item['extendParamsType'],
+      extendParams: item['extendParams'],
+      timeExpressionType: item['timeExpressionType'],
+      timeExpression: item['timeExpression'],
+      executeStrategy: item['executeStrategy'],
+      failRetryTimes: item['failRetryTimes'],
+      failRetryInterval: item['failRetryInterval'],
+      concurrency: item['concurrency'],
       status: item['status'] === 1,
-      desc: item['desc'],
-      createTime: item['createTime'],
+      createTime: formatDateByTimestamp(item['createTime']),
     })
   });
 
@@ -176,9 +216,30 @@ const getTableData = async () => {
   }, 500);
 };
 
+const initAppList = async ()=>{
+  let data = await appApi.getList({
+    namespaceId: searchState.form.namespaceId,
+    page: 1,
+    size: 30,
+  });
+
+  appState.list = [];
+  data.list.forEach(function (item: Object) {
+    if (searchState.form.appId === 0){
+      searchState.form.appId = item['id'];
+    }
+
+    // 列表数据
+    appState.list.push({
+      id: item['id'],
+      label: item['name']
+    })
+  });
+};
+
 const onSwitch = async (event: object, row: EmptyObjectType) => {
   const statusValue = event ? 1 : 2;
-  await appApi.updateStatus({
+  await jobApi.updateStatus({
     "id": row.id,
     "status": statusValue,
   });
@@ -221,7 +282,7 @@ const onDel = (row: RowNamespaceType) => {
     type: 'warning',
   })
     .then(async () => {
-      await appApi.delete({
+      await jobApi.delete({
         "id": row.id,
       });
 

@@ -12,6 +12,7 @@
                     :key="item.id"
                     :label="item.label"
                     :value="item.id"
+                    @click="onSearch(tableSearchRef)"
                   />
                 </el-select>
               </el-form-item>
@@ -112,16 +113,7 @@ onMounted(()=>{
 
 
 const appState = reactive<any>({
-  list: [
-    {
-      id: 1,
-      label: "test"
-    },
-    {
-      id: 2,
-      label: "test3"
-    }
-  ],
+  list: [],
 });
 
 const searchState = reactive({
@@ -168,6 +160,7 @@ const getTableData = async () => {
   state.tableData.loading = true;
   let data = await serverApi.getWorkerList({
     namespaceId: searchState.form.namespaceId,
+    appId: searchState.form.appId,
     address: searchState.form.address,
     page: state.tableData.param.pageNum,
     size: state.tableData.param.pageSize,
