@@ -9,6 +9,8 @@ export default {
     reset: "重置",
     view: "查看",
     update: "更新",
+    copy: '复制',
+    more: '更多',
     delete: "删除",
     add: "新增",
     online: "在线",
@@ -244,6 +246,8 @@ export default {
   },
   job:{
     job:{
+      instanceBtn: '实例',
+      executeOnce: '执行一次',
       name: '任务名称',
       description: '任务描述',
       status: '任务状态',

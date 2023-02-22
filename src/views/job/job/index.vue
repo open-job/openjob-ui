@@ -76,7 +76,7 @@
         </el-table-column>
         <el-table-column prop="createTime" :label="t('message.app.createTime')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column label="操作" width="300">
+        <el-table-column label="操作" width="360">
           <template #default="scope">
             <el-button type="primary" size="default" @click="onOpenEditRole('update',scope.row)">
               <el-icon>
@@ -84,12 +84,22 @@
               </el-icon>
               {{ $t('message.commonBtn.update') }}
             </el-button>
-            <el-button type="danger" size="default" @click="onDel(scope.row)">
+            <el-button type="success" size="default" @click="onOpenEditRole('update',scope.row)">
               <el-icon>
-                <ele-Delete/>
+                <ele-Edit/>
               </el-icon>
-              {{ $t('message.commonBtn.delete') }}
+              {{ $t('message.job.job.instanceBtn') }}
             </el-button>
+            <el-dropdown split-button type="info" size="default" style="margin-left: 12px">
+              {{ $t('message.commonBtn.more') }}
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>{{ $t('message.job.job.executeOnce') }}</el-dropdown-item>
+                  <el-dropdown-item>{{ $t('message.commonBtn.copy') }}</el-dropdown-item>
+                  <el-dropdown-item>{{ $t('message.commonBtn.delete') }}</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </template>
         </el-table-column>
       </el-table>

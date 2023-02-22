@@ -9,6 +9,8 @@ export default {
     reset: "Reset",
     view: "View",
     update: "Update",
+    copy: 'Copy',
+    more: 'More',
     delete: "Delete",
     add: "Add",
     online: "on-line",
@@ -244,6 +246,8 @@ export default {
   },
   job:{
     job:{
+      executeOnce: 'Execute Once',
+      instanceBtn: 'Instance',
       name: 'Name',
       description: 'Description',
       status: 'Status',
