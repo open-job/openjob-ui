@@ -12,7 +12,7 @@
 		<el-card shadow="hover" header="自定义div" class="mt15">
 			<div class="drag-dom">
 				<div class="drag-header">
-					<el-button type="success" size="default" v-drag="['.drag-container .drag-dom', '.drag-container .drag-header']">
+					<el-button type="success" size="default" v-drag="['.drag-container .drag-dom', '.drag-container .drag-header.ts']">
 						<el-icon>
 							<ele-Pointer />
 						</el-icon>

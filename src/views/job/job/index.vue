@@ -147,7 +147,6 @@ const appApi = useAppApi();
 // 定义变量内容
 const tableSearchRef = ref<FormInstance>();
 
-
 // 引入组件
 const NsDialog = defineAsyncComponent(() => import('/@/views/job/job/dialog.vue'));
 const JobDrawer = defineAsyncComponent(() => import('/@/views/job/job/drawer.vue'));
@@ -166,7 +165,7 @@ const appState = reactive<any>({
 
 const searchState = reactive({
   form: {
-    appId: '',
+    appId: 0,
     namespaceId: Local.get("nid"),
     name: ''
   },
@@ -277,7 +276,7 @@ const onReset = () => {
 
 // 打开新增角色弹窗
 const onOpenAddRole = (type: string) => {
-  JobDrawerRef.value.openDrawer(type);
+  JobDrawerRef.value.openDrawer(type, searchState.form.appId);
   // router.push({
   //   path: '/admin/job/page',
   //   params: {
@@ -288,7 +287,7 @@ const onOpenAddRole = (type: string) => {
 // 打开修改角色弹窗
 const onOpenEditRole = (type: string, row: Object) => {
   // nsDialogRef.value.openDialog(type, row);
-  JobDrawerRef.value.openDrawer(type, row);
+  JobDrawerRef.value.openDrawer(type, searchState.form.appId, row);
 };
 // 删除角色
 const onDel = (row: RowNamespaceType) => {

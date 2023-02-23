@@ -180,7 +180,7 @@ export default {
     threeTitle: 'Interface settings',
     threeIsCollapse: 'Menu horizontal collapse',
     threeIsUniqueOpened: 'Menu accordion',
-    threeIsFixedHeader: 'Fixed header',
+    threeIsFixedHeader: 'Fixed header.ts',
     threeIsClassicSplitMenu: 'Classic layout split menu',
     threeIsLockScreen: 'Open the lock screen',
     threeLockScreenTime: 'screen locking(s/s)',

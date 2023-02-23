@@ -119,7 +119,7 @@ const setBorder = computed(() => {
 	return props.config.isBorder ? true : false;
 });
 
-// 设置 tool header 数据
+// 设置 tool header.ts 数据
 const setHeader = computed(() => {
 	return props.header.filter((v) => v.isCheck);
 });

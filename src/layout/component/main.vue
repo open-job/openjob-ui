@@ -37,7 +37,7 @@ const { isTagsViewCurrenFull } = storeToRefs(storesTagsViewRoutes);
 const isFooter = computed(() => {
 	return themeConfig.value.isFooter && !route.meta.isIframe;
 });
-// 设置 header 固定
+// 设置 header.ts 固定
 const isFixedHeader = computed(() => {
 	return themeConfig.value.isFixedHeader;
 });
