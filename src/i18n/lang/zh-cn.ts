@@ -247,10 +247,28 @@ export default {
   job:{
     job:{
       instanceBtn: '实例',
+      application: "应用名称",
       executeOnce: '执行一次',
       name: '任务名称',
       description: '任务描述',
       status: '任务状态',
+      workflowId: '工作流ID',
+      processorType: '执行器类型',
+      processorInfo: '执行器',
+      executeType: '执行方式',
+      paramsType: '参数类型',
+      params: '参数',
+      extendParamsType: '扩展参数类型',
+      extendParams: '扩展参数',
+      timeExpressionType: '表达式类型',
+      timeExpression: '时间表达式',
+      executeStrategy: '执行策略',
+      failRetryTimes: '失败重试次数',
+      failRetryInterval: '失败重试间隔',
+      concurrency: '并发',
+      createTime: '创建时间',
+      processorAndExecuteType: '类型/方式',
+      expressionAndType: '时间类型/表达式',
     }
   },
   server: {

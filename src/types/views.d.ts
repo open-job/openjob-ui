@@ -125,7 +125,7 @@ declare interface RowJobType {
   extendParams: string;
   timeExpressionType: string;
   timeExpression: string;
-  executeStrategy: string;
+  executeStrategy: number;
   failRetryTimes: number;
   failRetryInterval: number;
   concurrency: number;

@@ -1,11 +1,11 @@
 <template>
-  <el-drawer v-model="state.drawer.isShow" direction="rtl" size="40%">
+  <el-drawer v-model="state.drawer.isShow" direction="rtl" size="50%">
     <template #header>
       <h4>新增定时任务</h4>
     </template>
     <template #default>
-      <div class="system-role-dialog-container">
-        <el-form ref="appDialogFormRef" :model="state.ruleForm" label-width="100px" :rules="state.fromRules" size="default" style="margin-top: 22px">
+      <div class="system-role-dialog-container" style="padding: 10px;">
+        <el-form ref="appDialogFormRef" :model="state.ruleForm" label-width="120px" :rules="state.fromRules" size="default">
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item :label="t('message.app.namespace')" prop="namespaceId">
@@ -22,7 +22,7 @@
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item :label="t('message.app.name')" prop="appId">
+              <el-form-item :label="t('message.job.job.application')" prop="appId">
                 <el-select v-model="state.ruleForm.appId" class="m-2" filterable :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
                   <el-option
                     v-for="app in state.appList"
@@ -36,21 +36,21 @@
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-              <el-form-item label="任务名称" prop="name">
-                <el-input clearable/>
+              <el-form-item :label="t('message.job.job.name')" prop="name">
+                <el-input v-model="state.ruleForm.name" clearable/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-              <el-form-item label="任务描述" prop="description">
-                <el-input type="textarea" rows="3"/>
+              <el-form-item :label="t('message.job.job.description')" prop="description">
+                <el-input v-model="state.ruleForm.description" type="textarea" rows="3"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="执行器类型" prop="processorType">
+              <el-form-item :label="t('message.job.job.processorType')" prop="processorType">
                 <el-select v-model="state.ruleForm.processorType" class="m-2" :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
                   <el-option
                     v-for="ns in state.processorType"
@@ -64,14 +64,14 @@
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-              <el-form-item label="执行器名称" prop="processorInfo">
-                <el-input />
+              <el-form-item :label="t('message.job.job.processorInfo')" prop="processorInfo">
+                <el-input v-model="state.ruleForm.processorInfo"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="参数类型" prop="paramsType">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item :label="t('message.job.job.paramsType')" prop="paramsType">
                 <el-radio-group v-model="state.ruleForm.paramsType">
                   <el-radio label="text">text</el-radio>
                   <el-radio label="json">json</el-radio>
@@ -83,14 +83,14 @@
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-              <el-form-item label="任务参数" prop="params">
-                <el-input type="textarea" rows="3"/>
+              <el-form-item :label="t('message.job.job.params')" prop="params">
+                <el-input v-model="state.ruleForm.params" type="textarea" rows="3"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="扩展参数类型" prop="extendParamsType">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item :label="t('message.job.job.extendParamsType')" prop="extendParamsType">
                 <el-radio-group v-model="state.ruleForm.extendParamsType">
                   <el-radio label="text">text</el-radio>
                   <el-radio label="json">json</el-radio>
@@ -102,14 +102,14 @@
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-              <el-form-item label="扩展参数" prop="extendParams">
-                <el-input type="textarea" rows="3"/>
+              <el-form-item :label="t('message.job.job.extendParams')" prop="extendParams">
+                <el-input v-model="state.ruleForm.extendParams" type="textarea" rows="3"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="任务类型" prop="">
+              <el-form-item :label="t('message.job.job.timeExpressionType')" prop="">
                 <el-select v-model="state.ruleForm.timeExpressionType" class="m-2" :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
                   <el-option
                     v-for="ns in state.timeExpressionType"
@@ -123,14 +123,14 @@
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="时间表达式" prop="timeExpression">
-                <el-input />
+              <el-form-item :label="t('message.job.job.timeExpression')" prop="timeExpression">
+                <el-input v-model="state.ruleForm.timeExpression"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="任务状态" prop="status">
+              <el-form-item :label="t('message.job.job.status')" prop="status">
                 <el-switch
                   v-model="state.ruleForm.status"
                   class="ml-2"
@@ -143,7 +143,7 @@
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="执行方式" prop="">
+              <el-form-item :label="t('message.job.job.executeType')" prop="">
                 <el-select v-model="state.ruleForm.executeType" class="m-2" :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
                   <el-option
                     v-for="ns in state.executeType"
@@ -155,7 +155,7 @@
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="执行策略" prop="executeStrategy">
+              <el-form-item :label="t('message.job.job.executeStrategy')" prop="executeStrategy">
                 <el-select v-model="state.ruleForm.executeStrategy" class="m-2" :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
                   <el-option
                     v-for="ns in state.executeStrategy"
@@ -172,19 +172,19 @@
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="重试次数" prop="failRetryTimes">
+              <el-form-item :label="t('message.job.job.failRetryTimes')" prop="failRetryTimes">
                 <el-input-number v-model="state.ruleForm.failRetryTimes" :min="1" :max="6" style="width: 100%"/>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="重试间隔" prop="failRetryInterval">
+              <el-form-item :label="t('message.job.job.failRetryInterval')" prop="failRetryInterval">
                 <el-input-number v-model="state.ruleForm.failRetryInterval" :min="1" step="1000" style="width: 100%"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="执行并发" prop="concurrency">
+              <el-form-item :label="t('message.job.job.concurrency')" prop="concurrency">
                 <el-input-number v-model="state.ruleForm.concurrency" :min="1" :max="128" step="1" style="width: 100%"/>
               </el-form-item>
             </el-col>
@@ -193,9 +193,9 @@
       </div>
     </template>
     <template #footer>
-      <div style="flex: auto;text-align: left">
-        <el-button @click="cancelClick">cancel</el-button>
+      <div style="flex: auto;text-align: left;padding-left: 30px;padding-bottom: 10px;">
         <el-button type="primary" @click="confirmClick">confirm</el-button>
+        <el-button @click="cancelClick">cancel</el-button>
       </div>
     </template>
   </el-drawer>
@@ -266,21 +266,23 @@ const state = reactive({
   namespaceList:<any>[],
   appList:<any>[],
   ruleForm: {
+    description: '',
     paramsType: 'text',
     params: '',
     extendParamsType: 'text',
     extendParams: '',
     timeExpressionType: 'cron',
+    timeExpression: '',
     executeType: 'standalone',
     processorType: 'java',
-    namespaceId: '',
+    processorInfo: '',
+    namespaceId: 0,
     appId: 1,
     id: 0,
     name: '',
     status: true,
-    desc: '',
     failRetryTimes: 1,
-    failRetryInterval: 3000,
+    failRetryInterval: 2000,
     concurrency: 1,
     executeStrategy: 1,
   },
@@ -308,6 +310,37 @@ const initNamespaceList = async () => {
 }
 
 const openDrawer = async (type: string, row: RowJobType) => {
+  // Init app list.
+  await initAppList();
+
+  state.drawer.type = type;
+  state.drawer.isShow = true;
+
+  if (type === 'add'){
+    return;
+  }
+
+  state.ruleForm.namespaceId = row.namespaceId;
+  state.ruleForm.appId = row.appId;
+  state.ruleForm.name = row.name;
+  state.ruleForm.description = row.description;
+  state.ruleForm.processorType = row.processorType;
+  state.ruleForm.processorInfo = row.processorInfo;
+  state.ruleForm.params = row.params;
+  state.ruleForm.paramsType = row.paramsType;
+  state.ruleForm.extendParamsType = row.extendParamsType;
+  state.ruleForm.extendParams = row.extendParams;
+  state.ruleForm.timeExpressionType = row.timeExpressionType;
+  state.ruleForm.timeExpression = row.timeExpression;
+  state.ruleForm.status = row.status;
+  state.ruleForm.executeType = row.executeType;
+  state.ruleForm.executeStrategy = row.executeStrategy;
+  state.ruleForm.failRetryTimes = row.failRetryTimes;
+  state.ruleForm.failRetryInterval = row.failRetryInterval;
+  state.ruleForm.concurrency = row.concurrency;
+}
+
+const initAppList = async () => {
   let data = await appApi.getList({
     namespaceId: Local.get("nid"),
     page: 1,
@@ -322,9 +355,6 @@ const openDrawer = async (type: string, row: RowJobType) => {
       label: item['name']
     })
   });
-
-  state.drawer.type = type;
-  state.drawer.isShow = true;
 }
 
 const cancelClick =()=> {

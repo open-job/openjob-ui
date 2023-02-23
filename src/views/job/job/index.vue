@@ -50,14 +50,14 @@
       </div>
       <el-table :data="state.tableData.data" v-loading="state.tableData.loading"
                 style="width: 100%">
-        <el-table-column prop="name" label="任务名称" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="processorInfo" label="执行器" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="executeType" label="任务类型/执行方式" show-overflow-tooltip>
+        <el-table-column prop="name" :label="t('message.job.job.name')" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="processorInfo" :label="t('message.job.job.processorInfo')" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="executeType" :label="t('message.job.job.processorAndExecuteType')" show-overflow-tooltip>
           <template #default="scope">
             <el-row>[{{scope.row.processorType}}] {{scope.row.executeType}}</el-row>
           </template>
         </el-table-column>
-        <el-table-column prop="timeExpression" label="类型/表达式" show-overflow-tooltip>
+        <el-table-column prop="timeExpression" :label="t('message.job.job.expressionAndType')" show-overflow-tooltip>
           <template #default="scope">
              <el-row style="font-weight: bold;">{{scope.row.timeExpressionType}}</el-row>
              <el-row>{{scope.row.timeExpression}}</el-row>
@@ -74,7 +74,7 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" :label="t('message.app.createTime')"
+        <el-table-column prop="createTime" :label="t('message.job.job.createTime')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" width="360">
           <template #default="scope">
@@ -166,7 +166,7 @@ const appState = reactive<any>({
 
 const searchState = reactive({
   form: {
-    appId: 0,
+    appId: '',
     namespaceId: Local.get("nid"),
     name: ''
   },
@@ -277,7 +277,7 @@ const onReset = () => {
 
 // 打开新增角色弹窗
 const onOpenAddRole = (type: string) => {
-  JobDrawerRef.value.openDrawer();
+  JobDrawerRef.value.openDrawer(type);
   // router.push({
   //   path: '/admin/job/page',
   //   params: {
@@ -287,7 +287,8 @@ const onOpenAddRole = (type: string) => {
 };
 // 打开修改角色弹窗
 const onOpenEditRole = (type: string, row: Object) => {
-  nsDialogRef.value.openDialog(type, row);
+  // nsDialogRef.value.openDialog(type, row);
+  JobDrawerRef.value.openDrawer(type, row);
 };
 // 删除角色
 const onDel = (row: RowNamespaceType) => {

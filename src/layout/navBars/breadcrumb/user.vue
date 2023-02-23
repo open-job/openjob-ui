@@ -233,7 +233,8 @@ const initNamespace = async ()=>{
   data.list.forEach(function (item: Object) {
     // 首次选择第一个
     if (index === 0 && nid == null) {
-      namespaceState.current = data.list[0].name;
+      namespaceState.current = item['name'];
+      Local.set("nid", item['id']);
     }
 
     // 列表数据
