@@ -90,13 +90,22 @@
               </el-icon>
               {{ $t('message.job.job.instanceBtn') }}
             </el-button>
-            <el-dropdown split-button type="info" size="default" style="margin-left: 12px">
+            <el-dropdown split-button type="info" size="default" style="margin-left: 12px" @command="onMoreCommand($event, scope.row)">
               {{ $t('message.commonBtn.more') }}
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item>{{ $t('message.job.job.executeOnce') }}</el-dropdown-item>
-                  <el-dropdown-item>{{ $t('message.commonBtn.copy') }}</el-dropdown-item>
-                  <el-dropdown-item>{{ $t('message.commonBtn.delete') }}</el-dropdown-item>
+                  <el-dropdown-item command="execute">{{
+                      $t('message.job.job.executeOnce')
+                    }}
+                  </el-dropdown-item>
+                  <el-dropdown-item command="copy">{{
+                      $t('message.commonBtn.copy')
+                    }}
+                  </el-dropdown-item>
+                  <el-dropdown-item command="delete">{{
+                      $t('message.commonBtn.delete')
+                    }}
+                  </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -274,6 +283,23 @@ const onReset = () => {
   getTableData();
 };
 
+const onMoreCommand = (command :string, row :RowJobType)=>{
+  if (command === 'execute'){
+    nsDialogRef.value.openDialog(row);
+    return ;
+  }
+
+  if (command === 'copy'){
+    JobDrawerRef.value.openDrawer('copy', searchState.form.appId, row);
+    return ;
+  }
+
+  if (command === 'delete'){
+    ElMessage.success('delete');
+    return ;
+  }
+};
+
 // 打开新增角色弹窗
 const onOpenAddRole = (type: string) => {
   JobDrawerRef.value.openDrawer(type, searchState.form.appId);
@@ -286,7 +312,6 @@ const onOpenAddRole = (type: string) => {
 };
 // 打开修改角色弹窗
 const onOpenEditRole = (type: string, row: Object) => {
-  // nsDialogRef.value.openDialog(type, row);
   JobDrawerRef.value.openDrawer(type, searchState.form.appId, row);
 };
 // 删除角色

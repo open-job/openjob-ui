@@ -248,7 +248,7 @@ export default {
     job:{
       instanceBtn: '实例',
       application: "应用名称",
-      executeOnce: '执行一次',
+      executeOnce: '执行',
       name: '任务名称',
       description: '任务描述',
       status: '任务状态',

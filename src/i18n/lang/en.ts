@@ -246,7 +246,7 @@ export default {
   },
   job:{
     job:{
-      executeOnce: 'Execute Once',
+      executeOnce: 'Execute',
       instanceBtn: 'Instance',
       application: "Application",
       name: 'Name',

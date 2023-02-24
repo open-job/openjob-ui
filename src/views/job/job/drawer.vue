@@ -88,7 +88,7 @@
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.params')" prop="params">
-                <el-input v-model="state.ruleForm.params" clearabletype="textarea" rows="3"/>
+                <el-input v-model="state.ruleForm.params" clearable type="textarea" rows="3"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -179,14 +179,13 @@
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item :label="t('message.job.job.failRetryTimes')" prop="failRetryTimes">
-                <el-input-number v-model="state.ruleForm.failRetryTimes" :min="1" :max="6"
-                                 style="width: 100%"/>
+                <el-input-number v-model="state.ruleForm.failRetryTimes" :min="1" :max="6" :step="state.ruleForm.timesStep" style="width: 100%"/>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item :label="t('message.job.job.failRetryInterval')"
                             prop="failRetryInterval">
-                <el-input-number v-model="state.ruleForm.failRetryInterval" :min="1"
+                <el-input-number v-model="state.ruleForm.failRetryInterval" :step="state.ruleForm.intervalStep" :min="1"
                                  style="width: 100%"/>
               </el-form-item>
             </el-col>
