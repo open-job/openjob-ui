@@ -430,7 +430,7 @@ const confirmClick = async () => {
     status: (state.ruleForm.status ? 1 : 2)
   };
 
-  if (state.drawer.type === 'add') {
+  if (state.drawer.type === 'add' || state.drawer.type === 'copy') {
     await jobApi.add(request);
     ElMessage.success('新增成功');
     state.drawer.isShow = false;

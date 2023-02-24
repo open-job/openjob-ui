@@ -61,7 +61,7 @@
         <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.params')" prop="params">
-              <el-input v-model="state.ruleForm.params" type="textarea" rows="3"/>
+              <el-input v-model="state.ruleForm.params" type="textarea" rows="10"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -80,7 +80,7 @@
         <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.extendParams')" prop="extendParams">
-              <el-input v-model="state.ruleForm.extendParams" type="textarea" rows="3"/>
+              <el-input v-model="state.ruleForm.extendParams" type="textarea" rows="5"/>
             </el-form-item>
           </el-col>
         </el-row>

@@ -174,7 +174,7 @@ const appState = reactive<any>({
 
 const searchState = reactive({
   form: {
-    appId: 0,
+    appId: '',
     namespaceId: Local.get("nid"),
     name: ''
   },
@@ -247,10 +247,6 @@ const initAppList = async ()=>{
 
   appState.list = [];
   data.list.forEach(function (item: Object) {
-    if (searchState.form.appId === 0){
-      searchState.form.appId = item['id'];
-    }
-
     // 列表数据
     appState.list.push({
       id: item['id'],
@@ -280,6 +276,7 @@ const onSearch = (formEl: FormInstance | undefined) => {
 
 const onReset = () => {
   searchState.form.name = '';
+  searchState.form.appId = '';
   getTableData();
 };
 
