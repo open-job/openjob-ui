@@ -269,6 +269,15 @@ export default {
       createTime: '创建时间',
       processorAndExecuteType: '类型/方式',
       expressionAndType: '时间类型/表达式',
+    },
+    instance: {
+      jobId: '任务ID',
+      status: '任务状态',
+      workerAddress: '工作节点',
+      executeTime: '执行时间',
+      completeTime: '完成时间',
+      lastReportTime: '最近上报时间',
+      createTime: '创建时间',
     }
   },
   server: {

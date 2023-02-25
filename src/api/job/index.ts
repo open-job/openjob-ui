@@ -1,5 +1,5 @@
 import request from '/@/utils/request';
-import {JOB_APIS} from "/@/api/serverApis";
+import {JOB_APIS, JOB_INSTANCE_APIS} from "/@/api/serverApis";
 
 /**
  * 以下为模拟接口地址，gitee 的不通，就换自己的真实接口地址
@@ -48,5 +48,17 @@ export function useJobApi() {
         data,
       });
     },
+  };
+}
+
+export function useJobInstanceApi() {
+  return {
+    getList: (params?: object) => {
+      return request({
+        url: JOB_INSTANCE_APIS.list,
+        method: 'get',
+        params,
+      });
+    }
   };
 }

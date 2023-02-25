@@ -244,8 +244,8 @@ export default {
     editTitle: "Edit Application",
     validateName: "Format letters or number or . or _ or -"
   },
-  job:{
-    job:{
+  job: {
+    job: {
       executeOnce: 'Execute',
       instanceBtn: 'Instance',
       application: "Application",
@@ -269,6 +269,15 @@ export default {
       createTime: 'Create Time',
       processorAndExecuteType: 'Type/Method',
       expressionAndType: 'Type/Expression',
+    },
+    instance: {
+      jobId: 'Job id',
+      status: 'Status',
+      workerAddress: 'Worker address',
+      executeTime: 'ExecuteTime',
+      completeTime: 'Complete Time',
+      lastReportTime: 'Last Report Time',
+      createTime: 'Create Time',
     }
   },
   server: {

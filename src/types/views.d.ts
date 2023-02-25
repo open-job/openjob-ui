@@ -133,12 +133,50 @@ declare interface RowJobType {
   createTime: string;
 }
 
-interface AppJobType extends TableType {
+interface JobTableType extends TableType {
   data: RowJobType[];
 }
 
 declare interface JobState {
-  tableData: AppJobType;
+  tableData: JobTableType;
+}
+
+/**
+ * Job instance
+ */
+declare interface RowJobInstanceType {
+  id: number;
+  workflowId: number
+  namespaceId: number;
+  appId: number;
+  jobId: number;
+  processorType: string;
+  processorInfo: string;
+  executeType: string;
+  paramsType: string;
+  params: string;
+  extendParamsType: string;
+  extendParams: string;
+  timeExpressionType: string;
+  timeExpression: string;
+  executeStrategy: number;
+  failRetryTimes: number;
+  failRetryInterval: number;
+  concurrency: number;
+  status: number;
+  executeTime: string;
+  completeTime: string;
+  lastReportTime: string;
+  workerAddress: string;
+  createTime: string;
+}
+
+interface InstanceTableType extends TableType {
+  data: RowJobInstanceType[];
+}
+
+declare interface JobInstanceState {
+  tableData: InstanceTableType;
 }
 
 declare interface NamespaceMenuState {

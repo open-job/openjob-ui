@@ -28,6 +28,11 @@ export const JOB_APIS = {
   delete: '/admin/job/delete',
 }
 
+export const JOB_INSTANCE_APIS = {
+  // list
+  list: '/admin/job-instance/list',
+}
+
 export const NAMESPACE_APIS = {
   // list
   list: '/admin/namespace/list',
