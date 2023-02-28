@@ -88,9 +88,16 @@
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.params')" prop="params">
-                <div>
-                  <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
-                </div>
+                <el-card shadow="never" style="padding: 0">
+                  <template #header>
+                    <div class="card-header">
+                      <span>任务调度</span>
+                    </div>
+                  </template>
+                  <div>
+                    <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
+                  </div>
+                </el-card>
               </el-form-item>
             </el-col>
           </el-row>
