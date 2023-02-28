@@ -1,50 +1,11 @@
 <template>
-  <el-drawer v-model="state.drawer.isShow" direction="rtl" size="50%">
+  <el-drawer v-model="state.drawer.isShow" direction="rtl" size="80%">
     <template #header>
       <h4>新增定时任务</h4>
     </template>
     <template #default>
       <div class="system-role-dialog-container" style="padding: 10px;">
-<!--        <el-card class="box-card" shadow="never" style="margin-top: 10px">-->
-<!--          <template #header>-->
-<!--            <div class="card-header">-->
-<!--              <span>任务调度</span>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--          <div>-->
-<!--            xxx-->
-<!--          </div>-->
-<!--        </el-card>-->
-<!--        <el-card class="box-card" shadow="never" style="margin-top: 10px">-->
-<!--          <template #header>-->
-<!--            <div class="card-header">-->
-<!--              <span>任务调度</span>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--          <div>-->
-<!--            xxx-->
-<!--          </div>-->
-<!--        </el-card>-->
-<!--        <el-card class="box-card" shadow="never" style="margin-top: 10px">-->
-<!--          <template #header>-->
-<!--            <div class="card-header">-->
-<!--              <span>任务调度</span>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--          <div>-->
-<!--            xxx-->
-<!--          </div>-->
-<!--        </el-card>-->
-        <el-descriptions title="任务调度">
-          <el-descriptions-item>
-            xxxx
-          </el-descriptions-item>
-        </el-descriptions>
-        <el-descriptions title="任务执行">
-          <el-descriptions-item>
-            xxxx
-          </el-descriptions-item>
-        </el-descriptions>
+        <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
       </div>
     </template>
     <template #footer>
@@ -60,7 +21,9 @@
 import {ElMessage} from 'element-plus'
 import {useI18n} from "vue-i18n";
 import {useNamespaceApi} from "/@/api/namespace";
-import {reactive} from "vue";
+import {defineAsyncComponent, reactive} from "vue";
+const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
+
 
 
 const {t} = useI18n();

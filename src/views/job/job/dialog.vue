@@ -61,7 +61,7 @@
         <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.params')" prop="params">
-              <el-input v-model="state.ruleForm.params" type="textarea" rows="10"/>
+              <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
             </el-form-item>
           </el-col>
         </el-row>
@@ -80,7 +80,7 @@
         <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.extendParams')" prop="extendParams">
-              <el-input v-model="state.ruleForm.extendParams" type="textarea" rows="5"/>
+              <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
             </el-form-item>
           </el-col>
         </el-row>
@@ -98,12 +98,14 @@
 </template>
 
 <script setup lang="ts" name="systemRoleDialog">
-import {reactive, ref} from 'vue';
+import {defineAsyncComponent, reactive, ref} from 'vue';
 import {useI18n} from "vue-i18n";
 import {useNamespaceApi} from "/@/api/namespace";
 import {Local} from "/@/utils/storage";
 import {useAppApi} from "/@/api/app";
 import {FormInstance} from "element-plus";
+const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
+
 
 const {t} = useI18n();
 

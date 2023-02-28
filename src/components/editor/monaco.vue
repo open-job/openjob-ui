@@ -1,5 +1,5 @@
 <template>
-  <div ref="codeEditBox" style="width: 900px;height: 200px;"></div>
+  <div ref="codeEditBox" style="width: 100%;height: 1300px;"></div>
 </template>
 
 
@@ -59,16 +59,14 @@ const editorInit = () => {
       rules:[],
       encodedTokensColors: [],
       colors: {
-        'editor.background':'#ffffff',
-        "sideBar.background": "#330000",//侧边栏背景色。
-      },
+      }
     })
 
     !editor ? editor = monaco.editor.create(codeEditBox.value, {
         value: text.value, // 编辑器初始显示文字
         language: 'json', // 语言支持自行查阅demo
         automaticLayout: true, // 自适应布局
-        theme: 'defaultTheme', // 官方自带三种主题vs, hc-black, or vs-dark
+        theme: 'vs-dark', // 官方自带三种主题vs, hc-black, or vs-dark
         foldingStrategy: 'indentation',
         renderLineHighlight: 'none', // 行亮
         selectOnLineNumbers: false, // 显示行号

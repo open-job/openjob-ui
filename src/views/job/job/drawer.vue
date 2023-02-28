@@ -88,16 +88,7 @@
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.params')" prop="params">
-                <el-card shadow="never" style="padding: 0">
-                  <template #header>
-                    <div class="card-header">
-                      <span>任务调度</span>
-                    </div>
-                  </template>
-                  <div>
-                    <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
-                  </div>
-                </el-card>
+                  <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
               </el-form-item>
             </el-col>
           </el-row>
@@ -116,7 +107,7 @@
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.extendParams')" prop="extendParams">
-                <el-input v-model="state.ruleForm.extendParams" type="textarea" rows="3"/>
+                  <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
               </el-form-item>
             </el-col>
           </el-row>
