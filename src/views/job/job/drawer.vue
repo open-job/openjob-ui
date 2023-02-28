@@ -88,7 +88,9 @@
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.params')" prop="params">
-                <el-input v-model="state.ruleForm.params" clearable type="textarea" rows="3"/>
+                <div>
+                  <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
+                </div>
               </el-form-item>
             </el-col>
           </el-row>
@@ -211,7 +213,7 @@
 </template>
 
 <script setup lang="ts" name="jobDrawerName">
-import {onMounted, reactive, ref} from 'vue';
+import {defineAsyncComponent, onMounted, reactive, ref} from 'vue';
 import {ElMessage, ElMessageBox} from 'element-plus'
 import {useI18n} from "vue-i18n";
 import {useNamespaceApi} from "/@/api/namespace";
@@ -219,6 +221,7 @@ import {useAppApi} from "/@/api/app";
 import {Local} from "/@/utils/storage";
 import {getHeaderNamespaceId} from "/@/utils/header";
 import {useJobApi} from "/@/api/job";
+const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
 
 
 const {t} = useI18n();

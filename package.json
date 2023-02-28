@@ -25,6 +25,7 @@
     "js-table2excel": "^1.0.3",
     "jsplumb": "^2.15.6",
     "mitt": "^3.0.0",
+    "monaco-editor": "^0.36.0",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.28",
     "print-js": "^1.6.0",
