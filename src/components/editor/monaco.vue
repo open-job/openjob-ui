@@ -1,5 +1,5 @@
 <template>
-  <div ref="codeEditBox" style="width: 100%;height: 1300px;"></div>
+  <div ref="codeEditBox" :style="editorStyle"></div>
 </template>
 
 
@@ -11,9 +11,28 @@ import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import * as monaco from 'monaco-editor'
 import {nextTick, ref, onBeforeUnmount} from 'vue'
-import {IColors} from "monaco-editor";
 
 let editor: monaco.editor.IStandaloneCodeEditor
+
+// 定义父组件传过来的值
+const props = defineProps({
+  value: {
+    default: '',
+    type: String,
+  },
+  editorStyle: {
+    default: 'width: 100px;height: 100px;',
+    type: String
+  },
+  language: {
+    default: 'json',
+    type: String
+  },
+  readOnly: {
+    default: false,
+    type: Boolean
+  },
+});
 
 const text = ref('')
 const codeEditBox = ref();
@@ -56,15 +75,14 @@ const editorInit = () => {
     monaco.editor.defineTheme('defaultTheme', {
       base: "vs",
       inherit: true,
-      rules:[],
+      rules: [],
       encodedTokensColors: [],
-      colors: {
-      }
+      colors: {}
     })
 
     !editor ? editor = monaco.editor.create(codeEditBox.value, {
-        value: text.value, // 编辑器初始显示文字
-        language: 'json', // 语言支持自行查阅demo
+        value: props.value, // 编辑器初始显示文字
+        language: props.language, // 语言支持自行查阅demo
         automaticLayout: true, // 自适应布局
         theme: 'vs-dark', // 官方自带三种主题vs, hc-black, or vs-dark
         foldingStrategy: 'indentation',
@@ -77,7 +95,7 @@ const editorInit = () => {
         //   top: 10,
         //   bottom: 5
         // },
-        readOnly: false, // 只读
+        readOnly: props.readOnly, // 只读
         fontSize: 14, // 字体大小
         autoClosingBrackets: 'always', // 是否自动添加结束括号(包括中括号) "always" | "languageDefined" | "beforeWhitespace" | "never"
         autoClosingDelete: 'always', // 是否自动删除结束括号(包括中括号) "always" | "never" | "auto"
@@ -85,7 +103,7 @@ const editorInit = () => {
         scrollBeyondLastLine: false, // 取消代码后面一大段空白
         overviewRulerBorder: false, // 不要滚动条的边框
       }) :
-      editor.setValue('')
+      editor.setValue(props.value)
     editor.onDidChangeModelContent(() => {
       text.value = editor.getValue()
     })
@@ -97,6 +115,4 @@ editorInit()
 // const changeLanguage = () => {
 //     monaco.editor.setModelLanguage(editor.getModel(), language.value)
 // }
-
-
 </script>

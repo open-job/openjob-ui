@@ -88,7 +88,12 @@
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.params')" prop="params">
-                  <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
+                <MonacoEditor
+                  ref="JobParamsMonacoEditor"
+                  :editorStyle="state.paramsEditor.editorStyle"
+                  :language="state.paramsEditor.language"
+                  :value="state.paramsEditor.value"
+                />
               </el-form-item>
             </el-col>
           </el-row>
@@ -107,7 +112,12 @@
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.extendParams')" prop="extendParams">
-                  <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
+                <MonacoEditor
+                  ref="JobExtParamsMonacoEditor"
+                  :editorStyle="state.paramsExtEditor.editorStyle"
+                  :language="state.paramsExtEditor.language"
+                  :value="state.paramsExtEditor.value"
+                />
               </el-form-item>
             </el-col>
           </el-row>
@@ -179,13 +189,15 @@
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item :label="t('message.job.job.failRetryTimes')" prop="failRetryTimes">
-                <el-input-number v-model="state.ruleForm.failRetryTimes" :min="1" :max="6" :step="state.ruleForm.timesStep" style="width: 100%"/>
+                <el-input-number v-model="state.ruleForm.failRetryTimes" :min="1" :max="6"
+                                 :step="state.ruleForm.timesStep" style="width: 100%"/>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item :label="t('message.job.job.failRetryInterval')"
                             prop="failRetryInterval">
-                <el-input-number v-model="state.ruleForm.failRetryInterval" :step="state.ruleForm.intervalStep" :min="1"
+                <el-input-number v-model="state.ruleForm.failRetryInterval"
+                                 :step="state.ruleForm.intervalStep" :min="1"
                                  style="width: 100%"/>
               </el-form-item>
             </el-col>
@@ -219,6 +231,7 @@ import {useAppApi} from "/@/api/app";
 import {Local} from "/@/utils/storage";
 import {getHeaderNamespaceId} from "/@/utils/header";
 import {useJobApi} from "/@/api/job";
+
 const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
 
 
@@ -236,6 +249,16 @@ const jobFormRef = ref();
 const emit = defineEmits(['refresh']);
 
 const state = reactive({
+  paramsEditor: {
+    editorStyle: 'width: 95%;height: 220px;',
+    language: 'json',
+    value: ''
+  },
+  paramsExtEditor: {
+    editorStyle: 'width: 95%;height: 150px;',
+    language: 'json',
+    value: ''
+  },
   drawer: {
     type: '',
     isShow: false
