@@ -280,16 +280,33 @@ export default {
       createTime: '创建时间',
     }
   },
+  delay: {
+    job: {
+      appName: '应用名称',
+      name: '任务名称',
+      processorInfo: '执行器',
+      topic: '任务主题',
+      status: '任务状态',
+      description: '任务描述',
+      failRetryTimes: '重试次数',
+      failRetryInterval: '重试间隔',
+      executeTimeout: '超时时间',
+      concurrency: '并发',
+      blockingSize: '缓存大小',
+      createTime: '创建时间',
+    },
+    instance: {}
+  },
   server: {
     slots: {
       id: 'ID',
-      serverId:'节点编号',
-      serverAddress:"节点地址",
-      serverStatus:"节点状态",
-      createTime:"创建时间",
-      updateTime:"更新时间",
+      serverId: '节点编号',
+      serverAddress: "节点地址",
+      serverStatus: "节点状态",
+      createTime: "创建时间",
+      updateTime: "更新时间",
     },
-    node:{
+    node: {
       id: 'ID',
       ip: "节点IP",
       akkaAddress: "节点地址",
@@ -297,7 +314,7 @@ export default {
       createTime: "创建时间",
       updateTime: "更新时间",
     },
-    worker:{
+    worker: {
       appName: '应用名称',
       address: '节点地址',
       protocolType: '节点协议',

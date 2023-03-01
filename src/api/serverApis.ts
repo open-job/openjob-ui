@@ -33,6 +33,20 @@ export const JOB_INSTANCE_APIS = {
   list: '/admin/job-instance/list',
 }
 
+export const DELAY_APIS = {
+  // list
+  list: '/admin/delay/list',
+  add: '/admin/delay/add',
+  update: '/admin/delay/update',
+  updateStatus: '/admin/delay/update-status',
+  delete: '/admin/delay/delete',
+}
+
+export const DELAY_INSTANCE_APIS = {
+  // list
+  list: '/admin/delay-instance/list',
+}
+
 export const NAMESPACE_APIS = {
   // list
   list: '/admin/namespace/list',

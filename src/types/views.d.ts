@@ -179,6 +179,64 @@ declare interface JobInstanceState {
   tableData: InstanceTableType;
 }
 
+/**
+ * Delay
+ */
+declare interface RowDelayType {
+  id: number;
+  namespaceId: number;
+  appId: number;
+  name: string;
+  description: string;
+  processorInfo: string;
+  topic: string;
+  failRetryTimes: number;
+  failRetryInterval: number;
+  concurrency: number;
+  blockingSize: number;
+  executeTimeout: number,
+  status: boolean;
+  createTime: string;
+}
+
+interface DelayTableType extends TableType {
+  data: RowDelayType[];
+}
+
+declare interface DelayState {
+  tableData: DelayTableType;
+}
+
+
+/**
+ * Delay instance
+ */
+declare interface RowDelayInstanceType {
+  id: number;
+  namespaceId: number;
+  appId: number;
+  delayId: number;
+  taskId: string;
+  topic: string;
+  delayParams: string;
+  delayExtra: string;
+  status: number;
+  executeTime: string
+  createTime: string;
+}
+
+interface DelayInstanceTableType extends TableType {
+  data: RowDelayInstanceType[];
+}
+
+declare interface DelayInstanceState {
+  tableData: DelayInstanceTableType;
+}
+
+
+/**
+ * Namespace menu
+ */
 declare interface NamespaceMenuState {
   current: string
   list: RowNamespaceType[]

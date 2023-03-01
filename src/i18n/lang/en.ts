@@ -280,6 +280,23 @@ export default {
       createTime: 'Create Time',
     }
   },
+  delay: {
+    job: {
+      appName: 'Application',
+      name: 'Name',
+      processorInfo: 'Processor',
+      topic: 'Topic',
+      status: 'Status',
+      description: 'Description',
+      failRetryTimes: 'Retry Times',
+      failRetryInterval: 'Retry Interval',
+      executeTimeout: 'Timeout',
+      concurrency: 'concurrency',
+      blockingSize: 'Blocking Size',
+      createTime: 'Create Time',
+    },
+    instance: {}
+  },
   server: {
     slots: {
       id: 'ID',
