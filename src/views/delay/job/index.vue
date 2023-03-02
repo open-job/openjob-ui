@@ -59,12 +59,8 @@
                 style="width: 100%">
         <el-table-column prop="appName" :label="t('message.delay.job.appName')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="appName" :label="t('message.delay.job.nameAndDesc')"
+        <el-table-column prop="name" :label="t('message.delay.job.name')"
                          show-overflow-tooltip>
-          <template #default="scope">
-            <el-row style="font-weight: bold;">{{scope.row.name}} </el-row>
-            <el-row>{{scope.row.description}}</el-row>
-          </template>
         </el-table-column>
         <el-table-column prop="processorInfo" :label="t('message.delay.job.processorInfo')"
                          show-overflow-tooltip></el-table-column>

@@ -52,11 +52,7 @@
                 style="width: 100%">
         <el-table-column prop="appName" :label="t('message.job.job.application')" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="name" :label="t('message.job.job.nameAndDesc')" show-overflow-tooltip>
-          <template #default="scope">
-            <el-row style="font-weight: bold;">{{scope.row.name}}</el-row>
-            <el-row>{{scope.row.description}}</el-row>
-          </template>
+        <el-table-column prop="name" :label="t('message.job.job.name')" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="processorInfo" :label="t('message.job.job.processorInfo')" show-overflow-tooltip></el-table-column>
         <el-table-column prop="executeType" :label="t('message.job.job.processorAndExecuteType')" show-overflow-tooltip>
