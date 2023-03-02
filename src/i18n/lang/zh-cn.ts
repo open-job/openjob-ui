@@ -249,6 +249,7 @@ export default {
       instanceBtn: '实例',
       application: "应用名称",
       executeOnce: '执行',
+      nameAndDesc: '名称/描述',
       name: '任务名称',
       description: '任务描述',
       status: '任务状态',
@@ -282,7 +283,9 @@ export default {
   },
   delay: {
     job: {
+      nsName: 'Namespace',
       appName: '应用名称',
+      nameAndDesc: '任务名称/任务描述',
       name: '任务名称',
       processorInfo: '执行器',
       topic: '任务主题',

@@ -5,7 +5,7 @@
         <el-form ref="tableSearchRef" :model="searchState.form" :rules="searchState.rules">
           <el-row>
             <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
-              <el-form-item :label="t('message.app.name')" prop="appName">
+              <el-form-item :label="t('message.delay.job.appName')" prop="appName">
                 <el-select v-model="searchState.form.appId" filterable placeholder="" size="default"
                            style="width: 90%">
                   <el-option
@@ -59,13 +59,18 @@
                 style="width: 100%">
         <el-table-column prop="appName" :label="t('message.delay.job.appName')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="name" :label="t('message.delay.job.name')"
-                         show-overflow-tooltip></el-table-column>
+        <el-table-column prop="appName" :label="t('message.delay.job.nameAndDesc')"
+                         show-overflow-tooltip>
+          <template #default="scope">
+            <el-row style="font-weight: bold;">{{scope.row.name}} </el-row>
+            <el-row>{{scope.row.description}}</el-row>
+          </template>
+        </el-table-column>
         <el-table-column prop="processorInfo" :label="t('message.delay.job.processorInfo')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="topic" :label="t('message.delay.job.topic')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="status" :label="t('message.delay.job.status')" show-overflow-tooltip>
+        <el-table-column prop="status" :label="t('message.delay.job.status')" width="200" show-overflow-tooltip>
           <template #default="scope">
             <el-switch
               v-model="scope.row.status"
@@ -77,7 +82,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="createTime" :label="t('message.delay.job.createTime')"
-                         show-overflow-tooltip></el-table-column>
+                         width="200" show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" width="300">
           <template #default="scope">
             <el-button type="primary" size="default" @click="onOpenEditRole('update',scope.row)">
@@ -190,6 +195,7 @@ const getTableData = async () => {
     state.tableData.data.push({
       id: item['id'],
       name: item['name'],
+      appName: item['appName'],
       namespaceId: item['namespaceId'],
       appId: item['appId'],
       status: item['status'] === 1,

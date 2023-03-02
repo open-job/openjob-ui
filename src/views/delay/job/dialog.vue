@@ -1,7 +1,7 @@
 <template>
   <div class="system-role-dialog-container">
     <el-dialog :title="state.dialog.title" v-model="state.dialog.isShowDialog" width="769px">
-      <el-form ref="appDialogFormRef" :model="state.ruleForm" label-width="80px" :rules="state.fromRules" size="default">
+      <el-form ref="appDialogFormRef" :model="state.ruleForm" label-width="100px" :rules="state.fromRules" size="default">
         <el-row>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item :label="t('message.app.namespace')" prop="namespaceName">

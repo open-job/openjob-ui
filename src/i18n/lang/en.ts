@@ -249,6 +249,7 @@ export default {
       executeOnce: 'Execute',
       instanceBtn: 'Instance',
       application: "Application",
+      nameAndDesc: 'Name/Desc',
       name: 'Name',
       description: 'Description',
       status: 'Status',
@@ -282,7 +283,9 @@ export default {
   },
   delay: {
     job: {
+      nsName: 'Namespace',
       appName: 'Application',
+      nameAndDesc: 'Name/Desc',
       name: 'Name',
       processorInfo: 'Processor',
       topic: 'Topic',

@@ -113,6 +113,7 @@ declare interface RowJobType {
   id: number;
   namespaceId: number;
   appId: number;
+  appName: string;
   workflowId: number;
   name: string;
   description: string;
@@ -186,6 +187,8 @@ declare interface RowDelayType {
   id: number;
   namespaceId: number;
   appId: number;
+
+  appName: string;
   name: string;
   description: string;
   processorInfo: string;
