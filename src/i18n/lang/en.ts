@@ -4,6 +4,18 @@ export default {
     emptyInput: "Please enter",
     emptySelect: 'Select',
   },
+  dateMsg:{
+    rangeMsg: 'Date Time',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    oneMinute: 'Last 1 Minute',
+    fiveMinute: 'Last 5 minute',
+    fifteenMinute: 'Last 15 minute',
+    oneHours: 'Last 1 Hours',
+    today: 'Today',
+    oneDay: 'Last 1 day',
+    oneWeek: 'Last 1 week',
+  },
   commonBtn: {
     query: "Query",
     reset: "Reset",
@@ -298,7 +310,19 @@ export default {
       blockingSize: 'Blocking Size',
       createTime: 'Create Time',
     },
-    instance: {}
+    instance: {
+      namespaceId: 'Namespace',
+      appId: 'Application',
+      appName: 'Application',
+      delayId: 'Delay ID',
+      taskId: 'Task ID',
+      topic: 'Topic',
+      delayParams: 'Params',
+      delayExtra: 'Extend params',
+      status: 'Status',
+      executeTime: 'Execute Time',
+      createTime: 'Create Time',
+    }
   },
   server: {
     slots: {

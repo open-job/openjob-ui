@@ -218,6 +218,7 @@ declare interface RowDelayInstanceType {
   id: number;
   namespaceId: number;
   appId: number;
+  appName: string;
   delayId: number;
   taskId: string;
   topic: string;

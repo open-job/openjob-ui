@@ -2,12 +2,53 @@
   <div class="system-role-container layout-padding">
     <div class="system-role-padding layout-padding-auto layout-padding-view">
       <div class="system-user-search mb15">
-        <el-form ref="tableSearchRef" :model="searchState.form" :rules="searchState.rules">
+        <el-form ref="tableSearchRef" :label-width="80" :model="searchState.form" :rules="searchState.rules">
           <el-row>
             <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
-              <el-form-item :label="t('message.app.name')" prop="name">
-                <el-input v-model="searchState.form.name" size="default"
-                          style="width: 95%"></el-input>
+              <el-form-item :label="t('message.app.name')" prop="appName">
+                <el-select v-model="searchState.form.appId" filterable placeholder="" size="default" style="width: 95%">
+                  <el-option
+                    v-for="item in appState.list"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.id"
+                    @click="onSearch(tableSearchRef)"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+              <el-form-item :label="t('message.delay.instance.topic')" prop="topic">
+                <el-select v-model="searchState.form.topic" filterable placeholder="" size="default"
+                           style="width: 90%">
+                  <el-option
+                    v-for="item in appState.list"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.id"
+                    @click="onSearch(tableSearchRef)"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+
+          </el-row>
+          <el-row>
+            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+              <el-form-item :label="t('message.delay.instance.taskId')" prop="taskId">
+                <el-input v-model="searchState.form.taskId" size="default" style="width: 95%"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="8" :sm="12" :md="8" :lg="8" :xl="6" class="mb20">
+              <el-form-item :label="t('message.dateMsg.rangeMsg')" prop="taskId">
+                <el-date-picker
+                  v-model="searchState.form.dateSelect"
+                  type="datetimerange"
+                  :shortcuts="shortcuts"
+                  range-separator="-"
+                  :start-placeholder="t('message.dateMsg.startDate')"
+                  :end-placeholder="t('message.dateMsg.endDate')"
+                />
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
@@ -37,26 +78,21 @@
       </div>
       <el-table :data="state.tableData.data" v-loading="state.tableData.loading"
                 style="width: 100%">
-        <el-table-column prop="id" :label="t('message.app.id')"
+        <el-table-column prop="appName" :label="t('message.delay.instance.appName')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="namespaceName" :label="t('message.app.namespace')"
+        <el-table-column prop="taskId" :label="t('message.delay.instance.taskId')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="name" :label="t('message.app.name')"
+        <el-table-column prop="topic" :label="t('message.delay.instance.topic')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="desc" :label="t('message.app.desc')"
-                         show-overflow-tooltip></el-table-column>
-        <el-table-column prop="status" :label="t('message.app.status')" show-overflow-tooltip>
+        <el-table-column prop="status" :label="t('message.delay.instance.status')"
+                         show-overflow-tooltip>
           <template #default="scope">
-            <el-switch
-              v-model="scope.row.status"
-              class="ml-2"
-              size="default"
-              @change="onSwitch($event, scope.row)"
-              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-            />
+            {{ scope.row.status }}
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" :label="t('message.app.createTime')"
+        <el-table-column prop="executeTime" :label="t('message.delay.instance.executeTime')"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column prop="createTime" :label="t('message.delay.instance.createTime')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" width="300">
           <template #default="scope">
@@ -99,27 +135,41 @@ import {ElMessageBox, ElMessage, FormInstance} from 'element-plus';
 import {useI18n} from 'vue-i18n';
 import {Local} from '/@/utils/storage';
 import {useAppApi} from "/@/api/app";
+import {getHeaderNamespaceId} from "/@/utils/header";
+import {useDelayInstanceApi} from "/@/api/delay";
+import {formatDateByTimestamp, getShortcuts} from "/@/utils/formatTime";
 
 
 // 定义变量内容
 const {t} = useI18n();
 
 // 定义接口
-const appApi = useAppApi()
+const appApi = useAppApi();
+const delayInstanceApi = useDelayInstanceApi();
 
 // 定义变量内容
 const tableSearchRef = ref<FormInstance>();
 
 
 // 引入组件
-const NsDialog = defineAsyncComponent(() => import('/@/views/app/dialog.vue'));
+const NsDialog = defineAsyncComponent(() => import('/@/views/delay/instance/dialog.vue'));
 
 // 定义变量内容
 const nsDialogRef = ref();
 
+const appState = reactive<any>({
+  list: [],
+});
+
 const searchState = reactive({
   form: {
-    name: ''
+    appId: '',
+    topic: '',
+    taskId: '',
+    dateSelect: [
+      null,
+      null,
+    ]
   },
   rules: {
     name: {
@@ -131,7 +181,7 @@ const searchState = reactive({
   },
 });
 
-const state = reactive<AppState>({
+const state = reactive<DelayInstanceState>({
   tableData: {
     data: [],
     total: 0,
@@ -145,9 +195,8 @@ const state = reactive<AppState>({
 // 初始化表格数据
 const getTableData = async () => {
   state.tableData.loading = true;
-  let data = await appApi.getList({
-    namespaceId: Local.get("nid"),
-    name: searchState.form.name,
+  let data = await delayInstanceApi.getList({
+    namespaceId: getHeaderNamespaceId(),
     page: state.tableData.param.pageNum,
     size: state.tableData.param.pageSize,
   });
@@ -157,12 +206,17 @@ const getTableData = async () => {
   data.list.forEach(function (item: Object) {
     state.tableData.data.push({
       id: item['id'],
-      name: item['name'],
       namespaceId: item['namespaceId'],
-      namespaceName: item['namespaceName'],
-      status: item['status'] === 1,
-      desc: item['desc'],
-      createTime: item['createTime'],
+      appId: item['appId'],
+      appName: item['appName'],
+      status: item['status'],
+      delayId: item['delayId'],
+      taskId: item['taskId'],
+      topic: item['topic'],
+      delayParams: item['delayParams'],
+      delayExtra: item['delayExtra'],
+      createTime: formatDateByTimestamp(item['createTime']),
+      executeTime: formatDateByTimestamp(item['executeTime']),
     })
   });
 
@@ -171,6 +225,8 @@ const getTableData = async () => {
     state.tableData.loading = false;
   }, 500);
 };
+
+const shortcuts = getShortcuts();
 
 const onSwitch = async (event: object, row: EmptyObjectType) => {
   const statusValue = event ? 1 : 2;
@@ -192,7 +248,6 @@ const onSearch = (formEl: FormInstance | undefined) => {
 };
 
 const onReset = () => {
-  searchState.form.name = '';
   getTableData();
 };
 
@@ -227,13 +282,33 @@ const onHandleSizeChange = (val: number) => {
   state.tableData.param.pageSize = val;
   getTableData();
 };
+
 // 分页改变
 const onHandleCurrentChange = (val: number) => {
   state.tableData.param.pageNum = val;
   getTableData();
 };
+
+const initAppList = async () => {
+  let data = await appApi.getList({
+    namespaceId: getHeaderNamespaceId(),
+    page: 1,
+    size: 30,
+  });
+
+  appState.list = [];
+  data.list.forEach(function (item: Object) {
+    // 列表数据
+    appState.list.push({
+      id: item['id'],
+      label: item['name']
+    })
+  });
+};
+
 // 页面加载时
 onMounted(() => {
+  initAppList();
   getTableData();
 });
 </script>

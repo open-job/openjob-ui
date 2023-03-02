@@ -4,6 +4,18 @@ export default {
     emptyInput: '请输入',
     emptySelect: '请选择',
   },
+  dateMsg:{
+    rangeMsg: '时间范围',
+    startDate: '开始时间',
+    endDate: '结束时间',
+    oneMinute: '1分钟',
+    fiveMinute: '5分钟',
+    fifteenMinute: '15分钟',
+    oneHours: '1小时',
+    today: '今天',
+    oneDay: '1天',
+    oneWeek: '1周',
+  },
   commonBtn: {
     query: "查询",
     reset: "重置",
@@ -298,7 +310,19 @@ export default {
       blockingSize: '缓存大小',
       createTime: '创建时间',
     },
-    instance: {}
+    instance: {
+      namespaceId: '命名空间',
+      appId: '应用名称',
+      appName: '应用名称',
+      delayId: '延迟任务Id',
+      taskId: '任务ID',
+      topic: '任务主题',
+      delayParams: '任务参数',
+      delayExtra: '扩展参数',
+      status: '任务状态',
+      executeTime: '执行时间',
+      createTime: '创建时间',
+    }
   },
   server: {
     slots: {

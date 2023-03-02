@@ -1,3 +1,5 @@
+import {useI18n} from 'vue-i18n';
+
 /**
  * 时间日期转换
  * @param date 当前时间，new Date() 格式
@@ -138,4 +140,74 @@ export function formatAxis(param: Date): string {
 	else if (hour < 19) return '傍晚好';
 	else if (hour < 22) return '晚上好';
 	else return '夜里好';
+}
+
+export function getShortcuts(): Object[] {
+  // 定义变量内容
+  const {t} = useI18n();
+
+  return [
+    {
+      text: t('message.dateMsg.oneMinute'),
+      value: () => {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 60 * 1000)
+        return [start, end]
+      },
+    },
+    {
+      text: t('message.dateMsg.fiveMinute'),
+      value: () => {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 60 * 1000 * 5)
+        return [start, end]
+      },
+    },
+    {
+      text: t('message.dateMsg.fifteenMinute'),
+      value: () => {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 60 * 1000 * 15)
+        return [start, end]
+      },
+    },
+    {
+      text: t('message.dateMsg.oneHours'),
+      value: () => {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000)
+        return [start, end]
+      },
+    },
+    {
+      text: t('message.dateMsg.today'),
+      value: () => {
+        const end = new Date()
+        const start = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 0, 0, 0)
+        return [start, end]
+      },
+    },
+    {
+      text: t('message.dateMsg.oneDay'),
+      value: () => {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000 * 24)
+        return [start, end]
+      },
+    },
+    {
+      text: t('message.dateMsg.oneWeek'),
+      value: () => {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+        return [start, end]
+      },
+    },
+  ];
 }
