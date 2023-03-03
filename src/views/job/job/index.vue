@@ -6,7 +6,8 @@
           <el-row>
             <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
               <el-form-item :label="t('message.app.name')" prop="appName">
-                <el-select v-model="searchState.form.appId" filterable placeholder="" size="default" style="width: 90%">
+                <el-select v-model="searchState.form.appId" filterable placeholder="" size="default"
+                           style="width: 90%">
                   <el-option
                     v-for="item in appState.list"
                     :key="item.id"
@@ -50,20 +51,24 @@
       </div>
       <el-table :data="state.tableData.data" v-loading="state.tableData.loading"
                 style="width: 100%">
-        <el-table-column prop="appName" :label="t('message.job.job.application')" show-overflow-tooltip>
+        <el-table-column prop="appName" :label="t('message.job.job.application')"
+                         show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="name" :label="t('message.job.job.name')" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="processorInfo" :label="t('message.job.job.processorInfo')" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="executeType" :label="t('message.job.job.processorAndExecuteType')" show-overflow-tooltip>
+        <el-table-column prop="processorInfo" :label="t('message.job.job.processorInfo')"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column prop="executeType" :label="t('message.job.job.processorAndExecuteType')"
+                         show-overflow-tooltip>
           <template #default="scope">
-            <el-row>[{{scope.row.processorType}}] {{scope.row.executeType}}</el-row>
+            <el-row>[{{ scope.row.processorType }}] {{ scope.row.executeType }}</el-row>
           </template>
         </el-table-column>
-        <el-table-column prop="timeExpression" :label="t('message.job.job.expressionAndType')" show-overflow-tooltip>
+        <el-table-column prop="timeExpression" :label="t('message.job.job.expressionAndType')"
+                         show-overflow-tooltip>
           <template #default="scope">
-             <el-row style="font-weight: bold;">{{scope.row.timeExpressionType}}</el-row>
-             <el-row>{{scope.row.timeExpression}}</el-row>
+            <el-row style="font-weight: bold;">{{ scope.row.timeExpressionType }}</el-row>
+            <el-row>{{ scope.row.timeExpression }}</el-row>
           </template>
         </el-table-column>
         <el-table-column prop="status" :label="t('message.job.job.status')" show-overflow-tooltip>
@@ -93,7 +98,8 @@
               </el-icon>
               {{ $t('message.job.job.instanceBtn') }}
             </el-button>
-            <el-dropdown split-button type="info" size="default" style="margin-left: 12px" @command="onMoreCommand($event, scope.row)">
+            <el-dropdown split-button type="info" size="default" style="margin-left: 12px"
+                         @command="onMoreCommand($event, scope.row)">
               {{ $t('message.commonBtn.more') }}
               <template #dropdown>
                 <el-dropdown-menu>
@@ -143,6 +149,7 @@ import {useAppApi} from "/@/api/app";
 import {useRouter} from "vue-router";
 import {useJobApi} from "/@/api/job";
 import {formatDateByTimestamp} from "/@/utils/formatTime";
+import {getAppSelectList} from "/@/utils/data";
 
 
 // router
@@ -167,10 +174,6 @@ const JobDrawer = defineAsyncComponent(() => import('/@/views/job/job/drawer.vue
 const nsDialogRef = ref();
 const JobDrawerRef = ref();
 
-onMounted(()=>{
-  initAppList();
-});
-
 const appState = reactive<any>({
   list: [],
 });
@@ -181,8 +184,7 @@ const searchState = reactive({
     namespaceId: Local.get("nid"),
     name: ''
   },
-  rules: {
-  },
+  rules: {},
 });
 
 const state = reactive<JobState>({
@@ -242,23 +244,6 @@ const getTableData = async () => {
   }, 500);
 };
 
-const initAppList = async ()=>{
-  let data = await appApi.getList({
-    namespaceId: searchState.form.namespaceId,
-    page: 1,
-    size: 30,
-  });
-
-  appState.list = [];
-  data.list.forEach(function (item: Object) {
-    // 列表数据
-    appState.list.push({
-      id: item['id'],
-      label: item['name']
-    })
-  });
-};
-
 const onSwitch = async (event: object, row: EmptyObjectType) => {
   const statusValue = event ? 1 : 2;
   await jobApi.updateStatus({
@@ -284,20 +269,20 @@ const onReset = () => {
   getTableData();
 };
 
-const onMoreCommand = (command :string, row :RowJobType)=>{
-  if (command === 'execute'){
+const onMoreCommand = (command: string, row: RowJobType) => {
+  if (command === 'execute') {
     nsDialogRef.value.openDialog(row);
-    return ;
+    return;
   }
 
-  if (command === 'copy'){
+  if (command === 'copy') {
     JobDrawerRef.value.openDrawer('copy', searchState.form.appId, row);
-    return ;
+    return;
   }
 
-  if (command === 'delete'){
+  if (command === 'delete') {
     ElMessage.success('delete');
-    return ;
+    return;
   }
 };
 
@@ -344,8 +329,12 @@ const onHandleCurrentChange = (val: number) => {
   getTableData();
 };
 // 页面加载时
-onMounted(() => {
-  getTableData();
+onMounted(async () => {
+  // Init app list
+  appState.list = await getAppSelectList();
+
+  // Init table data
+  await getTableData();
 });
 </script>
 

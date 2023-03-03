@@ -123,6 +123,7 @@ import {useAppApi} from "/@/api/app";
 import {useDelayApi} from "/@/api/delay";
 import {formatDateByTimestamp} from "/@/utils/formatTime";
 import {getHeaderNamespaceId} from "/@/utils/header";
+import {getAppSelectList} from "/@/utils/data";
 
 
 // 定义变量内容
@@ -276,27 +277,13 @@ const onHandleCurrentChange = (val: number) => {
   getTableData();
 };
 
-const initAppList = async () => {
-  let data = await appApi.getList({
-    namespaceId: getHeaderNamespaceId(),
-    page: 1,
-    size: 30,
-  });
-
-  appState.list = [];
-  data.list.forEach(function (item: Object) {
-    // 列表数据
-    appState.list.push({
-      id: item['id'],
-      label: item['name']
-    })
-  });
-};
-
 // 页面加载时
-onMounted(() => {
-  initAppList();
-  getTableData();
+onMounted(async () => {
+  // Init app list
+  appState.list = await getAppSelectList();
+
+  // Init table data
+  await getTableData();
 });
 </script>
 

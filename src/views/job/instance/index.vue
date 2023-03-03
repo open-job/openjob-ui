@@ -6,7 +6,8 @@
           <el-row>
             <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
               <el-form-item :label="t('message.app.name')" prop="appName">
-                <el-select v-model="searchState.form.appId" filterable placeholder="" size="default" style="width: 90%">
+                <el-select v-model="searchState.form.appId" filterable placeholder="" size="default"
+                           style="width: 90%">
                   <el-option
                     v-for="item in appState.list"
                     :key="item.id"
@@ -75,13 +76,20 @@
       </div>
       <el-table :data="state.tableData.data" v-loading="state.tableData.loading"
                 style="width: 100%">
-        <el-table-column prop="jobId" :label="t('message.job.instance.jobId')" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="status" :label="t('message.job.instance.status')" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="workerAddress" :label="t('message.job.instance.workerAddress')" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="executeTime" :label="t('message.job.instance.executeTime')" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="completeTime" :label="t('message.job.instance.completeTime')" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="lastReportTime" :label="t('message.job.instance.lastReportTime')" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="createTime" :label="t('message.job.instance.createTime')" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="jobId" :label="t('message.job.instance.jobId')"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column prop="status" :label="t('message.job.instance.status')"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column prop="workerAddress" :label="t('message.job.instance.workerAddress')"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column prop="executeTime" :label="t('message.job.instance.executeTime')"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column prop="completeTime" :label="t('message.job.instance.completeTime')"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column prop="lastReportTime" :label="t('message.job.instance.lastReportTime')"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column prop="createTime" :label="t('message.job.instance.createTime')"
+                         show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" width="260">
           <template #default="scope">
             <el-button type="primary" size="default" @click="onOpenEditRole('update',scope.row)">
@@ -126,11 +134,11 @@ import {useAppApi} from "/@/api/app";
 import {useRouter} from "vue-router";
 import {useJobApi, useJobInstanceApi} from "/@/api/job";
 import {formatDateByTimestamp, getShortcuts} from "/@/utils/formatTime";
+import {getAppSelectList} from "/@/utils/data";
 
 
 // router
 const router = useRouter();
-
 
 
 // 定义变量内容
@@ -151,10 +159,6 @@ const JobDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawe
 const nsDialogRef = ref();
 const JobDrawerRef = ref();
 
-onMounted(()=>{
-  initAppList();
-});
-
 const appState = reactive<any>({
   list: [],
 });
@@ -169,8 +173,7 @@ const searchState = reactive({
       null,
     ]
   },
-  rules: {
-  },
+  rules: {},
 });
 
 const state = reactive<JobInstanceState>({
@@ -232,21 +235,8 @@ const getTableData = async () => {
   }, 500);
 };
 
-const initAppList = async ()=>{
-  let data = await appApi.getList({
-    namespaceId: searchState.form.namespaceId,
-    page: 1,
-    size: 30,
-  });
+const initAppList = async () => {
 
-  appState.list = [];
-  data.list.forEach(function (item: Object) {
-    // 列表数据
-    appState.list.push({
-      id: item['id'],
-      label: item['name']
-    })
-  });
 };
 
 const onSearch = (formEl: FormInstance | undefined) => {
@@ -266,20 +256,20 @@ const onReset = () => {
   getTableData();
 };
 
-const onMoreCommand = (command :string, row :RowJobType)=>{
-  if (command === 'execute'){
+const onMoreCommand = (command: string, row: RowJobType) => {
+  if (command === 'execute') {
     nsDialogRef.value.openDialog(row);
-    return ;
+    return;
   }
 
-  if (command === 'copy'){
+  if (command === 'copy') {
     JobDrawerRef.value.openDrawer('copy', searchState.form.appId, row);
-    return ;
+    return;
   }
 
-  if (command === 'delete'){
+  if (command === 'delete') {
     ElMessage.success('delete');
-    return ;
+    return;
   }
 };
 
@@ -326,9 +316,14 @@ const onHandleCurrentChange = (val: number) => {
   getTableData();
 };
 // 页面加载时
-onMounted(() => {
-  getTableData();
+onMounted(async () => {
+  // Init app list
+  appState.list = await getAppSelectList();
+
+  // Init table data.
+  await getTableData();
 });
+
 </script>
 
 <style scoped lang="scss">
