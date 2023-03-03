@@ -284,6 +284,7 @@ export default {
       expressionAndType: 'Type/Expression',
     },
     instance: {
+      id: 'ID',
       jobId: 'Job id',
       status: 'Status',
       workerAddress: 'Worker address',

@@ -4,7 +4,7 @@
       <div class="system-user-search mb15">
         <el-form ref="tableSearchRef" :model="searchState.form" :rules="searchState.rules">
           <el-row>
-            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+            <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
               <el-form-item :label="t('message.app.name')" prop="appName">
                 <el-select v-model="searchState.form.appId" filterable placeholder="" size="default" style="width: 90%">
                   <el-option
@@ -17,10 +17,35 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
-              <el-form-item :label="t('message.app.name')" prop="name">
+            <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
+              <el-form-item :label="t('message.job.job.name')" prop="name">
                 <el-input v-model="searchState.form.name" size="default"
                           style="width: 95%"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
+              <el-form-item :label="t('message.job.job.status')" prop="name">
+                <el-input v-model="searchState.form.name" size="default"
+                          style="width: 95%"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
+              <el-form-item :label="t('message.job.instance.id')" prop="name">
+                <el-input v-model="searchState.form.name" size="default"
+                          style="width: 95%"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="8" :sm="12" :md="8" :lg="8" :xl="6" class="mb20">
+              <el-form-item :label="t('message.dateMsg.rangeMsg')" prop="taskId">
+                <el-date-picker
+                  v-model="searchState.form.dateSelect"
+                  type="datetimerange"
+                  :shortcuts="shortcuts"
+                  range-separator="-"
+                  size="default"
+                  :start-placeholder="t('message.dateMsg.startDate')"
+                  :end-placeholder="t('message.dateMsg.endDate')"
+                />
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
@@ -100,15 +125,17 @@ import {Local} from '/@/utils/storage';
 import {useAppApi} from "/@/api/app";
 import {useRouter} from "vue-router";
 import {useJobApi, useJobInstanceApi} from "/@/api/job";
-import {formatDateByTimestamp} from "/@/utils/formatTime";
+import {formatDateByTimestamp, getShortcuts} from "/@/utils/formatTime";
 
 
 // router
 const router = useRouter();
 
 
+
 // 定义变量内容
 const {t} = useI18n();
+const shortcuts = getShortcuts();
 
 // 定义接口
 const instanceApi = useJobInstanceApi();
@@ -136,7 +163,11 @@ const searchState = reactive({
   form: {
     appId: '',
     namespaceId: Local.get("nid"),
-    name: ''
+    name: '',
+    dateSelect: [
+      null,
+      null,
+    ]
   },
   rules: {
   },

@@ -284,6 +284,7 @@ export default {
       expressionAndType: '时间类型/表达式',
     },
     instance: {
+      id: '实例ID',
       jobId: '任务ID',
       status: '任务状态',
       workerAddress: '工作节点',

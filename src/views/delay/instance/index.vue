@@ -4,7 +4,7 @@
       <div class="system-user-search mb15">
         <el-form ref="tableSearchRef" :label-width="80" :model="searchState.form" :rules="searchState.rules">
           <el-row>
-            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+            <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
               <el-form-item :label="t('message.app.name')" prop="appName">
                 <el-select v-model="searchState.form.appId" filterable placeholder="" size="default" style="width: 95%">
                   <el-option
@@ -17,7 +17,7 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+            <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
               <el-form-item :label="t('message.delay.instance.topic')" prop="topic">
                 <el-select v-model="searchState.form.topic" filterable placeholder="" size="default"
                            style="width: 90%">
@@ -31,10 +31,21 @@
                 </el-select>
               </el-form-item>
             </el-col>
-
-          </el-row>
-          <el-row>
-            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+            <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
+              <el-form-item :label="t('message.delay.instance.status')" prop="topic">
+                <el-select v-model="searchState.form.topic" filterable placeholder="" size="default"
+                           style="width: 90%">
+                  <el-option
+                    v-for="item in appState.list"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.id"
+                    @click="onSearch(tableSearchRef)"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
               <el-form-item :label="t('message.delay.instance.taskId')" prop="taskId">
                 <el-input v-model="searchState.form.taskId" size="default" style="width: 95%"></el-input>
               </el-form-item>
@@ -46,6 +57,7 @@
                   type="datetimerange"
                   :shortcuts="shortcuts"
                   range-separator="-"
+                  size="default"
                   :start-placeholder="t('message.dateMsg.startDate')"
                   :end-placeholder="t('message.dateMsg.endDate')"
                 />
@@ -65,12 +77,6 @@
                   <ele-RefreshRight/>
                 </el-icon>
                 {{ $t('message.commonBtn.reset') }}
-              </el-button>
-              <el-button size="default" type="success" class="ml10" @click="onOpenAddRole('add')">
-                <el-icon>
-                  <ele-FolderAdd/>
-                </el-icon>
-                {{ $t('message.commonBtn.add') }}
               </el-button>
             </el-col>
           </el-row>
