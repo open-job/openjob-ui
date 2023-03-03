@@ -6,10 +6,26 @@
           <el-row>
             <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
               <el-form-item :label="t('message.app.name')" prop="appName">
-                <el-select v-model="searchState.form.appId" filterable placeholder="" size="default"
+                <el-select v-model="searchState.form.appId" filterable
+                           :placeholder="t('message.commonMsg.all')" size="default"
                            style="width: 90%">
                   <el-option
-                    v-for="item in appState.list"
+                    v-for="item in selectState.appSelect"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.id"
+                    @click="onAppChange(item.id)"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
+              <el-form-item :label="t('message.job.job.name')" prop="jobId">
+                <el-select v-model="searchState.form.jobId" filterable
+                           :placeholder="t('message.commonMsg.all')" size="default"
+                           style="width: 90%">
+                  <el-option
+                    v-for="item in selectState.jobSelect"
                     :key="item.id"
                     :label="item.label"
                     :value="item.id"
@@ -19,20 +35,23 @@
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
-              <el-form-item :label="t('message.job.job.name')" prop="name">
-                <el-input v-model="searchState.form.name" size="default"
-                          style="width: 95%"></el-input>
+              <el-form-item :label="t('message.job.job.status')" prop="status">
+                <el-select v-model="searchState.form.status" filterable
+                           :placeholder="t('message.commonMsg.all')" size="default"
+                           style="width: 90%">
+                  <el-option
+                    v-for="item in selectState.statusSelect"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.id"
+                    @click="onSearch(tableSearchRef)"
+                  />
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
-              <el-form-item :label="t('message.job.job.status')" prop="name">
-                <el-input v-model="searchState.form.name" size="default"
-                          style="width: 95%"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
-              <el-form-item :label="t('message.job.instance.id')" prop="name">
-                <el-input v-model="searchState.form.name" size="default"
+              <el-form-item :label="t('message.job.instance.id')" prop="id">
+                <el-input v-model="searchState.form.id" size="default"
                           style="width: 95%"></el-input>
               </el-form-item>
             </el-col>
@@ -76,6 +95,8 @@
       </div>
       <el-table :data="state.tableData.data" v-loading="state.tableData.loading"
                 style="width: 100%">
+        <el-table-column prop="id" :label="t('message.job.instance.id')"
+                         show-overflow-tooltip></el-table-column>
         <el-table-column prop="jobId" :label="t('message.job.instance.jobId')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" :label="t('message.job.instance.status')"
@@ -133,8 +154,9 @@ import {Local} from '/@/utils/storage';
 import {useAppApi} from "/@/api/app";
 import {useRouter} from "vue-router";
 import {useJobApi, useJobInstanceApi} from "/@/api/job";
-import {formatDateByTimestamp, getShortcuts} from "/@/utils/formatTime";
-import {getAppSelectList} from "/@/utils/data";
+import {formatDateByTimestamp, getShortcuts, getTimestampByString} from "/@/utils/formatTime";
+import {getAppSelectList, getInstanceSelectList} from "/@/utils/data";
+import {getHeaderNamespaceId} from "/@/utils/header";
 
 
 // router
@@ -159,15 +181,18 @@ const JobDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawe
 const nsDialogRef = ref();
 const JobDrawerRef = ref();
 
-const appState = reactive<any>({
-  list: [],
+const selectState = reactive<any>({
+  appSelect: [],
+  jobSelect: [],
+  statusSelect: [],
 });
 
 const searchState = reactive({
   form: {
     appId: '',
-    namespaceId: Local.get("nid"),
-    name: '',
+    jobId: '',
+    status: '',
+    id: '',
     dateSelect: [
       null,
       null,
@@ -187,16 +212,33 @@ const state = reactive<JobInstanceState>({
     },
   },
 });
+
+
+selectState.statusSelect = getInstanceSelectList();
 // 初始化表格数据
 const getTableData = async () => {
   state.tableData.loading = true;
-  let data = await instanceApi.getList({
+
+  let request = {
     namespaceId: Local.get("nid"),
     appId: searchState.form.appId,
-    name: searchState.form.name,
+    jobId: searchState.form.jobId,
+    status: searchState.form.status,
+    id: searchState.form.id,
+    beginTime: 0,
+    endTime: 0,
     page: state.tableData.param.pageNum,
     size: state.tableData.param.pageSize,
-  });
+  };
+  if (searchState.form.dateSelect[0] !== null){
+    request.beginTime = getTimestampByString(searchState.form.dateSelect[0]);
+  }
+  if (searchState.form.dateSelect[1] !== null){
+    request.endTime = getTimestampByString(searchState.form.dateSelect[1]);
+  }
+
+  // Request
+  let data = await instanceApi.getList(request);
 
   // 清空列表数据
   state.tableData.data = [];
@@ -235,8 +277,26 @@ const getTableData = async () => {
   }, 500);
 };
 
-const initAppList = async () => {
+const onAppChange = async (appId: number) => {
+  searchState.form.jobId = '';
 
+  let data = await useJobApi().getList({
+    namespaceId: getHeaderNamespaceId(),
+    appId: appId,
+    page: 1,
+    size: 1024,
+  });
+
+  selectState.jobSelect = [];
+  data.list.forEach(function (item: Object) {
+    // 列表数据
+    selectState.jobSelect.push({
+      id: item['id'],
+      label: item['name']
+    })
+  });
+
+  await getTableData();
 };
 
 const onSearch = (formEl: FormInstance | undefined) => {
@@ -251,42 +311,27 @@ const onSearch = (formEl: FormInstance | undefined) => {
 };
 
 const onReset = () => {
-  searchState.form.name = '';
   searchState.form.appId = '';
+  searchState.form.jobId = '';
+  searchState.form.status = '';
+  searchState.form.id = '';
+  searchState.form.dateSelect = [
+    null,
+    null
+  ];
   getTableData();
-};
-
-const onMoreCommand = (command: string, row: RowJobType) => {
-  if (command === 'execute') {
-    nsDialogRef.value.openDialog(row);
-    return;
-  }
-
-  if (command === 'copy') {
-    JobDrawerRef.value.openDrawer('copy', searchState.form.appId, row);
-    return;
-  }
-
-  if (command === 'delete') {
-    ElMessage.success('delete');
-    return;
-  }
 };
 
 // 打开新增角色弹窗
 const onOpenAddRole = (type: string) => {
   JobDrawerRef.value.openDrawer(type, searchState.form.appId);
-  // router.push({
-  //   path: '/admin/job/page',
-  //   params: {
-  //     type: type
-  //   }
-  // })
 };
+
 // 打开修改角色弹窗
 const onOpenEditRole = (type: string, row: Object) => {
   JobDrawerRef.value.openDrawer(type, searchState.form.appId, row);
 };
+
 // 删除角色
 const onDel = (row: RowNamespaceType) => {
   ElMessageBox.confirm(`此操作将永久删除角色名称：“${row.name}”，是否继续?`, '提示', {
@@ -315,10 +360,12 @@ const onHandleCurrentChange = (val: number) => {
   state.tableData.param.pageNum = val;
   getTableData();
 };
+
+
 // 页面加载时
 onMounted(async () => {
   // Init app list
-  appState.list = await getAppSelectList();
+  selectState.appSelect = await getAppSelectList();
 
   // Init table data.
   await getTableData();

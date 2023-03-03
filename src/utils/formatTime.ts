@@ -57,6 +57,10 @@ export function formatDateByTimestamp(timestamp: number): string {
   return formatDate(new Date(timestamp * 1000), "YYYY-mm-dd HH:MM:SS");
 }
 
+export function getTimestampByString(datetime: string) {
+  return Date.parse(datetime) / 1000;
+}
+
 /**
  * 获取当前日期是第几周
  * @param dateTime 当前传入的日期值

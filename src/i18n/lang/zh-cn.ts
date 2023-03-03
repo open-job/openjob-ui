@@ -3,6 +3,7 @@ export default {
   commonMsg:{
     emptyInput: '请输入',
     emptySelect: '请选择',
+    all: '全部',
   },
   dateMsg:{
     rangeMsg: '时间范围',
@@ -27,6 +28,14 @@ export default {
     add: "新增",
     online: "在线",
     offline: "离线",
+  },
+  instanceStatus:{
+    waiting: '等待',
+    running: '运行',
+    success: '成功',
+    fail: '失败',
+    stop: '停止',
+    cancel: '取消',
   },
   router: {
     // 路由

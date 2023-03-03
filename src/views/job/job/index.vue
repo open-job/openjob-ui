@@ -6,7 +6,7 @@
           <el-row>
             <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
               <el-form-item :label="t('message.app.name')" prop="appName">
-                <el-select v-model="searchState.form.appId" filterable placeholder="" size="default"
+                <el-select v-model="searchState.form.appId"  filterable :placeholder="t('message.commonMsg.all')" size="default"
                            style="width: 90%">
                   <el-option
                     v-for="item in appState.list"

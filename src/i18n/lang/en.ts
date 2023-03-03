@@ -3,6 +3,7 @@ export default {
   commonMsg: {
     emptyInput: "Please enter",
     emptySelect: 'Select',
+    all: 'All',
   },
   dateMsg:{
     rangeMsg: 'Date Time',
@@ -27,6 +28,14 @@ export default {
     add: "Add",
     online: "on-line",
     offline: "off-line",
+  },
+  instanceStatus:{
+    waiting: 'Waiting',
+    running: 'Running',
+    success: 'success',
+    fail: 'Fail',
+    stop: 'Stop',
+    cancel: 'Cancel',
   },
   router: {
     // 路由
