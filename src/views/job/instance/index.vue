@@ -147,20 +147,14 @@
 </template>
 
 <script setup lang="ts" name="systemRole">
-import {defineAsyncComponent, reactive, onMounted, ref} from 'vue';
-import {ElMessageBox, ElMessage, FormInstance} from 'element-plus';
+import {defineAsyncComponent, onMounted, reactive, ref} from 'vue';
+import {ElMessage, ElMessageBox, FormInstance} from 'element-plus';
 import {useI18n} from 'vue-i18n';
 import {Local} from '/@/utils/storage';
-import {useAppApi} from "/@/api/app";
-import {useRouter} from "vue-router";
 import {useJobApi, useJobInstanceApi} from "/@/api/job";
 import {formatDateByTimestamp, getShortcuts, getTimestampByString} from "/@/utils/formatTime";
 import {getAppSelectList, getInstanceSelectList} from "/@/utils/data";
 import {getHeaderNamespaceId} from "/@/utils/header";
-
-
-// router
-const router = useRouter();
 
 
 // 定义变量内容
@@ -169,7 +163,6 @@ const shortcuts = getShortcuts();
 
 // 定义接口
 const instanceApi = useJobInstanceApi();
-const appApi = useAppApi();
 
 // 定义变量内容
 const tableSearchRef = ref<FormInstance>();
@@ -178,7 +171,6 @@ const tableSearchRef = ref<FormInstance>();
 const JobDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer.vue'));
 
 // 定义变量内容
-const nsDialogRef = ref();
 const JobDrawerRef = ref();
 
 const selectState = reactive<any>({
