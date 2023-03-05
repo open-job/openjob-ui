@@ -152,10 +152,9 @@ import {ElMessage, ElMessageBox, FormInstance} from 'element-plus';
 import {useI18n} from 'vue-i18n';
 import {Local} from '/@/utils/storage';
 import {useJobApi, useJobInstanceApi} from "/@/api/job";
-import {formatDateByTimestamp, getShortcuts, getTimestampByString} from "/@/utils/formatTime";
-import {getAppSelectList, getInstanceSelectList} from "/@/utils/data";
+import {formatDateByTimestamp, getTimestampByString} from "/@/utils/formatTime";
+import {getAppSelectList, getInstanceSelectList, getShortcuts} from "/@/utils/data";
 import {getHeaderNamespaceId} from "/@/utils/header";
-
 
 // 定义变量内容
 const {t} = useI18n();

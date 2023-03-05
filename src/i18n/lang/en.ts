@@ -37,6 +37,13 @@ export default {
     stop: 'Stop',
     cancel: 'Cancel',
   },
+  taskStatus:{
+    init: 'Init',
+    failover: 'Failover',
+    running: 'Running',
+    success: 'Success',
+    failed: 'Failed',
+  },
   router: {
     // 路由
     dashboard: 'Dashboard',

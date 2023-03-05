@@ -37,6 +37,13 @@ export default {
     stop: '停止',
     cancel: '取消',
   },
+  taskStatus:{
+    init: '初始化',
+    failover: '故障',
+    running: '运行',
+    success: '成功',
+    failed: '失败',
+  },
   router: {
     // 路由
     dashboard: '首页',

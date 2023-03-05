@@ -2,27 +2,31 @@
   <div class="system-role-container layout-padding">
     <div class="system-role-padding layout-padding-auto layout-padding-view">
       <div class="system-user-search mb15">
-        <el-form ref="tableSearchRef" :label-width="80" :model="searchState.form" :rules="searchState.rules">
+        <el-form ref="tableSearchRef" :label-width="80" :model="searchState.form"
+                 :rules="searchState.rules">
           <el-row>
             <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
               <el-form-item :label="t('message.app.name')" prop="appName">
-                <el-select v-model="searchState.form.appId" filterable :placeholder="t('message.commonMsg.all')" size="default" style="width: 95%">
+                <el-select v-model="searchState.form.appId" filterable
+                           :placeholder="t('message.commonMsg.all')" size="default"
+                           style="width: 95%">
                   <el-option
-                    v-for="item in appState.list"
+                    v-for="item in selectState.appList"
                     :key="item.id"
                     :label="item.label"
                     :value="item.id"
-                    @click="onSearch(tableSearchRef)"
+                    @click="onAppChange(item.id)"
                   />
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
               <el-form-item :label="t('message.delay.instance.topic')" prop="topic">
-                <el-select v-model="searchState.form.topic" filterable :placeholder="t('message.commonMsg.all')" size="default"
+                <el-select v-model="searchState.form.delayId" filterable
+                           :placeholder="t('message.commonMsg.all')" size="default"
                            style="width: 90%">
                   <el-option
-                    v-for="item in appState.list"
+                    v-for="item in selectState.topicList"
                     :key="item.id"
                     :label="item.label"
                     :value="item.id"
@@ -33,10 +37,11 @@
             </el-col>
             <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
               <el-form-item :label="t('message.delay.instance.status')" prop="topic">
-                <el-select v-model="searchState.form.topic" filterable :placeholder="t('message.commonMsg.all')" size="default"
+                <el-select v-model="searchState.form.status" filterable
+                           :placeholder="t('message.commonMsg.all')" size="default"
                            style="width: 90%">
                   <el-option
-                    v-for="item in appState.list"
+                    v-for="item in selectState.statusList"
                     :key="item.id"
                     :label="item.label"
                     :value="item.id"
@@ -47,7 +52,8 @@
             </el-col>
             <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
               <el-form-item :label="t('message.delay.instance.taskId')" prop="taskId">
-                <el-input v-model="searchState.form.taskId" size="default" style="width: 95%"></el-input>
+                <el-input v-model="searchState.form.taskId" size="default"
+                          style="width: 95%"></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="12" :md="8" :lg="8" :xl="6" class="mb20">
@@ -139,13 +145,11 @@
 import {defineAsyncComponent, reactive, onMounted, ref} from 'vue';
 import {ElMessageBox, ElMessage, FormInstance} from 'element-plus';
 import {useI18n} from 'vue-i18n';
-import {Local} from '/@/utils/storage';
 import {useAppApi} from "/@/api/app";
 import {getHeaderNamespaceId} from "/@/utils/header";
-import {useDelayInstanceApi} from "/@/api/delay";
-import {formatDateByTimestamp, getShortcuts} from "/@/utils/formatTime";
-import {getAppSelectList} from "/@/utils/data";
-
+import {useDelayApi, useDelayInstanceApi} from "/@/api/delay";
+import {formatDateByTimestamp, getTimestampByString} from "/@/utils/formatTime";
+import {getAppSelectList, getShortcuts, getTaskStatusSelectList} from "/@/utils/data";
 
 // 定义变量内容
 const {t} = useI18n();
@@ -164,15 +168,18 @@ const NsDialog = defineAsyncComponent(() => import('/@/views/delay/instance/dial
 // 定义变量内容
 const nsDialogRef = ref();
 
-const appState = reactive<any>({
-  list: [],
+const selectState = reactive<any>({
+  appList: [],
+  topicList: [],
+  statusList: [],
 });
 
 const searchState = reactive({
   form: {
     appId: '',
-    topic: '',
+    delayId: '',
     taskId: '',
+    status: '',
     dateSelect: [
       null,
       null,
@@ -199,14 +206,34 @@ const state = reactive<DelayInstanceState>({
     },
   },
 });
+
+// Init status list.
+selectState.statusList = getTaskStatusSelectList();
+
 // 初始化表格数据
 const getTableData = async () => {
   state.tableData.loading = true;
-  let data = await delayInstanceApi.getList({
+
+  let request = {
     namespaceId: getHeaderNamespaceId(),
+    appId: searchState.form.appId,
+    delayId: searchState.form.delayId,
+    status: searchState.form.status,
+    taskId: searchState.form.taskId,
+    beginTime: 0,
+    endTime: 0,
     page: state.tableData.param.pageNum,
     size: state.tableData.param.pageSize,
-  });
+  };
+
+  if (searchState.form.dateSelect[0] !== null){
+    request.beginTime = getTimestampByString(searchState.form.dateSelect[0]);
+  }
+  if (searchState.form.dateSelect[1] !== null){
+    request.endTime = getTimestampByString(searchState.form.dateSelect[1]);
+  }
+
+  let data = await delayInstanceApi.getList(request);
 
   // 清空列表数据
   state.tableData.data = [];
@@ -235,12 +262,26 @@ const getTableData = async () => {
 
 const shortcuts = getShortcuts();
 
-const onSwitch = async (event: object, row: EmptyObjectType) => {
-  const statusValue = event ? 1 : 2;
-  await appApi.updateStatus({
-    "id": row.id,
-    "status": statusValue,
+const onAppChange = async (appId: number) => {
+  searchState.form.delayId = '';
+
+  let data = await useDelayApi().getList({
+    namespaceId: getHeaderNamespaceId(),
+    appId: appId,
+    page: 1,
+    size: 1024,
   });
+
+  selectState.topicList = [];
+  data.list.forEach(function (item: Object) {
+    // 列表数据
+    selectState.topicList.push({
+      id: item['id'],
+      label: item['topic']
+    })
+  });
+
+  await getTableData();
 };
 
 const onSearch = (formEl: FormInstance | undefined) => {
@@ -255,13 +296,17 @@ const onSearch = (formEl: FormInstance | undefined) => {
 };
 
 const onReset = () => {
+  searchState.form.appId = '';
+  searchState.form.delayId = '';
+  searchState.form.status = '';
+  searchState.form.taskId = '';
+  searchState.form.dateSelect = [
+    null,
+    null
+  ];
   getTableData();
 };
 
-// 打开新增角色弹窗
-const onOpenAddRole = (type: string) => {
-  nsDialogRef.value.openDialog(type);
-};
 // 打开修改角色弹窗
 const onOpenEditRole = (type: string, row: Object) => {
   nsDialogRef.value.openDialog(type, row);
@@ -299,7 +344,7 @@ const onHandleCurrentChange = (val: number) => {
 // 页面加载时
 onMounted(async () => {
   // Init app list
-  appState.list = await getAppSelectList();
+  selectState.appList = await getAppSelectList();
 
   // Init table data
   await getTableData();
