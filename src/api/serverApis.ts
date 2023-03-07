@@ -68,4 +68,6 @@ export const SERVER_APIS = {
   serverList: '/admin/server/list-server',
   slotsList: '/admin/server/list-job-slots',
   workerList: '/admin/worker/list',
+  systemInfo: '/admin/system/config',
+  systemUpdate: '/admin/system/update',
 }

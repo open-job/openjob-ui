@@ -1,5 +1,5 @@
 import request from '/@/utils/request';
-import {SERVER_APIS} from "/@/api/serverApis";
+import {NAMESPACE_APIS, SERVER_APIS} from "/@/api/serverApis";
 
 /**
  * 以下为模拟接口地址，gitee 的不通，就换自己的真实接口地址
@@ -32,6 +32,20 @@ export function useServerApi() {
         url: SERVER_APIS.workerList,
         method: 'get',
         params,
+      });
+    },
+    getSystemInfo: (params?: object) => {
+      return request({
+        url: SERVER_APIS.systemInfo,
+        method: 'get',
+        params,
+      });
+    },
+    updateSystem: (data: object) => {
+      return request({
+        url: SERVER_APIS.systemUpdate,
+        method: 'post',
+        data,
       });
     },
   };

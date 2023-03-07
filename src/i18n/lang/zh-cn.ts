@@ -366,6 +366,18 @@ export default {
       lastHeartbeatTime: '上次心跳',
       status: '节点状态',
       createTime: "创建时间",
+    },
+    system: {
+      version: '系统版本',
+      maxSlot: '任务分片',
+      clusterVersion: '集群版本',
+      clusterDelayVersion: '延时任务版本',
+      clusterSupervisorSlot: '集群监控分片',
+      workerSupervisorSlot: '工作节点健康分片',
+      delayZsetSlot: '延时有序集合分片',
+      delayAddListSlot: '延时队列分片',
+      delayStatusListSlot: '延时状态分片',
+      delayDeleteListSlot: '延时删除分片',
     }
   }
 };
