@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --force",
+    "prod": "vite --mode production",
     "build": "vite build",
     "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/"
   },
