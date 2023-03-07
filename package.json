@@ -8,6 +8,7 @@
     "dev": "vite --force",
     "prod": "vite --mode production",
     "build": "vite build",
+    "build:pro": "vite build --mode production",
     "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/"
   },
   "dependencies": {
