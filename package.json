@@ -5,7 +5,7 @@
   "author": "lyt_20201208",
   "license": "MIT",
   "scripts": {
-    "dev": "vite --force",
+    "dev": "vite --mode development",
     "prod": "vite --mode production",
     "build": "vite build",
     "build:pro": "vite build --mode production",
