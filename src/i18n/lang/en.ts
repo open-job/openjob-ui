@@ -4,6 +4,9 @@ export default {
     emptyInput: "Please enter",
     emptySelect: 'Select',
     all: 'All',
+    tip: 'TIP',
+    deleteSuccess: 'Delete success!',
+    updateSuccess: 'Update success!',
   },
   dateMsg:{
     rangeMsg: 'Date Time',
@@ -259,6 +262,7 @@ export default {
     createTime: 'Create time',
     addTitle: 'Add Namespace',
     editTitle: "Edit Namespace",
+    deleteTitle: 'Are you sure to delete namespace',
   },
   app:{
     id : "ID",
@@ -270,6 +274,7 @@ export default {
     updateTime: "Update time",
     addTitle: 'Add Application',
     editTitle: "Edit Application",
+    deleteTitle: 'Are you sure to delete application',
     validateName: "Format letters or number or . or _ or -"
   },
   job: {
@@ -298,6 +303,7 @@ export default {
       createTime: 'Create Time',
       processorAndExecuteType: 'Type/Method',
       expressionAndType: 'Type/Expression',
+      deleteTitle: 'Are you sure to delete job',
     },
     instance: {
       id: 'ID',
@@ -308,6 +314,7 @@ export default {
       completeTime: 'Complete Time',
       lastReportTime: 'Last Report Time',
       createTime: 'Create Time',
+      deleteTitle: 'Are you sure to delete job instance',
     }
   },
   delay: {
@@ -326,6 +333,7 @@ export default {
       concurrency: 'concurrency',
       blockingSize: 'Blocking Size',
       createTime: 'Create Time',
+      deleteTitle: 'Are you sure to delete delay job',
     },
     instance: {
       namespaceId: 'Namespace',
@@ -339,6 +347,7 @@ export default {
       status: 'Status',
       executeTime: 'Execute Time',
       createTime: 'Create Time',
+      deleteTitle: 'Are you sure to delete delay instance',
     }
   },
   server: {

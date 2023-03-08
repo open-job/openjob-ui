@@ -96,6 +96,8 @@ import {defineAsyncComponent, reactive, onMounted, ref} from 'vue';
 import {ElMessageBox, ElMessage, FormInstance} from 'element-plus';
 import {useI18n} from 'vue-i18n';
 import {useNamespaceApi} from "/@/api/namespace";
+import {formatDateByTimestamp} from "/@/utils/formatTime";
+
 
 
 // 定义变量内容
@@ -119,11 +121,6 @@ const searchState = reactive({
     name: ''
   },
   rules: {
-    name: {
-      required: true,
-      message: t("message.commonMsg.emptyInput") + t('message.namespace.name'),
-      trigger: 'blur'
-    },
   },
 });
 
@@ -156,7 +153,7 @@ const getTableData = async () => {
       name: item['name'],
       status: item['status'] === 1,
       uniqueId: item['uuid'],
-      createTime: item['createTime'],
+      createTime: formatDateByTimestamp(item['createTime']),
     })
   });
 
@@ -200,7 +197,7 @@ const onOpenEditRole = (type: string, row: Object) => {
 };
 // 删除角色
 const onDel = (row: RowNamespaceType) => {
-  ElMessageBox.confirm(`此操作将永久删除角色名称：“${row.name}”，是否继续?`, '提示', {
+    ElMessageBox.confirm(t('message.namespace.deleteTitle') + `(${row.name})?`, t('message.commonMsg.tip'), {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
     type: 'warning',
@@ -211,7 +208,7 @@ const onDel = (row: RowNamespaceType) => {
       });
 
       await getTableData();
-      ElMessage.success('删除成功');
+      ElMessage.success(t('message.commonMsg.deleteSuccess'));
     })
     .catch(() => {
     });

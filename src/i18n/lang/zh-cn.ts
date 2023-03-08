@@ -4,6 +4,9 @@ export default {
     emptyInput: '请输入',
     emptySelect: '请选择',
     all: '全部',
+    tip: '提示',
+    deleteSuccess: '删除成功',
+    updateSuccess: '更新成功',
   },
   dateMsg:{
     rangeMsg: '时间范围',
@@ -258,7 +261,8 @@ export default {
     status: "空间状态",
     createTime: '创建时间',
     addTitle: '新增命名空间',
-    editTitle: '编辑命名空间',
+    editTitle: '更新命名空间',
+    deleteTitle: '你确定要删除命名空间',
   },
   app:{
     id : "ID",
@@ -270,6 +274,7 @@ export default {
     updateTime:"更新时间",
     addTitle: '新增应用',
     editTitle: "更新应用",
+    deleteTitle: '你确定要删除应用',
     validateName: "格式为英文字母、数字、.、_或-"
   },
   job:{
@@ -298,6 +303,7 @@ export default {
       createTime: '创建时间',
       processorAndExecuteType: '类型/方式',
       expressionAndType: '时间类型/表达式',
+      deleteTitle: '你确定要删除任务',
     },
     instance: {
       id: '实例ID',
@@ -308,6 +314,7 @@ export default {
       completeTime: '完成时间',
       lastReportTime: '最近上报时间',
       createTime: '创建时间',
+      deleteTitle: '你确定要删除实例',
     }
   },
   delay: {
@@ -326,6 +333,7 @@ export default {
       concurrency: '并发',
       blockingSize: '缓存大小',
       createTime: '创建时间',
+      deleteTitle: '你确定要删除延时任务',
     },
     instance: {
       namespaceId: '命名空间',
@@ -339,6 +347,7 @@ export default {
       status: '任务状态',
       executeTime: '执行时间',
       createTime: '创建时间',
+      deleteTitle: '你确定要删除延时任务实例',
     }
   },
   server: {
