@@ -84,7 +84,7 @@ const state = reactive({
       trigger: 'blur'
     },
     desc: {
-      required: true,
+      required: false,
       message: t('message.app.desc'),
       trigger: 'blur'
     },

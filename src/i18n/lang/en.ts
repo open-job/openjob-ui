@@ -21,6 +21,8 @@ export default {
     oneWeek: 'Last 1 week',
   },
   commonBtn: {
+    confirm: 'Confirm',
+    cancel: 'Cancel',
     query: "Query",
     reset: "Reset",
     view: "View",

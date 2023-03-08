@@ -21,6 +21,8 @@ export default {
     oneWeek: '1周',
   },
   commonBtn: {
+    confirm: '确认',
+    cancel: '取消',
     query: "查询",
     reset: "重置",
     view: "查看",
