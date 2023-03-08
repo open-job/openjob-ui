@@ -4,8 +4,13 @@
       <h4>新增定时任务</h4>
     </template>
     <template #default>
-      <div class="system-role-dialog-container" style="padding: 10px;">
-        <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
+      <div class="system-role-dialog-container" style="padding: 10px;height: 100%">
+        <MonacoEditor
+          ref="JobParamsMonacoEditor"
+          :editorStyle="state.editor.editorStyle"
+          :language="state.editor.language"
+          :value="state.editor.value"
+        />
       </div>
     </template>
     <template #footer>
@@ -21,10 +26,8 @@
 import {ElMessage} from 'element-plus'
 import {useI18n} from "vue-i18n";
 import {useNamespaceApi} from "/@/api/namespace";
-import {defineAsyncComponent, reactive} from "vue";
+import {defineAsyncComponent, onMounted, reactive} from "vue";
 const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
-
-
 
 const {t} = useI18n();
 
@@ -32,6 +35,11 @@ const {t} = useI18n();
 const nsApi = useNamespaceApi();
 
 const state = reactive({
+  editor: {
+    editorStyle: 'width: 100%;height: 100%;',
+    language: 'plaintext',
+    value: '',
+  },
   drawer: {
     isShow: false
   },
@@ -39,6 +47,11 @@ const state = reactive({
 
 const openDrawer = async (row: RowJobType) => {
   state.drawer.isShow = true;
+  state.editor.value = '';
+
+  setInterval(function (){
+    state.editor.value = state.editor.value+"bbb\n";
+  }, 5000)
 }
 const cancelClick = () => {
   state.drawer.isShow = false

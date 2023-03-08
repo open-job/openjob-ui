@@ -77,10 +77,8 @@
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.paramsType')" prop="paramsType">
                 <el-radio-group v-model="state.ruleForm.paramsType">
-                  <el-radio label="text">text</el-radio>
-                  <el-radio label="json">json</el-radio>
-                  <el-radio label="yaml">yaml</el-radio>
-                  <el-radio label="properties">properties</el-radio>
+                  <el-radio v-for="t in state.contentType" :key="t.value" :label="t.label"
+                            @click="onChangePramsType(t.value)">{{t.value}}</el-radio>
                 </el-radio-group>
               </el-form-item>
             </el-col>
@@ -91,8 +89,9 @@
                 <MonacoEditor
                   ref="JobParamsMonacoEditor"
                   :editorStyle="state.paramsEditor.editorStyle"
-                  :language="state.paramsEditor.language"
-                  :value="state.paramsEditor.value"
+                  :language="state.ruleForm.paramsType"
+                  :value="state.ruleForm.params"
+                  @updateContent="onParamsUpdateContent"
                 />
               </el-form-item>
             </el-col>
@@ -101,10 +100,8 @@
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.extendParamsType')" prop="extendParamsType">
                 <el-radio-group v-model="state.ruleForm.extendParamsType">
-                  <el-radio label="text">text</el-radio>
-                  <el-radio label="json">json</el-radio>
-                  <el-radio label="yaml">yaml</el-radio>
-                  <el-radio label="properties">properties</el-radio>
+                  <el-radio v-for="t in state.contentType" :key="t.value" :label="t.label"
+                  @click="onChangeExtPramsType(t.value)">{{t.value}}</el-radio>
                 </el-radio-group>
               </el-form-item>
             </el-col>
@@ -115,8 +112,9 @@
                 <MonacoEditor
                   ref="JobExtParamsMonacoEditor"
                   :editorStyle="state.paramsExtEditor.editorStyle"
-                  :language="state.paramsExtEditor.language"
-                  :value="state.paramsExtEditor.value"
+                  :language="state.ruleForm.extendParamsType"
+                  :value="state.ruleForm.extendParams"
+                  @updateContent="onExtParamsUpdateContent"
                 />
               </el-form-item>
             </el-col>
@@ -251,27 +249,45 @@ const emit = defineEmits(['refresh']);
 const state = reactive({
   paramsEditor: {
     editorStyle: 'width: 95%;height: 220px;',
-    language: 'json',
-    value: ''
   },
   paramsExtEditor: {
     editorStyle: 'width: 95%;height: 150px;',
-    language: 'json',
-    value: ''
   },
   drawer: {
     type: '',
     isShow: false
   },
   fromRules: {},
+  contentType: [
+    {
+      value: 'plaintext',
+      label: 'plaintext',
+    },
+    {
+      value: 'json',
+      label: 'json',
+    },
+    {
+      value: 'yaml',
+      label: 'yaml',
+    },
+    {
+      value: 'properties',
+      label: 'properties',
+    },
+  ],
   processorType: [
     {
-      value: 'java',
-      label: 'java',
+      value: 'processor',
+      label: 'processor',
     },
     {
       value: 'shell',
       label: 'shell',
+    },
+    {
+      value: 'http',
+      label: 'http',
     }
   ],
   executeType: [
@@ -310,14 +326,14 @@ const state = reactive({
     timesStep: 1,
     intervalStep: 1000,
     description: '',
-    paramsType: 'text',
+    paramsType: 'plaintext',
     params: '',
-    extendParamsType: 'text',
+    extendParamsType: 'plaintext',
     extendParams: '',
     timeExpressionType: 'cron',
     timeExpression: '',
     executeType: 'standalone',
-    processorType: 'java',
+    processorType: 'processor',
     processorInfo: '',
     namespaceId: 0,
     appId: 1,
@@ -373,11 +389,11 @@ const resetJobContent = (selectAppId: number) => {
   state.ruleForm.appId = selectAppId;
   state.ruleForm.name = '';
   state.ruleForm.description = '';
-  state.ruleForm.processorType = 'java';
+  state.ruleForm.processorType = 'processor';
   state.ruleForm.processorInfo = '';
-  state.ruleForm.params = '';
-  state.ruleForm.paramsType = 'text';
-  state.ruleForm.extendParamsType = 'text';
+  state.ruleForm.params = 'bbb';
+  state.ruleForm.paramsType = 'plaintext';
+  state.ruleForm.extendParamsType = 'plaintext';
   state.ruleForm.extendParams = '';
   state.ruleForm.timeExpressionType = 'cron';
   state.ruleForm.timeExpression = '';
@@ -466,6 +482,22 @@ const confirmClick = async () => {
   ElMessage.success('更新成功');
   state.drawer.isShow = false;
   emit('refresh');
+}
+
+const onChangePramsType = (type :string)=>{
+  state.ruleForm.paramsType = type;
+}
+
+const onChangeExtPramsType = (type :string)=>{
+  state.ruleForm.extendParamsType = type;
+}
+
+const onParamsUpdateContent = (value :string)=>{
+  state.ruleForm.params = value;
+}
+
+const onExtParamsUpdateContent = (value :string)=>{
+  state.ruleForm.extendParams = value;
 }
 
 // 暴露变量

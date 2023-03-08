@@ -10,9 +10,12 @@ import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import * as monaco from 'monaco-editor'
-import {nextTick, ref, onBeforeUnmount} from 'vue'
+import {nextTick, ref, onBeforeUnmount, toRaw, watch} from 'vue'
 
 let editor: monaco.editor.IStandaloneCodeEditor
+
+const emit = defineEmits(['updateContent']);
+
 
 // 定义父组件传过来的值
 const props = defineProps({
@@ -104,15 +107,31 @@ const editorInit = () => {
         overviewRulerBorder: false, // 不要滚动条的边框
       }) :
       editor.setValue(props.value)
+
     editor.onDidChangeModelContent(() => {
-      text.value = editor.getValue()
+      emit('updateContent', toRaw(editor.getValue()))
     })
+
+    // Change language
+    watch(
+      () => props.language,
+      newLanguage => {
+        let model = editor.getModel();
+        if (model !== null) {
+          monaco.editor.setModelLanguage(model, newLanguage)
+        }
+      }
+    );
+
+    // Change value
+    watch(
+      () => props.value,
+      newValue => {
+        editor.setValue(newValue)
+      }
+    );
   })
 }
 
 editorInit()
-
-// const changeLanguage = () => {
-//     monaco.editor.setModelLanguage(editor.getModel(), language.value)
-// }
 </script>
