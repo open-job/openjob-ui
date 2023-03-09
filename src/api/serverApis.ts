@@ -26,6 +26,7 @@ export const JOB_APIS = {
   update: '/admin/job/update',
   updateStatus: '/admin/job/update-status',
   delete: '/admin/job/delete',
+  timeExpression: '/admin/job/time-expression',
 }
 
 export const JOB_INSTANCE_APIS = {

@@ -328,7 +328,9 @@ export default {
       },
       validateName: {
         fixed: '格式为数字',
-      }
+      },
+      timeExpressionTitle: '最近6次执行时间',
+      timeExpressionValidMsg: '时间表达式格式错误',
     },
     instance: {
       id: '实例ID',

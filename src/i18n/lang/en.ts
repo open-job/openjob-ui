@@ -328,7 +328,9 @@ export default {
       },
       validateName: {
         fixed: 'Format must be number',
-      }
+      },
+      timeExpressionTitle: 'Next execute time',
+      timeExpressionValidMsg: 'Time expression is invalid',
     },
     instance: {
       id: 'ID',
@@ -358,7 +360,7 @@ export default {
       concurrency: 'concurrency',
       blockingSize: 'Blocking Size',
       createTime: 'Create Time',
-      deleteTitle: 'Are you sure to delete delay job',
+      deleteTitle: 'Are you sure to delete delay job'
     },
     instance: {
       namespaceId: 'Namespace',

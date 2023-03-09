@@ -156,7 +156,11 @@
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-button type="success" plain size="default" style="margin-left: 10px;">执行时间</el-button>
+              <el-button type="success" plain size="default"
+                         @click="onClickTimeExpression()"
+                         style="margin-left: 10px;">
+                执行时间
+              </el-button>
             </el-col>
           </el-row>
           <el-row v-show="state.rowState.fixedDelay">
@@ -272,6 +276,7 @@ import {useAppApi} from "/@/api/app";
 import {Local} from "/@/utils/storage";
 import {getHeaderNamespaceId} from "/@/utils/header";
 import {useJobApi} from "/@/api/job";
+import {formatDateByTimestamp} from "/@/utils/formatTime";
 
 const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
 
@@ -640,6 +645,28 @@ const onChangeTimeType = (type :string)=>{
     state.rowState.executeTime = true;
     return
   }
+}
+
+const onClickTimeExpression = async () => {
+  let data = await jobApi.timeExpression({
+    timeExpression: state.ruleForm.timeExpression
+  });
+
+  if (data.valid  === 2){
+    await ElMessageBox.alert(t('message.job.job.timeExpressionValidMsg'), t('message.commonMsg.tip'), {
+      type: 'error',
+    })
+    return;
+  }
+
+  let message = '';
+  data.list.forEach(function (time: number) {
+    message += formatDateByTimestamp(time) + '<br>';
+  });
+
+  await ElMessageBox.alert(`<div style="text-align: center">${message}</div>`, t('message.job.job.timeExpressionTitle'), {
+    dangerouslyUseHTMLString: true,
+  })
 }
 
 const onChangePramsType = (type :string)=>{
