@@ -35,6 +35,10 @@ const props = defineProps({
     default: false,
     type: Boolean
   },
+  syncValue: {
+    default: false,
+    type: Boolean
+  },
 });
 
 const text = ref('')
@@ -100,9 +104,9 @@ const editorInit = () => {
         // },
         readOnly: props.readOnly, // 只读
         fontSize: 14, // 字体大小
-        autoClosingBrackets: 'always', // 是否自动添加结束括号(包括中括号) "always" | "languageDefined" | "beforeWhitespace" | "never"
+        autoClosingBrackets: 'languageDefined', // 是否自动添加结束括号(包括中括号) "always" | "languageDefined" | "beforeWhitespace" | "never"
         autoClosingDelete: 'always', // 是否自动删除结束括号(包括中括号) "always" | "never" | "auto"
-        autoClosingQuotes: 'always', // 是否自动添加结束的单引号 双引号 "always" | "languageDefined" | "beforeWhitespace" | "never"
+        autoClosingQuotes: 'languageDefined', // 是否自动添加结束的单引号 双引号 "always" | "languageDefined" | "beforeWhitespace" | "never"
         scrollBeyondLastLine: false, // 取消代码后面一大段空白
         overviewRulerBorder: false, // 不要滚动条的边框
       }) :
@@ -127,7 +131,9 @@ const editorInit = () => {
     watch(
       () => props.value,
       newValue => {
-        editor.setValue(newValue)
+        if (props.syncValue) {
+          editor.setValue(newValue)
+        }
       }
     );
   })

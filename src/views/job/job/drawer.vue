@@ -105,6 +105,7 @@
                   :editorStyle="state.paramsEditor.editorStyle"
                   :language="state.ruleForm.paramsType"
                   :value="state.ruleForm.params"
+                  :syncValue="state.syncEditor"
                   @updateContent="onParamsUpdateContent"
                 />
               </el-form-item>
@@ -128,6 +129,7 @@
                   :editorStyle="state.paramsExtEditor.editorStyle"
                   :language="state.ruleForm.extendParamsType"
                   :value="state.ruleForm.extendParams"
+                  :syncValue="state.syncEditor"
                   @updateContent="onExtParamsUpdateContent"
                 />
               </el-form-item>
@@ -260,8 +262,8 @@
     </template>
     <template #footer>
       <div style="flex: auto;text-align: left;padding-left: 30px;padding-bottom: 10px;">
-        <el-button type="primary" @click="confirmClick">confirm</el-button>
-        <el-button @click="cancelClick">cancel</el-button>
+        <el-button type="primary" @click="confirmClick(jobFormRef)">{{t('message.commonBtn.confirm')}}</el-button>
+        <el-button @click="cancelClick">{{t('message.commonBtn.cancel')}}</el-button>
       </div>
     </template>
   </el-drawer>
@@ -269,14 +271,15 @@
 
 <script setup lang="ts" name="jobDrawerName">
 import {defineAsyncComponent, onMounted, reactive, ref} from 'vue';
-import {ElMessage, ElMessageBox} from 'element-plus'
+import {ElMessage, ElMessageBox, FormInstance} from 'element-plus'
 import {useI18n} from "vue-i18n";
 import {useNamespaceApi} from "/@/api/namespace";
 import {useAppApi} from "/@/api/app";
 import {Local} from "/@/utils/storage";
 import {getHeaderNamespaceId} from "/@/utils/header";
 import {useJobApi} from "/@/api/job";
-import {formatDateByTimestamp} from "/@/utils/formatTime";
+import {formatDateByTimestamp, getTimestampByString} from "/@/utils/formatTime";
+import {getAppSelectList} from "/@/utils/data";
 
 const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
 
@@ -303,6 +306,7 @@ const state = reactive({
     fixedDelay: false,
     fixedRate: false,
   },
+  syncEditor: false,
   shellEditor: {
     editorStyle: 'width: 95%;height: 220px;',
     language: 'shell',
@@ -494,15 +498,23 @@ const openDrawer = async (type: string, selectAppId: number, row: RowJobType) =>
   state.drawer.isShow = true;
 
   if (type === 'add') {
-    resetJobContent(selectAppId);
+    state.syncEditor = true;
+    await resetJobContent(selectAppId);
+    state.syncEditor = false;
     return;
   }
 
   // Init content.
-  initJobContent(row);
+  state.syncEditor = true;
+  await initJobContent(row);
+  state.syncEditor = false;
 }
 
-const resetJobContent = (selectAppId: number) => {
+const resetJobContent = async (selectAppId: number) => {
+  if (selectAppId == 0) {
+    selectAppId = state.appList[0]['id'];
+  }
+
   state.ruleForm.namespaceId = getHeaderNamespaceId();
   state.ruleForm.appId = selectAppId;
   state.ruleForm.name = '';
@@ -523,7 +535,7 @@ const resetJobContent = (selectAppId: number) => {
   state.ruleForm.concurrency = 1;
 };
 
-const initJobContent = (row: RowJobType) => {
+const initJobContent = async (row: RowJobType) => {
   state.ruleForm.id = row.id;
   state.ruleForm.namespaceId = row.namespaceId;
   state.ruleForm.appId = row.appId;
@@ -543,29 +555,59 @@ const initJobContent = (row: RowJobType) => {
   state.ruleForm.failRetryTimes = row.failRetryTimes;
   state.ruleForm.failRetryInterval = row.failRetryInterval;
   state.ruleForm.concurrency = row.concurrency;
+
+  onChangeTimeType(row.timeExpressionType);
+
+  if (row.timeExpressionType == 'secondDelay') {
+    state.ruleForm.fixedDelay = row.timeExpressionValue.toString();
+  } else if (row.timeExpressionType == 'fixedRate') {
+    state.ruleForm.fixedRate= row.timeExpressionValue.toString();
+  } else if (row.timeExpressionType == 'oneTime') {
+    state.ruleForm.executeTime=  formatDateByTimestamp(row.timeExpressionValue);
+  }
 };
 
 const initAppList = async () => {
-  let data = await appApi.getList({
-    namespaceId: Local.get("nid"),
-    page: 1,
-    size: 30,
-  });
-
-  state.appList = [];
-  data.list.forEach(function (item: Object) {
-    // 列表数据
-    state.appList.push({
-      id: item['id'],
-      label: item['name']
-    })
-  });
+  state.appList = await getAppSelectList();
 }
 
 const cancelClick = () => {
   state.drawer.isShow = false
 }
-const confirmClick = async () => {
+const confirmClick = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  let validFields = ['name', 'processorInfo'];
+
+  if (state.ruleForm.timeExpressionType == 'secondDelay') {
+    validFields.push('fixedDelay');
+  } else if (state.ruleForm.timeExpressionType == 'fixedRate') {
+    validFields.push('fixedRate');
+  } else if (state.ruleForm.timeExpressionType == 'oneTime') {
+    validFields.push('executeTime');
+  } else {
+    validFields.push('timeExpression');
+  }
+
+  await formEl.validateField(validFields,(valid: boolean) => {
+    if (valid) {
+     onSubmitRequest();
+    } else {
+      return false;
+    }
+  });
+}
+
+const onSubmitRequest = async ()=>{
+  let timeExpressionValue;
+
+  if (state.ruleForm.timeExpressionType == 'secondDelay') {
+    timeExpressionValue = state.ruleForm.fixedDelay;
+  } else if (state.ruleForm.timeExpressionType == 'fixedRate') {
+    timeExpressionValue = state.ruleForm.fixedRate;
+  } else if (state.ruleForm.timeExpressionType == 'oneTime') {
+    timeExpressionValue = getTimestampByString(state.ruleForm.executeTime);
+  }
+
   let request = {
     id: state.ruleForm.id,
     namespaceId: state.ruleForm.namespaceId,
@@ -581,6 +623,7 @@ const confirmClick = async () => {
     extendParams: state.ruleForm.extendParams,
     timeExpressionType: state.ruleForm.timeExpressionType,
     timeExpression: state.ruleForm.timeExpression,
+    timeExpressionValue: timeExpressionValue,
     executeStrategy: state.ruleForm.executeStrategy,
     failRetryTimes: state.ruleForm.failRetryTimes,
     failRetryInterval: state.ruleForm.failRetryInterval,

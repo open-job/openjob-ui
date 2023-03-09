@@ -19,7 +19,7 @@
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
-              <el-form-item :label="t('message.app.name')" prop="name">
+              <el-form-item :label="t('message.job.job.name')" prop="name">
                 <el-input v-model="searchState.form.name" size="default"
                           style="width: 95%"></el-input>
               </el-form-item>
@@ -229,6 +229,7 @@ const getTableData = async () => {
       extendParams: item['extendParams'],
       timeExpressionType: item['timeExpressionType'],
       timeExpression: item['timeExpression'],
+      timeExpressionValue: item['timeExpressionValue'],
       executeStrategy: item['executeStrategy'],
       failRetryTimes: item['failRetryTimes'],
       failRetryInterval: item['failRetryInterval'],
@@ -281,7 +282,7 @@ const onMoreCommand = (command: string, row: RowJobType) => {
   }
 
   if (command === 'delete') {
-    ElMessage.success('delete');
+    onDel(row);
     return;
   }
 };
@@ -300,11 +301,11 @@ const onOpenAddRole = (type: string) => {
 const onOpenEditRole = (type: string, row: Object) => {
   JobDrawerRef.value.openDrawer(type, searchState.form.appId, row);
 };
-// 删除角色
-const onDel = (row: RowNamespaceType) => {
-  ElMessageBox.confirm(`此操作将永久删除角色名称：“${row.name}”，是否继续?`, '提示', {
-    confirmButtonText: '确认',
-    cancelButtonText: '取消',
+
+const onDel = (row: RowJobType) => {
+  ElMessageBox.confirm(t('message.job.job.deleteTitle') + `(${row.name})?`, t('message.commonMsg.tip'), {
+    confirmButtonText: t('message.commonBtn.confirm'),
+    cancelButtonText: t('message.commonBtn.cancel'),
     type: 'warning',
   })
     .then(async () => {
@@ -313,7 +314,7 @@ const onDel = (row: RowNamespaceType) => {
       });
 
       await getTableData();
-      ElMessage.success('删除成功');
+      ElMessage.success(t('message.commonMsg.deleteSuccess'));
     })
     .catch(() => {
     });

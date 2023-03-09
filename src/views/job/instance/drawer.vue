@@ -10,6 +10,8 @@
           :editorStyle="state.editor.editorStyle"
           :language="state.editor.language"
           :value="state.editor.value"
+          :readOnly="true"
+          :syncValue="true"
         />
       </div>
     </template>
@@ -51,7 +53,10 @@ const openDrawer = async (row: RowJobType) => {
 
   setInterval(function (){
     state.editor.value = state.editor.value+"bbb\n";
-  }, 5000)
+    state.editor.value = state.editor.value+"bbb\n";
+    state.editor.value = state.editor.value+"bbb\n";
+    state.editor.value = state.editor.value+"bbb\n";
+  }, 2000)
 }
 const cancelClick = () => {
   state.drawer.isShow = false
