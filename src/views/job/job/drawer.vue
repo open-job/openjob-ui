@@ -61,15 +61,29 @@
                     :key="ns.value"
                     :label="ns.label"
                     :value="ns.value"
+                    @click="onChangeProcessorType(ns.value)"
                   />
                 </el-select>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row v-show="state.rowState.inputProcessor">
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.processorInfo')" prop="processorInfo">
                 <el-input v-model="state.ruleForm.processorInfo"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row v-show="state.rowState.shellProcessor">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item :label="t('message.job.job.processorInfo')" prop="processorInfo">
+                <MonacoEditor
+                  ref="shellProcessorMonacoEditor"
+                  :editorStyle="state.shellEditor.editorStyle"
+                  :language="state.shellEditor.language"
+                  :value="state.ruleForm.processorInfo"
+                  @updateContent="onShellUpdateContent"
+                />
               </el-form-item>
             </el-col>
           </el-row>
@@ -129,15 +143,44 @@
                     :key="ns.value"
                     :label="ns.label"
                     :value="ns.value"
+                    @click="onChangeTimeType(ns.value)"
                   />
                 </el-select>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row v-show="state.rowState.timeExpression">
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item :label="t('message.job.job.timeExpression')" prop="timeExpression">
                 <el-input v-model="state.ruleForm.timeExpression"/>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-button type="success" plain size="default" style="margin-left: 10px;">执行时间</el-button>
+            </el-col>
+          </el-row>
+          <el-row v-show="state.rowState.fixedDelay">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item :label="t('message.job.job.timeExpressionTypeList.secondDelayTitle')" prop="fixedDelay">
+                <el-input v-model="state.ruleForm.fixedDelay"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row v-show="state.rowState.fixedRate">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item :label="t('message.job.job.timeExpressionTypeList.fixedRateTitle')" prop="fixedRate">
+                <el-input v-model="state.ruleForm.fixedRate"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row v-show="state.rowState.executeTime">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item :label="t('message.job.job.timeExpressionTypeList.oneTimeTitle')" prop="executeTime">
+                <el-date-picker
+                  v-model="state.ruleForm.executeTime"
+                  type="datetime"
+                  :placeholder="t('message.commonMsg.emptySelect')"
+                />
               </el-form-item>
             </el-col>
           </el-row>
@@ -247,6 +290,18 @@ const jobFormRef = ref();
 const emit = defineEmits(['refresh']);
 
 const state = reactive({
+  rowState:{
+    inputProcessor: true,
+    shellProcessor: false,
+    timeExpression: true,
+    executeTime: false,
+    fixedDelay: false,
+    fixedRate: false,
+  },
+  shellEditor: {
+    editorStyle: 'width: 95%;height: 220px;',
+    language: 'shell',
+  },
   paramsEditor: {
     editorStyle: 'width: 95%;height: 220px;',
   },
@@ -257,7 +312,40 @@ const state = reactive({
     type: '',
     isShow: false
   },
-  fromRules: {},
+  fromRules: {
+    name: {
+      required: true,
+      message: t('message.job.job.name'),
+      trigger: 'blur'
+    },
+    processorInfo: {
+      required: true,
+      message: t('message.job.job.processorInfo'),
+      trigger: 'blur'
+    },
+    timeExpression: {
+      required: true,
+      message: t('message.job.job.timeExpression'),
+      trigger: 'blur'
+    },
+    fixedDelay: {
+      required: true,
+      message: t('message.job.job.validateName.fixed'),
+      pattern: /^[0-9]*$/,
+      trigger: 'blur'
+    },
+    fixedRate: {
+      required: true,
+      message: t('message.job.job.validateName.fixed'),
+      pattern: /^[0-9]*$/,
+      trigger: 'blur'
+    },
+    executeTime: {
+      required: true,
+      message: t('message.job.job.timeExpressionTypeList.oneTimeTitle'),
+      trigger: 'blur'
+    },
+  },
   contentType: [
     {
       value: 'plaintext',
@@ -293,32 +381,53 @@ const state = reactive({
   executeType: [
     {
       value: 'standalone',
-      label: '单机',
+      label: t('message.job.job.executeTypeList.standalone'),
     },
     {
       value: 'broadcast',
-      label: '广播',
+      label: t('message.job.job.executeTypeList.broadcast'),
+    },
+    {
+      value: 'mapReduce',
+      label: t('message.job.job.executeTypeList.mapReduce'),
+    },
+    {
+      value: 'sharding',
+      label: t('message.job.job.executeTypeList.sharding'),
     }
   ],
   executeStrategy: [
     {
       value: 1,
-      label: '丢弃',
+      label: t('message.job.job.executeStrategyList.discard'),
     },
     {
       value: 2,
-      label: '覆盖',
+      label: t('message.job.job.executeStrategyList.overlay'),
+    }
+    ,
+    {
+      value: 3,
+      label: t('message.job.job.executeStrategyList.concurrency'),
     }
   ],
   timeExpressionType: [
     {
       value: 'cron',
-      label: '定时任务',
+      label: t('message.job.job.timeExpressionTypeList.cron'),
     },
     {
-      value: 'second',
-      label: '秒级任务',
+      value: 'secondDelay',
+      label: t('message.job.job.timeExpressionTypeList.secondDelay'),
     },
+    {
+      value: 'fixedRate',
+      label: t('message.job.job.timeExpressionTypeList.fixedRate'),
+    },
+    {
+      value: 'oneTime',
+      label: t('message.job.job.timeExpressionTypeList.oneTime'),
+    }
   ],
   namespaceList: <any>[],
   appList: <any>[],
@@ -332,6 +441,10 @@ const state = reactive({
     extendParams: '',
     timeExpressionType: 'cron',
     timeExpression: '',
+    executeTime: '',
+    fixedDelay: '',
+    fixedRate: '',
+    Time: 0 ,
     executeType: 'standalone',
     processorType: 'processor',
     processorInfo: '',
@@ -391,7 +504,7 @@ const resetJobContent = (selectAppId: number) => {
   state.ruleForm.description = '';
   state.ruleForm.processorType = 'processor';
   state.ruleForm.processorInfo = '';
-  state.ruleForm.params = 'bbb';
+  state.ruleForm.params = '';
   state.ruleForm.paramsType = 'plaintext';
   state.ruleForm.extendParamsType = 'plaintext';
   state.ruleForm.extendParams = '';
@@ -401,7 +514,7 @@ const resetJobContent = (selectAppId: number) => {
   state.ruleForm.executeType = 'standalone';
   state.ruleForm.executeStrategy = 1;
   state.ruleForm.failRetryTimes = 1;
-  state.ruleForm.failRetryInterval = 2000;
+  state.ruleForm.failRetryInterval = 3000;
   state.ruleForm.concurrency = 1;
 };
 
@@ -484,12 +597,61 @@ const confirmClick = async () => {
   emit('refresh');
 }
 
+const onChangeProcessorType = (type :string)=>{
+  if (type == 'shell'){
+    state.rowState.inputProcessor = false;
+    state.rowState.shellProcessor = true;
+    return
+  }
+
+  state.rowState.inputProcessor = true;
+  state.rowState.shellProcessor = false;
+}
+
+const onChangeTimeType = (type :string)=>{
+  if (type == 'cron'){
+    state.rowState.timeExpression = true;
+    state.rowState.fixedDelay = false;
+    state.rowState.fixedRate = false;
+    state.rowState.executeTime = false;
+    return
+  }
+
+  if (type == 'secondDelay'){
+    state.rowState.timeExpression = false;
+    state.rowState.fixedDelay = true;
+    state.rowState.fixedRate = false;
+    state.rowState.executeTime = false;
+    return
+  }
+
+  if (type == 'fixedRate'){
+    state.rowState.timeExpression = false;
+    state.rowState.fixedDelay = false;
+    state.rowState.fixedRate = true;
+    state.rowState.executeTime = false;
+    return
+  }
+
+  if (type == 'oneTime'){
+    state.rowState.timeExpression = false;
+    state.rowState.fixedDelay = false;
+    state.rowState.fixedRate = false;
+    state.rowState.executeTime = true;
+    return
+  }
+}
+
 const onChangePramsType = (type :string)=>{
   state.ruleForm.paramsType = type;
 }
 
 const onChangeExtPramsType = (type :string)=>{
   state.ruleForm.extendParamsType = type;
+}
+
+const onShellUpdateContent = (value :string)=>{
+  state.ruleForm.processorInfo = value;
 }
 
 const onParamsUpdateContent = (value :string)=>{

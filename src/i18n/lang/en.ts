@@ -306,6 +306,29 @@ export default {
       processorAndExecuteType: 'Type/Method',
       expressionAndType: 'Type/Expression',
       deleteTitle: 'Are you sure to delete job',
+      executeTypeList: {
+        standalone: 'standalone',
+        broadcast: 'broadcast',
+        mapReduce: 'map reduce',
+        sharding: 'sharding',
+      },
+      executeStrategyList: {
+        discard: 'discard',
+        overlay: 'overlay',
+        concurrency: 'concurrency',
+      },
+      timeExpressionTypeList: {
+        cron: 'cron',
+        secondDelay: 'second delay',
+        fixedRate: 'fixed rate',
+        oneTime: 'one time',
+        secondDelayTitle: 'Fixed Delay',
+        fixedRateTitle: 'Fixed Rate',
+        oneTimeTitle: 'Execute Time',
+      },
+      validateName: {
+        fixed: 'Format must be number',
+      }
     },
     instance: {
       id: 'ID',

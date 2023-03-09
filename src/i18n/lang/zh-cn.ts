@@ -306,6 +306,29 @@ export default {
       processorAndExecuteType: '类型/方式',
       expressionAndType: '时间类型/表达式',
       deleteTitle: '你确定要删除任务',
+      executeTypeList: {
+        standalone: '单机',
+        broadcast: '广播',
+        mapReduce: 'Map Reduce',
+        sharding: '分片',
+      },
+      executeStrategyList: {
+        discard: '丢弃',
+        overlay: '覆盖',
+        concurrency: '并发',
+      },
+      timeExpressionTypeList: {
+        cron: '定时任务',
+        secondDelay: '秒级任务',
+        fixedRate: '固定频率',
+        oneTime: '一次性',
+        secondDelayTitle: '固定延迟',
+        fixedRateTitle: '固定频率',
+        oneTimeTitle: '执行时间',
+      },
+      validateName: {
+        fixed: '格式为数字',
+      }
     },
     instance: {
       id: '实例ID',
