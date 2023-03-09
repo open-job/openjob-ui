@@ -11,6 +11,7 @@
           :language="state.editor.language"
           :value="state.editor.value"
           :readOnly="true"
+          :scrollBottom="true"
           :syncValue="true"
         />
       </div>

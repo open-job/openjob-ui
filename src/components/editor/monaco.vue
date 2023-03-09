@@ -39,6 +39,10 @@ const props = defineProps({
     default: false,
     type: Boolean
   },
+  scrollBottom: {
+    default: false,
+    type: Boolean
+  },
 });
 
 const text = ref('')
@@ -112,6 +116,7 @@ const editorInit = () => {
       }) :
       editor.setValue(props.value)
 
+
     editor.onDidChangeModelContent(() => {
       emit('updateContent', toRaw(editor.getValue()))
     })
@@ -129,12 +134,16 @@ const editorInit = () => {
 
     // Change value
     watch(
-      () => props.value,
-      newValue => {
-        if (props.syncValue) {
-          editor.setValue(newValue)
+        () => props.value,
+        newValue => {
+          if (props.syncValue) {
+            editor.setValue(newValue)
+            let model = editor.getModel();
+            if (model !== null && props.scrollBottom) {
+              editor.revealLine(model.getLineCount())
+            }
+          }
         }
-      }
     );
   })
 }
