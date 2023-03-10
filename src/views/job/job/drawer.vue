@@ -76,12 +76,13 @@
           </el-row>
           <el-row v-show="state.rowState.shellProcessor">
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-              <el-form-item :label="t('message.job.job.processorInfo')" prop="processorInfo">
+              <el-form-item :label="t('message.job.job.processorInfo')" prop="shellProcessorInfo">
                 <MonacoEditor
                   ref="shellProcessorMonacoEditor"
                   :editorStyle="state.shellEditor.editorStyle"
                   :language="state.shellEditor.language"
-                  :value="state.ruleForm.processorInfo"
+                  :value="state.ruleForm.shellProcessorInfo"
+                  :syncValue="state.syncEditor"
                   @updateContent="onShellUpdateContent"
                 />
               </el-form-item>
@@ -332,6 +333,11 @@ const state = reactive({
       message: t('message.job.job.processorInfo'),
       trigger: 'blur'
     },
+    shellProcessorInfo: {
+      required: true,
+      message: t('message.job.job.processorInfo'),
+      trigger: 'blur'
+    },
     timeExpression: {
       required: true,
       message: t('message.job.job.timeExpression'),
@@ -457,6 +463,7 @@ const state = reactive({
     executeType: 'standalone',
     processorType: 'processor',
     processorInfo: '',
+    shellProcessorInfo: '',
     namespaceId: 0,
     appId: 1,
     id: 0,
@@ -515,18 +522,25 @@ const resetJobContent = async (selectAppId: number) => {
     selectAppId = state.appList[0]['id'];
   }
 
+  onChangeTimeType('cron');
+  onChangeProcessorType('processor');
+
   state.ruleForm.namespaceId = getHeaderNamespaceId();
   state.ruleForm.appId = selectAppId;
   state.ruleForm.name = '';
   state.ruleForm.description = '';
   state.ruleForm.processorType = 'processor';
   state.ruleForm.processorInfo = '';
+  state.ruleForm.shellProcessorInfo = '';
   state.ruleForm.params = '';
   state.ruleForm.paramsType = 'plaintext';
   state.ruleForm.extendParamsType = 'plaintext';
   state.ruleForm.extendParams = '';
   state.ruleForm.timeExpressionType = 'cron';
   state.ruleForm.timeExpression = '';
+  state.ruleForm.executeTime = '';
+  state.ruleForm.fixedDelay = '';
+  state.ruleForm.fixedRate = '';
   state.ruleForm.status = true;
   state.ruleForm.executeType = 'standalone';
   state.ruleForm.executeStrategy = 1;
@@ -558,6 +572,15 @@ const initJobContent = async (row: RowJobType) => {
 
   onChangeTimeType(row.timeExpressionType);
 
+  onChangeProcessorType(row.processorType);
+
+  if (row.processorType == 'shell') {
+    state.ruleForm.shellProcessorInfo = row.processorInfo;
+  } else {
+    state.ruleForm.processorInfo = row.processorInfo;
+  }
+
+
   if (row.timeExpressionType == 'secondDelay') {
     state.ruleForm.fixedDelay = row.timeExpressionValue.toString();
   } else if (row.timeExpressionType == 'fixedRate') {
@@ -576,7 +599,13 @@ const cancelClick = () => {
 }
 const confirmClick = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  let validFields = ['name', 'processorInfo'];
+  let validFields = ['name'];
+
+  if (state.ruleForm.processorType == 'shell') {
+    validFields.push('shellProcessorInfo');
+  } else {
+    validFields.push('processorInfo');
+  }
 
   if (state.ruleForm.timeExpressionType == 'secondDelay') {
     validFields.push('fixedDelay');
@@ -606,6 +635,10 @@ const onSubmitRequest = async ()=>{
     timeExpressionValue = state.ruleForm.fixedRate;
   } else if (state.ruleForm.timeExpressionType == 'oneTime') {
     timeExpressionValue = getTimestampByString(state.ruleForm.executeTime);
+  }
+
+  if (state.ruleForm.processorType == 'shell') {
+    state.ruleForm.processorInfo = state.ruleForm.shellProcessorInfo;
   }
 
   let request = {
@@ -721,7 +754,7 @@ const onChangeExtPramsType = (type :string)=>{
 }
 
 const onShellUpdateContent = (value :string)=>{
-  state.ruleForm.processorInfo = value;
+  state.ruleForm.shellProcessorInfo = value;
 }
 
 const onParamsUpdateContent = (value :string)=>{

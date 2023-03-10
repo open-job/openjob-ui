@@ -141,7 +141,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			// 网站副标题（登录页顶部文字）
 			globalViceTitle: 'Openjob',
 			// 网站副标题（登录页顶部文字）
-			globalViceTitleMsg: '专注、免费、开源的分布式调度框架',
+			globalViceTitleMsg: '一款开源、免费、分布式高性能任务调度框架',
 			// 默认初始语言，可选值"<zh-cn|en|zh-tw>"，默认 zh-cn
 			globalI18n: 'zh-cn',
 			// 默认全局组件大小，可选值"<large|'default'|small>"，默认 'large'
