@@ -39,10 +39,25 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row v-show="state.rowState.inputProcessor">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.processorInfo')" prop="processorInfo">
               <el-input v-model="state.ruleForm.processorInfo" disabled/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row v-show="state.rowState.shellProcessor">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+            <el-form-item :label="t('message.job.job.processorInfo')" prop="shellProcessorInfo">
+              <MonacoEditor
+                ref="shellProcessorMonacoEditor"
+                :editorStyle="state.shellEditor.editorStyle"
+                :language="state.shellEditor.language"
+                :value="state.ruleForm.shellProcessorInfo"
+                :syncValue="state.syncEditor"
+                :readOnly="true"
+                @updateContent="onShellUpdateContent"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -50,10 +65,8 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.paramsType')" prop="paramsType">
               <el-radio-group v-model="state.ruleForm.paramsType">
-                <el-radio label="text">text</el-radio>
-                <el-radio label="json">json</el-radio>
-                <el-radio label="yaml">yaml</el-radio>
-                <el-radio label="properties">properties</el-radio>
+                <el-radio v-for="t in state.contentType" :key="t.value" :label="t.label"
+                          @click="onChangePramsType(t.value)">{{t.value}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -61,7 +74,14 @@
         <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.params')" prop="params">
-              <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
+              <MonacoEditor
+                ref="JobExecuteParamsMonacoEditor"
+                :editorStyle="state.paramsEditor.editorStyle"
+                :language="state.ruleForm.paramsType"
+                :value="state.ruleForm.params"
+                :syncValue="state.syncEditor"
+                @updateContent="onParamsUpdateContent"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -69,10 +89,8 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.extendParamsType')" prop="extendParamsType">
               <el-radio-group v-model="state.ruleForm.extendParamsType">
-                <el-radio label="text">text</el-radio>
-                <el-radio label="json">json</el-radio>
-                <el-radio label="yaml">yaml</el-radio>
-                <el-radio label="properties">properties</el-radio>
+                <el-radio v-for="t in state.contentType" :key="t.value" :label="t.label"
+                          @click="onChangeExtPramsType(t.value)">{{t.value}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -80,7 +98,14 @@
         <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.extendParams')" prop="extendParams">
-              <MonacoEditor ref="JobParamsMonacoEditor"></MonacoEditor>
+              <MonacoEditor
+                ref="JobExecuteExtParamsMonacoEditor"
+                :editorStyle="state.paramsExtEditor.editorStyle"
+                :language="state.ruleForm.extendParamsType"
+                :value="state.ruleForm.extendParams"
+                :syncValue="state.syncEditor"
+                @updateContent="onExtParamsUpdateContent"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -119,25 +144,52 @@ const emit = defineEmits(['refresh']);
 // 定义变量内容
 const appDialogFormRef = ref<FormInstance>();
 const state = reactive({
+  rowState:{
+    inputProcessor: true,
+    shellProcessor: false,
+  },
+  syncEditor: false,
+  shellEditor: {
+    editorStyle: 'width: 95%;height: 220px;',
+    language: 'shell',
+  },
+  paramsEditor: {
+    editorStyle: 'width: 95%;height: 220px;',
+  },
+  paramsExtEditor: {
+    editorStyle: 'width: 95%;height: 150px;',
+  },
   processorType: [
     {
-      value: 'java',
-      label: 'java',
+      value: 'processor',
+      label: 'processor',
     },
     {
       value: 'shell',
       label: 'shell',
-    }
-  ],
-  executeType: [
-    {
-      value: 'standalone',
-      label: '单机',
     },
     {
-      value: 'broadcast',
-      label: '广播',
+      value: 'http',
+      label: 'http',
     }
+  ],
+  contentType: [
+    {
+      value: 'plaintext',
+      label: 'plaintext',
+    },
+    {
+      value: 'json',
+      label: 'json',
+    },
+    {
+      value: 'yaml',
+      label: 'yaml',
+    },
+    {
+      value: 'properties',
+      label: 'properties',
+    },
   ],
   fromRules: {
   },
@@ -146,6 +198,7 @@ const state = reactive({
     appId: 0,
     processorType: 'java',
     processorInfo: '',
+    shellProcessorInfo: '',
     paramsType: 'text',
     params: '',
     extendParamsType:'text',
@@ -174,14 +227,11 @@ const openDialog = async (row: RowJobType) => {
   // Init application
   await initAppList(row);
 
-  state.ruleForm.appId = row.appId;
-  state.ruleForm.name = row.name;
-  state.ruleForm.processorType = row.processorType;
-  state.ruleForm.processorInfo = row.processorInfo;
-  state.ruleForm.paramsType = row.paramsType;
-  state.ruleForm.params = row.params;
-  state.ruleForm.extendParamsType = row.extendParamsType;
-  state.ruleForm.extendParams = row.extendParams;
+  // Reset
+  state.syncEditor = true;
+  await initJob(row);
+  state.syncEditor = false;
+
   state.dialog.title = t("message.app.addTitle");
   state.dialog.submitTxt = t("message.commonBtn.add");
   state.dialog.isShowDialog = true;
@@ -237,6 +287,46 @@ const onSubmitApp = async () => {
 
   closeDialog();
   emit('refresh');
+}
+
+const onChangePramsType = (type :string)=>{
+  state.ruleForm.paramsType = type;
+}
+
+const onChangeExtPramsType = (type :string)=>{
+  state.ruleForm.extendParamsType = type;
+}
+
+const onShellUpdateContent = (value :string)=>{
+  state.ruleForm.shellProcessorInfo = value;
+}
+
+const onParamsUpdateContent = (value :string)=>{
+  state.ruleForm.params = value;
+}
+
+const onExtParamsUpdateContent = (value :string)=>{
+  state.ruleForm.extendParams = value;
+}
+
+const initJob = async (row :RowJobType) => {
+  state.ruleForm.appId = row.appId;
+  state.ruleForm.name = row.name;
+  state.ruleForm.processorType = row.processorType;
+  state.ruleForm.processorInfo = row.processorInfo;
+  state.ruleForm.paramsType = row.paramsType;
+  state.ruleForm.params = row.params;
+  state.ruleForm.extendParamsType = row.extendParamsType;
+  state.ruleForm.extendParams = row.extendParams;
+
+  if (row.processorType == 'shell'){
+    state.rowState.inputProcessor = false;
+    state.rowState.shellProcessor = true;
+    state.ruleForm.shellProcessorInfo = row.processorInfo;
+  }else{
+    state.rowState.inputProcessor = true;
+    state.rowState.shellProcessor = false;
+  }
 }
 
 // 暴露变量
