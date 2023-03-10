@@ -331,6 +331,9 @@ export default {
       },
       timeExpressionTitle: '最近6次执行时间',
       timeExpressionValidMsg: '时间表达式格式错误',
+      executeJobTitle: '执行一次',
+      addJobTitle: '新增任务',
+      updateJobTitle: '更新任务',
     },
     instance: {
       id: '实例ID',

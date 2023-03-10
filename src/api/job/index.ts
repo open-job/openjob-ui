@@ -48,6 +48,13 @@ export function useJobApi() {
         data,
       });
     },
+    execute: (data: object) => {
+      return request({
+        url: JOB_APIS.execute,
+        method: 'post',
+        data,
+      });
+    },
     timeExpression: (data: object) => {
       return request({
         url: JOB_APIS.timeExpression,

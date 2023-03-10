@@ -1,7 +1,7 @@
 <template>
   <el-drawer v-model="state.drawer.isShow" direction="rtl" size="50%">
     <template #header>
-      <h4>新增定时任务</h4>
+      <h4>{{state.dialogTitle}}</h4>
     </template>
     <template #default>
       <div class="system-role-dialog-container" style="padding: 10px;">
@@ -275,8 +275,6 @@ import {defineAsyncComponent, onMounted, reactive, ref} from 'vue';
 import {ElMessage, ElMessageBox, FormInstance} from 'element-plus'
 import {useI18n} from "vue-i18n";
 import {useNamespaceApi} from "/@/api/namespace";
-import {useAppApi} from "/@/api/app";
-import {Local} from "/@/utils/storage";
 import {getHeaderNamespaceId} from "/@/utils/header";
 import {useJobApi} from "/@/api/job";
 import {formatDateByTimestamp, getTimestampByString} from "/@/utils/formatTime";
@@ -289,7 +287,6 @@ const {t} = useI18n();
 
 // 定义接口
 const nsApi = useNamespaceApi();
-const appApi = useAppApi();
 const jobApi = useJobApi();
 
 // 定义变量内容
@@ -299,6 +296,7 @@ const jobFormRef = ref();
 const emit = defineEmits(['refresh']);
 
 const state = reactive({
+  dialogTitle: '',
   rowState:{
     inputProcessor: true,
     shellProcessor: false,
@@ -484,7 +482,7 @@ const initNamespaceList = async () => {
   // 初始化命名空间
   let data = await nsApi.getList({
     page: 1,
-    size: 30,
+    size: 128,
   });
 
   // 清空列表数据
@@ -505,11 +503,15 @@ const openDrawer = async (type: string, selectAppId: number, row: RowJobType) =>
   state.drawer.isShow = true;
 
   if (type === 'add') {
+    state.dialogTitle = t('message.job.job.addJobTitle')
+
     state.syncEditor = true;
     await resetJobContent(selectAppId);
     state.syncEditor = false;
     return;
   }
+
+  state.dialogTitle = t('message.job.job.updateJobTitle')
 
   // Init content.
   state.syncEditor = true;

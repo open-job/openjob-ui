@@ -112,9 +112,9 @@
       </el-form>
       <template #footer>
 				<span class="dialog-footer">
-					<el-button @click="onCancel" size="default">取 消</el-button>
+					<el-button @click="onCancel" size="default">{{t('message.commonBtn.cancel')}}</el-button>
 					<el-button type="primary" @click="onSubmit(appDialogFormRef)" size="default">
-            {{ state.dialog.submitTxt }}
+            {{t('message.commonBtn.confirm')}}
           </el-button>
 				</span>
       </template>
@@ -125,18 +125,18 @@
 <script setup lang="ts" name="systemRoleDialog">
 import {defineAsyncComponent, reactive, ref} from 'vue';
 import {useI18n} from "vue-i18n";
-import {useNamespaceApi} from "/@/api/namespace";
-import {Local} from "/@/utils/storage";
 import {useAppApi} from "/@/api/app";
 import {FormInstance} from "element-plus";
+import {getAppSelectList} from "/@/utils/data";
+import {useJobApi} from "/@/api/job";
+
 const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
 
 
 const {t} = useI18n();
 
 // 定义接口
-const nsApi = useNamespaceApi();
-const appApi = useAppApi();
+const jobApi = useJobApi();
 
 // 定义子组件向父组件传值/事件
 const emit = defineEmits(['refresh']);
@@ -150,14 +150,14 @@ const state = reactive({
   },
   syncEditor: false,
   shellEditor: {
-    editorStyle: 'width: 95%;height: 220px;',
+    editorStyle: 'width: 95%;height: 260px;',
     language: 'shell',
   },
   paramsEditor: {
-    editorStyle: 'width: 95%;height: 220px;',
+    editorStyle: 'width: 95%;height: 260px;',
   },
   paramsExtEditor: {
-    editorStyle: 'width: 95%;height: 150px;',
+    editorStyle: 'width: 95%;height: 120px;',
   },
   processorType: [
     {
@@ -195,6 +195,7 @@ const state = reactive({
   },
   appList: <any>[],
   ruleForm: {
+    id: 0,
     appId: 0,
     processorType: 'java',
     processorInfo: '',
@@ -215,7 +216,6 @@ const state = reactive({
     isShowDialog: false,
     type: '',
     title: '',
-    submitTxt: '',
   },
 });
 
@@ -232,26 +232,20 @@ const openDialog = async (row: RowJobType) => {
   await initJob(row);
   state.syncEditor = false;
 
-  state.dialog.title = t("message.app.addTitle");
-  state.dialog.submitTxt = t("message.commonBtn.add");
+  if (row.processorType == 'shell'){
+    state.paramsEditor.editorStyle = 'width: 95%;height: 60px;';
+    state.paramsExtEditor.editorStyle = 'width: 95%;height: 60px;';
+  }else {
+    state.paramsEditor.editorStyle = 'width: 95%;height: 260px;';
+    state.paramsExtEditor.editorStyle = 'width: 95%;height: 120px;';
+  }
+
+  state.dialog.title = t("message.job.job.executeJobTitle");
   state.dialog.isShowDialog = true;
 };
 
 const initAppList = async (row: RowJobType) => {
-  let data = await appApi.getList({
-    namespaceId: Local.get("nid"),
-    page: 1,
-    size: 30,
-  });
-
-  state.appList = [];
-  data.list.forEach(function (item: Object) {
-    // 列表数据
-    state.appList.push({
-      id: item['id'],
-      label: item['name']
-    })
-  });
+  state.appList = await getAppSelectList();
 
   state.ruleForm.appId = row.appId;
 }
@@ -277,12 +271,10 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
 };
 
 const onSubmitApp = async () => {
-  const statusValue = state.ruleForm.status ? 1 : 2;
-  await appApi.add({
-    "namespaceId": state.ruleForm.namespaceId,
-    "desc": state.ruleForm.desc,
-    "name": state.ruleForm.name,
-    "status": statusValue
+  await jobApi.execute({
+    id: state.ruleForm.id,
+    params: state.ruleForm.params,
+    extendParams: state.ruleForm.extendParams
   });
 
   closeDialog();
@@ -310,6 +302,7 @@ const onExtParamsUpdateContent = (value :string)=>{
 }
 
 const initJob = async (row :RowJobType) => {
+  state.ruleForm.id = row.id;
   state.ruleForm.appId = row.appId;
   state.ruleForm.name = row.name;
   state.ruleForm.processorType = row.processorType;

@@ -331,6 +331,9 @@ export default {
       },
       timeExpressionTitle: 'Next execute time',
       timeExpressionValidMsg: 'Time expression is invalid',
+      executeJobTitle: 'Execute once',
+      addJobTitle: 'Add job',
+      updateJobTitle: 'Update job',
     },
     instance: {
       id: 'ID',
