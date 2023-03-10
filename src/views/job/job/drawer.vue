@@ -550,6 +550,7 @@ const resetJobContent = async (selectAppId: number) => {
 };
 
 const initJobContent = async (row: RowJobType) => {
+  jobFormRef.value?.clearValidate();
   state.ruleForm.id = row.id;
   state.ruleForm.namespaceId = row.namespaceId;
   state.ruleForm.appId = row.appId;
@@ -576,17 +577,32 @@ const initJobContent = async (row: RowJobType) => {
 
   if (row.processorType == 'shell') {
     state.ruleForm.shellProcessorInfo = row.processorInfo;
+    state.ruleForm.processorInfo = '';
   } else {
     state.ruleForm.processorInfo = row.processorInfo;
+    state.ruleForm.shellProcessorInfo = '';
   }
 
 
   if (row.timeExpressionType == 'secondDelay') {
     state.ruleForm.fixedDelay = row.timeExpressionValue.toString();
+    state.ruleForm.fixedRate = '';
+    state.ruleForm.timeExpression = '';
+    state.ruleForm.executeTime = '';
   } else if (row.timeExpressionType == 'fixedRate') {
-    state.ruleForm.fixedRate= row.timeExpressionValue.toString();
+    state.ruleForm.fixedRate = row.timeExpressionValue.toString();
+    state.ruleForm.fixedDelay = '';
+    state.ruleForm.timeExpression = '';
+    state.ruleForm.executeTime = '';
   } else if (row.timeExpressionType == 'oneTime') {
-    state.ruleForm.executeTime=  formatDateByTimestamp(row.timeExpressionValue);
+    state.ruleForm.executeTime = formatDateByTimestamp(row.timeExpressionValue);
+    state.ruleForm.fixedRate = '';
+    state.ruleForm.timeExpression = '';
+    state.ruleForm.fixedDelay = '';
+  } else {
+    state.ruleForm.fixedRate = '';
+    state.ruleForm.fixedRate = '';
+    state.ruleForm.executeTime = '';
   }
 };
 
