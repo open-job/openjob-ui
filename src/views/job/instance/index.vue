@@ -320,7 +320,7 @@ const onOpenAddRole = (type: string) => {
 
 // 打开修改角色弹窗
 const onOpenEditRole = (type: string, row: Object) => {
-  JobDrawerRef.value.openDrawer(type, searchState.form.appId, row);
+  JobDrawerRef.value.openDrawer(row);
 };
 
 // 删除角色

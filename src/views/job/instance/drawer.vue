@@ -28,14 +28,14 @@
 <script setup lang="ts" name="jobDrawerName">
 import {ElMessage} from 'element-plus'
 import {useI18n} from "vue-i18n";
-import {useNamespaceApi} from "/@/api/namespace";
-import {defineAsyncComponent, onMounted, reactive} from "vue";
+import {defineAsyncComponent, reactive} from "vue";
+import {useJobInstanceApi} from "/@/api/job";
 const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
 
 const {t} = useI18n();
 
 // 定义接口
-const nsApi = useNamespaceApi();
+const jobInstanceApi = useJobInstanceApi();
 
 const state = reactive({
   editor: {
@@ -48,16 +48,20 @@ const state = reactive({
   },
 })
 
-const openDrawer = async (row: RowJobType) => {
+const openDrawer = async (row: RowJobInstanceType) => {
   state.drawer.isShow = true;
   state.editor.value = '';
 
-  setInterval(function (){
-    state.editor.value = state.editor.value+"bbb\n";
-    state.editor.value = state.editor.value+"bbb\n";
-    state.editor.value = state.editor.value+"bbb\n";
-    state.editor.value = state.editor.value+"bbb\n";
-  }, 2000)
+  let data = await jobInstanceApi.getProcessorList({
+    jobInstanceId: row.id,
+    executeType: row.executeType,
+    time: 0,
+    page: 20,
+  });
+
+  data.list.forEach(function (line: string) {
+    state.editor.value += line + '\n'
+  });
 }
 const cancelClick = () => {
   state.drawer.isShow = false

@@ -73,6 +73,13 @@ export function useJobInstanceApi() {
         method: 'get',
         params,
       });
+    },
+    getProcessorList: (params?: object) => {
+      return request({
+        url: JOB_INSTANCE_APIS.listProcessorLog,
+        method: 'get',
+        params,
+      });
     }
   };
 }
