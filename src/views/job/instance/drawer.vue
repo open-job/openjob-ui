@@ -72,16 +72,17 @@ const openDrawer = async (row: RowJobInstanceType) => {
 }
 
 const loadingLog = async (row: RowJobInstanceType, isTimer: boolean) => {
-  if (loadingState.counter > 0 && loadingState.counter % 60 == 0 && isTimer) {
+  if (isTimer) {
     state.editor.value += '\n';
   }
 
-  let size = 100;
+  let size = 30;
   let data = await jobInstanceApi.getProcessorList({
+    jobId: row.jobId,
     jobInstanceId: row.id,
     executeType: row.executeType,
     time: loadingState.time,
-    page: size,
+    size: size,
   });
 
   data.list.forEach(function (line: string) {
