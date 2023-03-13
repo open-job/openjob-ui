@@ -1,14 +1,18 @@
 <template>
   <el-drawer v-model="state.drawer.isShow" direction="rtl" size="80%" @close="onDrawerClose()">
     <template #header>
-      <el-descriptions style="margin-top: 10px;" column="6">
-        <el-descriptions-item label="工作节点:" width="260px" align="left">192.168.31.136:25531
+      <el-descriptions style="margin-top: 10px;" :column="state.descriptions.column">
+        <el-descriptions-item :label="t('message.job.instance.workerAddress')" width="260px" align="left">
+          {{state.descriptions.workerAddress}}
         </el-descriptions-item>
-        <el-descriptions-item label="开始时间:" width="260px" align="left">2023-12-12 15:12:12
+        <el-descriptions-item :label="t('message.job.instance.createTime')" width="260px" align="left">
+          {{state.descriptions.createTime}}
         </el-descriptions-item>
-        <el-descriptions-item label="完成时间:" width="260px" align="left">2023-12-12 15:12:12
+        <el-descriptions-item :label="t('message.job.instance.completeTime')" width="260px" align="left">
+          {{state.descriptions.completeTime}}
         </el-descriptions-item>
-        <el-descriptions-item label="任务状态:" width="260px" align="left">成功
+        <el-descriptions-item :label="t('message.job.instance.status')" width="260px" align="left">
+          <el-tag class="ml-2" :type="state.descriptions.statusTag" size="small">{{state.descriptions.statusLabel}}</el-tag>
         </el-descriptions-item>
       </el-descriptions>
     </template>
@@ -39,6 +43,7 @@ import {ElMessage} from 'element-plus'
 import {useI18n} from "vue-i18n";
 import {defineAsyncComponent, reactive} from "vue";
 import {useJobInstanceApi} from "/@/api/job";
+import {getInstanceStatusInfo} from "/@/utils/data";
 
 const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
 
@@ -56,6 +61,14 @@ const state = reactive({
   drawer: {
     isShow: false
   },
+  descriptions: {
+    column: 6,
+    workerAddress: '',
+    createTime: '',
+    completeTime: '',
+    statusTag: '',
+    statusLabel: 'Default',
+  }
 })
 
 const loadingState = reactive({
@@ -65,6 +78,13 @@ const loadingState = reactive({
 });
 
 const openDrawer = async (row: RowJobInstanceType) => {
+  // Description
+  state.descriptions.workerAddress = row.workerAddress;
+  state.descriptions.createTime = row.createTime;
+  state.descriptions.completeTime = row.completeTime;
+  state.descriptions.statusTag = getInstanceStatusInfo(row.status)['tag'];
+  state.descriptions.statusLabel = getInstanceStatusInfo(row.status)['label'];
+
   state.drawer.isShow = true;
   state.editor.value = '';
   loadingState.time = 0;

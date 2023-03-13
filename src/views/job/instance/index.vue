@@ -100,7 +100,11 @@
         <el-table-column prop="jobId" :label="t('message.job.instance.jobId')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" :label="t('message.job.instance.status')"
-                         show-overflow-tooltip></el-table-column>
+                         show-overflow-tooltip>
+          <template #default="scope">
+            <el-tag class="ml-2" :type="getInstanceStatusInfo(scope.row.status)['tag']">{{getInstanceStatusInfo(scope.row.status)['label']}}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="workerAddress" :label="t('message.job.instance.workerAddress')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="executeTime" :label="t('message.job.instance.executeTime')"
@@ -153,7 +157,7 @@ import {useI18n} from 'vue-i18n';
 import {Local} from '/@/utils/storage';
 import {useJobApi, useJobInstanceApi} from "/@/api/job";
 import {formatDateByTimestamp, getTimestampByString} from "/@/utils/formatTime";
-import {getAppSelectList, getInstanceSelectList, getShortcuts} from "/@/utils/data";
+import {getAppSelectList, getInstanceSelectList, getShortcuts, getInstanceStatusInfo} from "/@/utils/data";
 import {getHeaderNamespaceId} from "/@/utils/header";
 
 // 定义变量内容

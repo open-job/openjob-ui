@@ -1,6 +1,7 @@
 import {useI18n} from "vue-i18n";
 import {useAppApi} from "/@/api/app";
 import {getHeaderNamespaceId} from "/@/utils/header";
+import {i18n} from "/@/i18n";
 
 export function getShortcuts(): Object[] {
   // 定义变量内容
@@ -76,7 +77,7 @@ export async function getAppSelectList(): Promise<Object[]> {
   let data = await useAppApi().getList({
     namespaceId: getHeaderNamespaceId(),
     page: 1,
-    size: 30,
+    size: 1024,
   });
 
   let list: Object[] = [];
@@ -119,6 +120,48 @@ export function getInstanceSelectList(): Object[] {
       label: t('message.instanceStatus.cancel')
     }
   ];
+}
+
+export function getInstanceStatusInfo(status: number): Object {
+  const {t} = i18n.global;
+
+  switch (status) {
+    case 1:
+      return {
+        tag: '',
+        label: t('message.instanceStatus.waiting')
+      };
+    case 5:
+      return {
+        tag: '',
+        label: t('message.instanceStatus.running')
+      };
+    case 10:
+      return {
+        tag: 'success',
+        label: t('message.instanceStatus.success')
+      };
+    case 15:
+      return {
+        tag: 'danger',
+        label: t('message.instanceStatus.fail')
+      };
+    case 20:
+      return {
+        tag: 'info',
+        label: t('message.instanceStatus.stop')
+      };
+    case 25:
+      return {
+        tag: 'warning',
+        label: t('message.instanceStatus.cancel')
+      };
+    default:
+      return {
+        tag: '',
+        label: 'Default',
+      };
+  }
 }
 
 export function getTaskStatusSelectList():Object[]{
