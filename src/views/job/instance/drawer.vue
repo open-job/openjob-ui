@@ -68,10 +68,10 @@ const openDrawer = async (row: RowJobInstanceType) => {
   state.drawer.isShow = true;
   state.editor.value = '';
   loadingState.time = 0;
-  await loadingLog(row, false);
+  await loadingLog(row, false, 2);
 }
 
-const loadingLog = async (row: RowJobInstanceType, isTimer: boolean) => {
+const loadingLog = async (row: RowJobInstanceType, isTimer: boolean, loading :number) => {
   if (isTimer) {
     state.editor.value += '\n';
   }
@@ -81,7 +81,9 @@ const loadingLog = async (row: RowJobInstanceType, isTimer: boolean) => {
     jobId: row.jobId,
     jobInstanceId: row.id,
     executeType: row.executeType,
+    status: row.status,
     time: loadingState.time,
+    loading: loading,
     size: size,
   });
 
@@ -99,7 +101,7 @@ const loadingLog = async (row: RowJobInstanceType, isTimer: boolean) => {
 
   if (data.list.length > 0) {
     setTimeout(async () => {
-      await loadingLog(row, false)
+      await loadingLog(row, false, 2)
     }, 500);
     return;
   }
@@ -109,7 +111,7 @@ const loadingLog = async (row: RowJobInstanceType, isTimer: boolean) => {
     loadingState.counter += 1;
     if (loadingState.counter % 6 == 0) {
       clearInterval(loadingState.timerId);
-      loadingLog(row, true);
+      loadingLog(row, true, 1);
     }
   }, 500);
 }
