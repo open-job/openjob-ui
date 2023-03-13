@@ -80,6 +80,13 @@ export function useJobInstanceApi() {
         method: 'get',
         params,
       });
-    }
+    },
+    stop: (data: object) => {
+      return request({
+        url: JOB_INSTANCE_APIS.stop,
+        method: 'post',
+        data,
+      });
+    },
   };
 }

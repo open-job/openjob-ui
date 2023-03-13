@@ -33,6 +33,7 @@ export const JOB_APIS = {
 export const JOB_INSTANCE_APIS = {
   // list
   list: '/admin/job-instance/list',
+  stop: '/admin/job-instance/stop',
   listProcessorLog: '/admin/job-instance/list-processor-log',
 }
 

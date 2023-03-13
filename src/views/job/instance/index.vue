@@ -102,7 +102,9 @@
         <el-table-column prop="status" :label="t('message.job.instance.status')"
                          show-overflow-tooltip>
           <template #default="scope">
-            <el-tag class="ml-2" :type="getInstanceStatusInfo(scope.row.status)['tag']">{{getInstanceStatusInfo(scope.row.status)['label']}}</el-tag>
+            <el-tag class="ml-2" :type="getInstanceStatusInfo(scope.row.status)['tag']">
+              {{ getInstanceStatusInfo(scope.row.status)['label'] }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="workerAddress" :label="t('message.job.instance.workerAddress')"
@@ -115,19 +117,27 @@
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="createTime" :label="t('message.job.instance.createTime')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column label="操作" width="260">
+        <el-table-column label="操作" width="300">
           <template #default="scope">
-            <el-button type="primary" size="default" @click="onOpenEditRole('update',scope.row)">
-              <el-icon>
-                <ele-Edit/>
-              </el-icon>
-              {{ $t('message.commonBtn.update') }}
-            </el-button>
             <el-button type="success" size="default" @click="onOpenEditRole('update',scope.row)">
               <el-icon>
                 <ele-Edit/>
               </el-icon>
               {{ $t('message.job.job.instanceBtn') }}
+            </el-button>
+
+            <el-button type="warning" size="default" @click="onStop(scope.row)">
+              <el-icon>
+                <ele-Delete/>
+              </el-icon>
+              {{ $t('message.commonBtn.delete') }}
+            </el-button>
+
+            <el-button type="danger" size="default" @click="onDel(scope.row)">
+              <el-icon>
+                <ele-Delete/>
+              </el-icon>
+              {{ $t('message.commonBtn.delete') }}
             </el-button>
           </template>
         </el-table-column>
@@ -157,7 +167,12 @@ import {useI18n} from 'vue-i18n';
 import {Local} from '/@/utils/storage';
 import {useJobApi, useJobInstanceApi} from "/@/api/job";
 import {formatDateByTimestamp, getTimestampByString} from "/@/utils/formatTime";
-import {getAppSelectList, getInstanceSelectList, getShortcuts, getInstanceStatusInfo} from "/@/utils/data";
+import {
+  getAppSelectList,
+  getInstanceSelectList,
+  getShortcuts,
+  getInstanceStatusInfo
+} from "/@/utils/data";
 import {getHeaderNamespaceId} from "/@/utils/header";
 
 // 定义变量内容
@@ -225,10 +240,10 @@ const getTableData = async () => {
     page: state.tableData.param.pageNum,
     size: state.tableData.param.pageSize,
   };
-  if (searchState.form.dateSelect[0] !== null){
+  if (searchState.form.dateSelect[0] !== null) {
     request.beginTime = getTimestampByString(searchState.form.dateSelect[0]);
   }
-  if (searchState.form.dateSelect[1] !== null){
+  if (searchState.form.dateSelect[1] !== null) {
     request.endTime = getTimestampByString(searchState.form.dateSelect[1]);
   }
 
@@ -327,17 +342,35 @@ const onOpenEditRole = (type: string, row: Object) => {
   JobDrawerRef.value.openDrawer(row);
 };
 
+const onStop = (row: RowJobInstanceType) => {
+  ElMessageBox.confirm(`此操作将永久删除角色名称：“${row.id}”，是否继续?`, '提示', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(async () => {
+      await instanceApi.stop({
+        id: row.id,
+      });
+
+      await getTableData();
+      ElMessage.success('删除成功');
+    })
+    .catch(() => {
+    });
+}
+
 // 删除角色
-const onDel = (row: RowNamespaceType) => {
+const onDel = (row: RowJobInstanceType) => {
   ElMessageBox.confirm(`此操作将永久删除角色名称：“${row.name}”，是否继续?`, '提示', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
     type: 'warning',
   })
     .then(async () => {
-      await instanceApi.delete({
-        "id": row.id,
-      });
+      // await instanceApi.delete({
+      //   "id": row.id,
+      // });
 
       await getTableData();
       ElMessage.success('删除成功');
