@@ -88,5 +88,12 @@ export function useJobInstanceApi() {
         data,
       });
     },
+    delete: (data: object) => {
+      return request({
+        url: JOB_INSTANCE_APIS.delete,
+        method: 'post',
+        data,
+      });
+    },
   };
 }

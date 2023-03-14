@@ -7,6 +7,7 @@ export default {
     tip: '提示',
     deleteSuccess: '删除成功',
     updateSuccess: '更新成功',
+    stopSuccess: '终止成功',
   },
   dateMsg:{
     rangeMsg: '时间范围',
@@ -33,6 +34,7 @@ export default {
     add: "新增",
     online: "在线",
     offline: "离线",
+    stop: '终止',
   },
   instanceStatus:{
     waiting: '等待',
@@ -345,6 +347,7 @@ export default {
       lastReportTime: '最近上报时间',
       createTime: '创建时间',
       deleteTitle: '你确定要删除实例',
+      stopTitle: '你确定要终止任务实例',
     }
   },
   delay: {
@@ -378,6 +381,7 @@ export default {
       executeTime: '执行时间',
       createTime: '创建时间',
       deleteTitle: '你确定要删除延时任务实例',
+      stopTitle: '你确定要终止延时任务实例',
     }
   },
   server: {

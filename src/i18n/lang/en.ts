@@ -7,6 +7,7 @@ export default {
     tip: 'TIP',
     deleteSuccess: 'Delete success!',
     updateSuccess: 'Update success!',
+    stopSuccess: 'Kill success!',
   },
   dateMsg:{
     rangeMsg: 'Date Time',
@@ -33,6 +34,7 @@ export default {
     add: "Add",
     online: "on-line",
     offline: "off-line",
+    stop: 'Kill',
   },
   instanceStatus:{
     waiting: 'Waiting',
@@ -345,6 +347,7 @@ export default {
       lastReportTime: 'Last Report Time',
       createTime: 'Create Time',
       deleteTitle: 'Are you sure to delete job instance',
+      stopTitle: 'Are you sure to stop job instance',
     }
   },
   delay: {
@@ -378,6 +381,7 @@ export default {
       executeTime: 'Execute Time',
       createTime: 'Create Time',
       deleteTitle: 'Are you sure to delete delay instance',
+      stopTitle: 'Are you sure to stop delay instance',
     }
   },
   server: {

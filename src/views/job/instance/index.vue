@@ -126,11 +126,11 @@
               {{ $t('message.job.job.instanceBtn') }}
             </el-button>
 
-            <el-button type="warning" size="default" @click="onStop(scope.row)">
+            <el-button type="warning" size="default" v-if="scope.row.status === 5" @click="onStop(scope.row)">
               <el-icon>
-                <ele-Delete/>
+                <ele-Stopwatch/>
               </el-icon>
-              {{ $t('message.commonBtn.delete') }}
+              {{ $t('message.commonBtn.stop') }}
             </el-button>
 
             <el-button type="danger" size="default" @click="onDel(scope.row)">
@@ -343,9 +343,9 @@ const onOpenEditRole = (type: string, row: Object) => {
 };
 
 const onStop = (row: RowJobInstanceType) => {
-  ElMessageBox.confirm(`此操作将永久删除角色名称：“${row.id}”，是否继续?`, '提示', {
-    confirmButtonText: '确认',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(t('message.job.instance.stopTitle') + `(${row.id})?`, t('message.commonMsg.tip'), {
+    confirmButtonText: t('message.commonBtn.confirm'),
+    cancelButtonText: t('message.commonBtn.cancel'),
     type: 'warning',
   })
     .then(async () => {
@@ -354,7 +354,7 @@ const onStop = (row: RowJobInstanceType) => {
       });
 
       await getTableData();
-      ElMessage.success('删除成功');
+      ElMessage.success(t('message.commonMsg.stopSuccess'));
     })
     .catch(() => {
     });
@@ -362,18 +362,18 @@ const onStop = (row: RowJobInstanceType) => {
 
 // 删除角色
 const onDel = (row: RowJobInstanceType) => {
-  ElMessageBox.confirm(`此操作将永久删除角色名称：“${row.name}”，是否继续?`, '提示', {
-    confirmButtonText: '确认',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(t('message.job.instance.deleteTitle') + `(${row.id})?`, t('message.commonMsg.tip'), {
+    confirmButtonText: t('message.commonBtn.confirm'),
+    cancelButtonText: t('message.commonBtn.cancel'),
     type: 'warning',
   })
     .then(async () => {
-      // await instanceApi.delete({
-      //   "id": row.id,
-      // });
+      await instanceApi.delete({
+        "id": row.id,
+      });
 
       await getTableData();
-      ElMessage.success('删除成功');
+      ElMessage.success(t('message.commonMsg.deleteSuccess'));
     })
     .catch(() => {
     });
