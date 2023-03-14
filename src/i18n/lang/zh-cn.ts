@@ -358,6 +358,8 @@ export default {
       name: '任务名称',
       processorInfo: '执行器',
       topic: '任务主题',
+      total: '总数',
+      ready: '待消费',
       status: '任务状态',
       description: '任务描述',
       failRetryTimes: '重试次数',

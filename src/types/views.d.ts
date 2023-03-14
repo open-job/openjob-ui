@@ -195,7 +195,12 @@ declare interface RowDelayType {
   description: string;
   processorInfo: string;
   topic: string;
+
+  total: number;
+
+  ready: number;
   failRetryTimes: number;
+
   failRetryInterval: number;
   concurrency: number;
   blockingSize: number;

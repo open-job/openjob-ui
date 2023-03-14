@@ -358,6 +358,8 @@ export default {
       name: 'Name',
       processorInfo: 'Processor',
       topic: 'Topic',
+      total: 'Total',
+      ready: 'Ready',
       status: 'Status',
       description: 'Description',
       failRetryTimes: 'Retry Times',

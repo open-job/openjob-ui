@@ -66,6 +66,10 @@
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="topic" :label="t('message.delay.job.topic')"
                          show-overflow-tooltip></el-table-column>
+        <el-table-column prop="total" :label="t('message.delay.job.total')"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column prop="ready" :label="t('message.delay.job.ready')"
+                         show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" :label="t('message.delay.job.status')" width="200" show-overflow-tooltip>
           <template #default="scope">
             <el-switch
@@ -199,6 +203,8 @@ const getTableData = async () => {
       description: item['description'],
       processorInfo: item['processorInfo'],
       topic: item['topic'],
+      total: item['total'],
+      ready: item['ready'],
       failRetryTimes: item['failRetryTimes'],
       failRetryInterval: item['failRetryInterval'],
       concurrency: item['concurrency'],
