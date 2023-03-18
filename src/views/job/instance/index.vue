@@ -5,8 +5,8 @@
         <el-form ref="tableSearchRef" :model="searchState.form" :rules="searchState.rules">
           <el-row>
             <el-col :xs="8" :sm="12" :md="8" :lg="4" :xl="4" class="mb20">
-              <el-form-item :label="t('message.app.name')" prop="appName">
-                <el-select v-model="searchState.form.appId" filterable
+              <el-form-item :label="t('message.app.name')" prop="appId">
+                <el-select v-model="searchState.form.appId" filterable class="m-2"
                            :placeholder="t('message.commonMsg.all')" size="default"
                            style="width: 90%">
                   <el-option
@@ -119,14 +119,15 @@
                          show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" width="300">
           <template #default="scope">
-            <el-button type="success" size="default" @click="onOpenEditRole('update',scope.row)">
+            <el-button type="success" size="default" @click="onOpenViewRole('update',scope.row)">
               <el-icon>
-                <ele-Edit/>
+                <ele-View/>
               </el-icon>
-              {{ $t('message.job.job.instanceBtn') }}
+              日志
             </el-button>
 
-            <el-button type="warning" size="default" v-if="scope.row.status === 5" @click="onStop(scope.row)">
+            <el-button type="warning" size="default" v-if="scope.row.status === 5"
+                       @click="onStop(scope.row)">
               <el-icon>
                 <ele-Stopwatch/>
               </el-icon>
@@ -174,10 +175,14 @@ import {
   getInstanceStatusInfo
 } from "/@/utils/data";
 import {getHeaderNamespaceId} from "/@/utils/header";
+import {useRouter} from "vue-router";
 
 // 定义变量内容
 const {t} = useI18n();
 const shortcuts = getShortcuts();
+
+// router
+const router = useRouter();
 
 // 定义接口
 const instanceApi = useJobInstanceApi();
@@ -337,8 +342,7 @@ const onOpenAddRole = (type: string) => {
   JobDrawerRef.value.openDrawer(type, searchState.form.appId);
 };
 
-// 打开修改角色弹窗
-const onOpenEditRole = (type: string, row: Object) => {
+const onOpenViewRole = (type: string, row: Object) => {
   JobDrawerRef.value.openDrawer(row);
 };
 
@@ -389,12 +393,18 @@ const onHandleCurrentChange = (val: number) => {
   getTableData();
 };
 
-
 // 页面加载时
 onMounted(async () => {
+  let id = router.currentRoute.value.query.id;
+  let appId = router.currentRoute.value.query.appId;
+
   // Init app list
   selectState.appSelect = await getAppSelectList();
-
+  if (id != undefined && appId != undefined) {
+    await onAppChange(searchState.form.appId);
+    searchState.form.appId = appId;
+    searchState.form.jobId = id;
+  }
   // Init table data.
   await getTableData();
 });

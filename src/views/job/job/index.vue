@@ -92,11 +92,11 @@
               </el-icon>
               {{ $t('message.commonBtn.update') }}
             </el-button>
-            <el-button type="success" size="default" @click="onOpenEditRole('update',scope.row)">
+            <el-button type="success" size="default" @click="onJumpInstance(scope.row)">
               <el-icon>
                 <ele-Edit/>
               </el-icon>
-              {{ $t('message.job.job.instanceBtn') }}
+              任务实例
             </el-button>
             <el-dropdown split-button type="info" size="default" style="margin-left: 12px"
                          @command="onMoreCommand($event, scope.row)">
@@ -145,7 +145,6 @@ import {defineAsyncComponent, reactive, onMounted, ref} from 'vue';
 import {ElMessageBox, ElMessage, FormInstance} from 'element-plus';
 import {useI18n} from 'vue-i18n';
 import {Local} from '/@/utils/storage';
-import {useAppApi} from "/@/api/app";
 import {useRouter} from "vue-router";
 import {useJobApi} from "/@/api/job";
 import {formatDateByTimestamp} from "/@/utils/formatTime";
@@ -161,7 +160,6 @@ const {t} = useI18n();
 
 // 定义接口
 const jobApi = useJobApi();
-const appApi = useAppApi();
 
 // 定义变量内容
 const tableSearchRef = ref<FormInstance>();
@@ -290,16 +288,20 @@ const onMoreCommand = (command: string, row: RowJobType) => {
 // 打开新增角色弹窗
 const onOpenAddRole = (type: string) => {
   JobDrawerRef.value.openDrawer(type, searchState.form.appId);
-  // router.push({
-  //   path: '/admin/job/page',
-  //   params: {
-  //     type: type
-  //   }
-  // })
 };
-// 打开修改角色弹窗
+
 const onOpenEditRole = (type: string, row: Object) => {
   JobDrawerRef.value.openDrawer(type, searchState.form.appId, row);
+};
+
+const onJumpInstance = ( row: RowJobType) => {
+  router.push({
+    path: '/admin/job-instance/list',
+    query: {
+      id:row.id,
+      appId: row.appId,
+    }
+  })
 };
 
 const onDel = (row: RowJobType) => {
