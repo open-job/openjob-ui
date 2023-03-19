@@ -14,7 +14,7 @@
                     :key="item.id"
                     :label="item.label"
                     :value="item.id"
-                    @click="onAppChange(item.id)"
+                    @click="onAppChange(item.id, true)"
                   />
                 </el-select>
               </el-form-item>
@@ -292,7 +292,7 @@ const getTableData = async () => {
   }, 500);
 };
 
-const onAppChange = async (appId: number) => {
+const onAppChange = async (appId: number, isLoadingData :boolean) => {
   searchState.form.jobId = '';
 
   let data = await useJobApi().getList({
@@ -311,7 +311,9 @@ const onAppChange = async (appId: number) => {
     })
   });
 
-  await getTableData();
+  if (isLoadingData){
+    await getTableData();
+  }
 };
 
 const onSearch = (formEl: FormInstance | undefined) => {
@@ -395,16 +397,17 @@ const onHandleCurrentChange = (val: number) => {
 
 // 页面加载时
 onMounted(async () => {
-  let id = router.currentRoute.value.query.id;
-  let appId = router.currentRoute.value.query.appId;
+  const id :number = Number(router.currentRoute.value.query.id);
+  const appId: number = Number(router.currentRoute.value.query.appId);
 
   // Init app list
   selectState.appSelect = await getAppSelectList();
   if (id != undefined && appId != undefined) {
-    await onAppChange(searchState.form.appId);
+    await onAppChange(appId, false);
     searchState.form.appId = appId;
     searchState.form.jobId = id;
   }
+
   // Init table data.
   await getTableData();
 });
