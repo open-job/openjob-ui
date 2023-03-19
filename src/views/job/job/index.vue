@@ -96,7 +96,7 @@
               <el-icon>
                 <ele-Edit/>
               </el-icon>
-              任务实例
+              实例
             </el-button>
             <el-dropdown split-button type="info" size="default" style="margin-left: 12px"
                          @command="onMoreCommand($event, scope.row)">

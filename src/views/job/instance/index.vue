@@ -397,15 +397,15 @@ const onHandleCurrentChange = (val: number) => {
 
 // 页面加载时
 onMounted(async () => {
-  const id :number = Number(router.currentRoute.value.query.id);
-  const appId: number = Number(router.currentRoute.value.query.appId);
+  let id = router.currentRoute.value.query.id;
+  let appId = router.currentRoute.value.query.appId;
 
   // Init app list
   selectState.appSelect = await getAppSelectList();
   if (id != undefined && appId != undefined) {
-    await onAppChange(appId, false);
-    searchState.form.appId = appId;
-    searchState.form.jobId = id;
+    await onAppChange(Number(appId), false);
+    searchState.form.appId = Number(appId);
+    searchState.form.jobId = Number(id);
   }
 
   // Init table data.
