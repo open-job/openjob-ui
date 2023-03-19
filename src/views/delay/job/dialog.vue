@@ -104,10 +104,10 @@
       </el-form>
       <template #footer>
 				<span class="dialog-footer">
-					<el-button @click="onCancel" size="default">取 消</el-button>
-					<el-button type="primary" @click="onSubmit(appDialogFormRef)" size="default">
-            {{ state.dialog.submitTxt }}
+          <el-button type="primary" @click="onSubmit(appDialogFormRef)" size="default">
+            {{t('message.commonBtn.confirm')}}
           </el-button>
+					<el-button @click="onCancel" size="default">{{t('message.commonBtn.cancel')}}</el-button>
 				</span>
       </template>
     </el-dialog>
@@ -153,8 +153,8 @@ const state = reactive({
   namespaceList:<any>[],
   appList:<any>[],
   ruleForm: {
-    namespaceId: 0,
-    appId: 0,
+    namespaceId: '',
+    appId: '',
     id: 0,
     name: '',
     topic: '',
@@ -162,10 +162,10 @@ const state = reactive({
     description: '',
     processorInfo: '',
     failRetryTimes: 3,
-    failRetryInterval: 3,
+    failRetryInterval: 3000,
     concurrency: 1,
-    blockingSize: 2,
-    executeTimeout: 3,
+    blockingSize: 8,
+    executeTimeout: 60000,
   },
   menuData: [] as TreeType[],
   menuProps: {
@@ -189,7 +189,7 @@ const openDialog = async (type: string, row: RowDelayType) => {
   await initNamespace();
   await initAppList();
 
-  if (type === 'update') {
+  if (type === 'update' || type == 'copy') {
     // state.ruleForm=row 这种方式会导致，弹窗状态切换，列表里面数据状态也切换了
     state.ruleForm.name = row.name;
     state.ruleForm.description = row.description;
@@ -204,14 +204,28 @@ const openDialog = async (type: string, row: RowDelayType) => {
     state.ruleForm.concurrency = row.concurrency;
     state.ruleForm.blockingSize = row.blockingSize;
     state.ruleForm.executeTimeout = row.executeTimeout;
-    state.dialog.title = t("message.app.editTitle");
     state.dialog.submitTxt = t("message.commonBtn.update");
+
+    if (type == 'update') {
+      state.dialog.title = t("message.delay.job.updateJobTitle");
+    } else {
+      state.dialog.title = t("message.delay.job.copyJobTitle");
+    }
   } else {
     state.ruleForm.name = '';
     state.ruleForm.description = '';
     state.ruleForm.status = true;
+    state.ruleForm.namespaceId = ''
+    state.ruleForm.appId = '';
+    state.ruleForm.processorInfo = '';
+    state.ruleForm.topic = '';
+    state.ruleForm.failRetryTimes = 3;
+    state.ruleForm.failRetryInterval = 3000;
+    state.ruleForm.concurrency = 1;
+    state.ruleForm.blockingSize = 8;
+    state.ruleForm.executeTimeout = 60000;
     state.ruleForm.namespaceId = Local.get("nid");
-    state.dialog.title = t("message.app.addTitle");
+    state.dialog.title = t("message.delay.job.addJobTitle");
     state.dialog.submitTxt = t("message.commonBtn.add");
   }
   state.dialog.type = type

@@ -35,6 +35,7 @@ export default {
     online: "on-line",
     offline: "off-line",
     stop: 'Kill',
+    instance: 'Instance',
   },
   instanceStatus:{
     waiting: 'Waiting',
@@ -336,6 +337,7 @@ export default {
       executeJobTitle: 'Execute once',
       addJobTitle: 'Add job',
       updateJobTitle: 'Update job',
+      copyJobTitle: 'Copy job',
     },
     instance: {
       id: 'ID',
@@ -368,7 +370,10 @@ export default {
       concurrency: 'concurrency',
       blockingSize: 'Blocking Size',
       createTime: 'Create Time',
-      deleteTitle: 'Are you sure to delete delay job'
+      deleteTitle: 'Are you sure to delete delay job',
+      addJobTitle: 'Add delay job',
+      updateJobTitle: 'Update delay job',
+      copyJobTitle: 'Copy delay job',
     },
     instance: {
       namespaceId: 'Namespace',

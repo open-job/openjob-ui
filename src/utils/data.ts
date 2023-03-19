@@ -164,7 +164,44 @@ export function getInstanceStatusInfo(status: number): Object {
   }
 }
 
-export function getTaskStatusSelectList():Object[]{
+export function getTaskStatusInfo(status: number): Object {
+  const {t} = i18n.global;
+
+  switch (status) {
+    case 5:
+      return {
+        tag: 'info',
+        label: t('message.taskStatus.init')
+      };
+    case 10:
+      return {
+        tag: 'warning',
+        label: t('message.taskStatus.failover')
+      };
+    case 15:
+      return {
+        tag: '',
+        label: t('message.taskStatus.running')
+      };
+    case 20:
+      return {
+        tag: 'success',
+        label: t('message.taskStatus.success')
+      };
+    case 25:
+      return {
+        tag: 'danger',
+        label: t('message.taskStatus.failed')
+      };
+    default:
+      return {
+        tag: '',
+        label: 'default'
+      };
+  }
+}
+
+export function getTaskStatusSelectList(): Object[] {
   const {t} = useI18n();
 
   return [

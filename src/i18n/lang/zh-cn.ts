@@ -35,6 +35,7 @@ export default {
     online: "在线",
     offline: "离线",
     stop: '终止',
+    instance: '实例',
   },
   instanceStatus:{
     waiting: '等待',
@@ -336,6 +337,7 @@ export default {
       executeJobTitle: '执行一次',
       addJobTitle: '新增任务',
       updateJobTitle: '更新任务',
+      copyJobTitle: '复制任务',
     },
     instance: {
       id: '实例ID',
@@ -369,6 +371,9 @@ export default {
       blockingSize: '缓存大小',
       createTime: '创建时间',
       deleteTitle: '你确定要删除延时任务',
+      addJobTitle: '新增延时任务',
+      updateJobTitle: '更新延时任务',
+      copyJobTitle: '复制延时任务',
     },
     instance: {
       namespaceId: '命名空间',

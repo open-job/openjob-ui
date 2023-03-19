@@ -83,7 +83,7 @@
         </el-table-column>
         <el-table-column prop="createTime" :label="t('message.delay.job.createTime')"
                          width="200" show-overflow-tooltip></el-table-column>
-        <el-table-column label="操作" width="300">
+        <el-table-column label="操作" width="360">
           <template #default="scope">
             <el-button type="primary" size="default" @click="onOpenEditRole('update',scope.row)">
               <el-icon>
@@ -91,12 +91,28 @@
               </el-icon>
               {{ $t('message.commonBtn.update') }}
             </el-button>
-            <el-button type="danger" size="default" @click="onDel(scope.row)">
+            <el-button type="success" size="default" @click="onJumpInstance(scope.row)">
               <el-icon>
-                <ele-Delete/>
+                <ele-Monitor/>
               </el-icon>
-              {{ $t('message.commonBtn.delete') }}
+              {{ $t('message.commonBtn.instance') }}
             </el-button>
+            <el-dropdown split-button type="info" size="default" style="margin-left: 12px"
+                         @command="onMoreCommand($event, scope.row)">
+              {{ $t('message.commonBtn.more') }}
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item command="copy">{{
+                      $t('message.commonBtn.copy')
+                    }}
+                  </el-dropdown-item>
+                  <el-dropdown-item command="delete">{{
+                      $t('message.commonBtn.delete')
+                    }}
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </template>
         </el-table-column>
       </el-table>
@@ -128,6 +144,7 @@ import {useDelayApi} from "/@/api/delay";
 import {formatDateByTimestamp} from "/@/utils/formatTime";
 import {getHeaderNamespaceId} from "/@/utils/header";
 import {getAppSelectList} from "/@/utils/data";
+import router from "/@/router";
 
 
 // 定义变量内容
@@ -255,10 +272,10 @@ const onOpenEditRole = (type: string, row: Object) => {
   nsDialogRef.value.openDialog(type, row);
 };
 // 删除角色
-const onDel = (row: RowNamespaceType) => {
-  ElMessageBox.confirm(`此操作将永久删除角色名称：“${row.name}”，是否继续?`, '提示', {
-    confirmButtonText: '确认',
-    cancelButtonText: '取消',
+const onDel = (row: RowDelayType) => {
+  ElMessageBox.confirm(t('message.delay.job.deleteTitle') + `(${row.name})?`, t('message.commonMsg.tip'), {
+    confirmButtonText: t('message.commonBtn.confirm'),
+    cancelButtonText: t('message.commonBtn.cancel'),
     type: 'warning',
   })
     .then(async () => {
@@ -267,11 +284,34 @@ const onDel = (row: RowNamespaceType) => {
       });
 
       await getTableData();
-      ElMessage.success('删除成功');
+      ElMessage.success(t('message.commonMsg.deleteSuccess'));
     })
     .catch(() => {
     });
 };
+
+const onJumpInstance = ( row: RowDelayType) => {
+  router.push({
+    path: '/admin/delay-instance/list',
+    query: {
+      appId: row.appId,
+      delayId: row.id
+    }
+  })
+};
+
+const onMoreCommand = (command: string, row: RowDelayType) => {
+  if (command === 'copy') {
+    nsDialogRef.value.openDialog('copy', row);
+    return;
+  }
+
+  if (command === 'delete') {
+    onDel(row);
+    return;
+  }
+};
+
 // 分页改变
 const onHandleSizeChange = (val: number) => {
   state.tableData.param.pageSize = val;

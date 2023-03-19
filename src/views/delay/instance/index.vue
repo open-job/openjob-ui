@@ -15,7 +15,7 @@
                     :key="item.id"
                     :label="item.label"
                     :value="item.id"
-                    @click="onAppChange(item.id)"
+                    @click="onAppChange(item.id, true)"
                   />
                 </el-select>
               </el-form-item>
@@ -99,7 +99,9 @@
         <el-table-column prop="status" :label="t('message.delay.instance.status')"
                          show-overflow-tooltip>
           <template #default="scope">
-            {{ scope.row.status }}
+            <el-tag class="ml-2" :type="getTaskStatusInfo(scope.row.status)['tag']">
+              {{ getTaskStatusInfo(scope.row.status)['label'] }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="executeTime" :label="t('message.delay.instance.executeTime')"
@@ -113,6 +115,13 @@
                 <ele-Edit/>
               </el-icon>
               {{ $t('message.commonBtn.update') }}
+            </el-button>
+            <el-button type="warning" size="default" v-if="scope.row.status === 15"
+                       @click="onStop(scope.row)">
+              <el-icon>
+                <ele-Stopwatch/>
+              </el-icon>
+              {{ $t('message.commonBtn.stop') }}
             </el-button>
             <el-button type="danger" size="default" @click="onDel(scope.row)">
               <el-icon>
@@ -149,7 +158,8 @@ import {useAppApi} from "/@/api/app";
 import {getHeaderNamespaceId} from "/@/utils/header";
 import {useDelayApi, useDelayInstanceApi} from "/@/api/delay";
 import {formatDateByTimestamp, getTimestampByString} from "/@/utils/formatTime";
-import {getAppSelectList, getShortcuts, getTaskStatusSelectList} from "/@/utils/data";
+import {getAppSelectList, getShortcuts, getTaskStatusSelectList, getTaskStatusInfo} from "/@/utils/data";
+import router from "/@/router";
 
 // 定义变量内容
 const {t} = useI18n();
@@ -262,7 +272,7 @@ const getTableData = async () => {
 
 const shortcuts = getShortcuts();
 
-const onAppChange = async (appId: number) => {
+const onAppChange = async (appId: number, isLoading :boolean) => {
   searchState.form.delayId = '';
 
   let data = await useDelayApi().getList({
@@ -281,7 +291,9 @@ const onAppChange = async (appId: number) => {
     })
   });
 
-  await getTableData();
+  if (isLoading){
+    await getTableData();
+  }
 };
 
 const onSearch = (formEl: FormInstance | undefined) => {
@@ -343,8 +355,16 @@ const onHandleCurrentChange = (val: number) => {
 
 // 页面加载时
 onMounted(async () => {
+  let delayId = router.currentRoute.value.query.delayId;
+  let appId = router.currentRoute.value.query.appId;
+
   // Init app list
   selectState.appList = await getAppSelectList();
+  if (delayId != undefined && appId != undefined) {
+    await onAppChange(Number(appId), false);
+    searchState.form.appId = Number(appId);
+    searchState.form.delayId = Number(delayId);
+  }
 
   // Init table data
   await getTableData();

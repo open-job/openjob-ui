@@ -263,8 +263,8 @@
     </template>
     <template #footer>
       <div style="flex: auto;text-align: left;padding-left: 30px;padding-bottom: 10px;">
-        <el-button type="primary" @click="confirmClick(jobFormRef)">{{t('message.commonBtn.confirm')}}</el-button>
-        <el-button @click="cancelClick">{{t('message.commonBtn.cancel')}}</el-button>
+        <el-button type="primary" @click="confirmClick(jobFormRef)" size="default">{{t('message.commonBtn.confirm')}}</el-button>
+        <el-button @click="cancelClick" size="default">{{t('message.commonBtn.cancel')}}</el-button>
       </div>
     </template>
   </el-drawer>
@@ -511,7 +511,11 @@ const openDrawer = async (type: string, selectAppId: number, row: RowJobType) =>
     return;
   }
 
-  state.dialogTitle = t('message.job.job.updateJobTitle')
+  if (type == 'update'){
+    state.dialogTitle = t('message.job.job.updateJobTitle')
+  }else{
+    state.dialogTitle = t('message.job.job.copyJobTitle')
+  }
 
   // Init content.
   state.syncEditor = true;

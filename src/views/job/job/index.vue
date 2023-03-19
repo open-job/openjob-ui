@@ -94,9 +94,9 @@
             </el-button>
             <el-button type="success" size="default" @click="onJumpInstance(scope.row)">
               <el-icon>
-                <ele-Edit/>
+                <ele-Monitor/>
               </el-icon>
-              实例
+              {{ $t('message.commonBtn.instance') }}
             </el-button>
             <el-dropdown split-button type="info" size="default" style="margin-left: 12px"
                          @command="onMoreCommand($event, scope.row)">
