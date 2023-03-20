@@ -386,6 +386,7 @@ export default {
       delayExtra: 'Extend params',
       status: 'Status',
       executeTime: 'Execute Time',
+      completeTime: 'Complete Time',
       createTime: 'Create Time',
       deleteTitle: 'Are you sure to delete delay instance',
       stopTitle: 'Are you sure to stop delay instance',

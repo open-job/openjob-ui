@@ -59,6 +59,20 @@ export function useDelayInstanceApi() {
         method: 'get',
         params,
       });
-    }
+    },
+    delete: (data: object) => {
+      return request({
+        url: DELAY_INSTANCE_APIS.delete,
+        method: 'post',
+        data,
+      });
+    },
+    stop: (data: object) => {
+      return request({
+        url: DELAY_INSTANCE_APIS.stop,
+        method: 'post',
+        data,
+      });
+    },
   };
 }

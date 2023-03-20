@@ -50,6 +50,8 @@ export const DELAY_APIS = {
 export const DELAY_INSTANCE_APIS = {
   // list
   list: '/admin/delay-instance/list',
+  delete: '/admin/delay-instance/delete',
+  stop: '/admin/delay-instance/stop',
 }
 
 export const NAMESPACE_APIS = {

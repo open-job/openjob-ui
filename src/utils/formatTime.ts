@@ -52,6 +52,9 @@ export function formatDate(date: Date, format: string): string {
 }
 
 export function formatDateByTimestamp(timestamp: number): string {
+  if (timestamp == null || timestamp == 0) {
+    return '-';
+  }
   return formatDate(new Date(timestamp * 1000), "YYYY-mm-dd HH:MM:SS");
 }
 

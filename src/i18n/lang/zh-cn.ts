@@ -386,6 +386,7 @@ export default {
       delayExtra: '扩展参数',
       status: '任务状态',
       executeTime: '执行时间',
+      completeTime: '完成时间',
       createTime: '创建时间',
       deleteTitle: '你确定要删除延时任务实例',
       stopTitle: '你确定要终止延时任务实例',

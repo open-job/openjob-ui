@@ -90,8 +90,6 @@
       </div>
       <el-table :data="state.tableData.data" v-loading="state.tableData.loading"
                 style="width: 100%">
-        <el-table-column prop="appName" :label="t('message.delay.instance.appName')"
-                         show-overflow-tooltip></el-table-column>
         <el-table-column prop="taskId" :label="t('message.delay.instance.taskId')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="topic" :label="t('message.delay.instance.topic')"
@@ -105,6 +103,8 @@
           </template>
         </el-table-column>
         <el-table-column prop="executeTime" :label="t('message.delay.instance.executeTime')"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column prop="completeTime" :label="t('message.delay.instance.completeTime')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="createTime" :label="t('message.delay.instance.createTime')"
                          show-overflow-tooltip></el-table-column>
@@ -154,7 +154,6 @@
 import {defineAsyncComponent, reactive, onMounted, ref} from 'vue';
 import {ElMessageBox, ElMessage, FormInstance} from 'element-plus';
 import {useI18n} from 'vue-i18n';
-import {useAppApi} from "/@/api/app";
 import {getHeaderNamespaceId} from "/@/utils/header";
 import {useDelayApi, useDelayInstanceApi} from "/@/api/delay";
 import {formatDateByTimestamp, getTimestampByString} from "/@/utils/formatTime";
@@ -165,7 +164,6 @@ import router from "/@/router";
 const {t} = useI18n();
 
 // 定义接口
-const appApi = useAppApi();
 const delayInstanceApi = useDelayInstanceApi();
 
 // 定义变量内容
@@ -261,6 +259,7 @@ const getTableData = async () => {
       delayExtra: item['delayExtra'],
       createTime: formatDateByTimestamp(item['createTime']),
       executeTime: formatDateByTimestamp(item['executeTime']),
+      completeTime: formatDateByTimestamp(item['completeTime']),
     })
   });
 
@@ -331,7 +330,7 @@ const onDel = (row: RowNamespaceType) => {
     type: 'warning',
   })
     .then(async () => {
-      await appApi.delete({
+      await useDelayInstanceApi().delete({
         "id": row.id,
       });
 
