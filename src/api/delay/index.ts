@@ -74,5 +74,12 @@ export function useDelayInstanceApi() {
         data,
       });
     },
+    getProcessorList: (params?: object) => {
+      return request({
+        url: DELAY_INSTANCE_APIS.listProcessorLog,
+        method: 'get',
+        params,
+      });
+    },
   };
 }

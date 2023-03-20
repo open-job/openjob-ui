@@ -26,6 +26,7 @@ export default {
     cancel: 'Cancel',
     query: "Query",
     reset: "Reset",
+    log: 'Log',
     view: "View",
     update: "Update",
     copy: 'Copy',

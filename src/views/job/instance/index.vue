@@ -83,12 +83,6 @@
                 </el-icon>
                 {{ $t('message.commonBtn.reset') }}
               </el-button>
-              <el-button size="default" type="success" class="ml10" @click="onOpenAddRole('add')">
-                <el-icon>
-                  <ele-FolderAdd/>
-                </el-icon>
-                {{ $t('message.commonBtn.add') }}
-              </el-button>
             </el-col>
           </el-row>
         </el-form>
@@ -119,11 +113,11 @@
                          show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" width="300">
           <template #default="scope">
-            <el-button type="success" size="default" @click="onOpenViewRole('update',scope.row)">
+            <el-button type="primary" size="default" @click="onOpenViewRole('update',scope.row)">
               <el-icon>
                 <ele-View/>
               </el-icon>
-              日志
+              {{ $t('message.commonBtn.log') }}
             </el-button>
 
             <el-button type="warning" size="default" v-if="scope.row.status === 5"
@@ -337,11 +331,6 @@ const onReset = () => {
     null
   ];
   getTableData();
-};
-
-// 打开新增角色弹窗
-const onOpenAddRole = (type: string) => {
-  JobDrawerRef.value.openDrawer(type, searchState.form.appId);
 };
 
 const onOpenViewRole = (type: string, row: Object) => {

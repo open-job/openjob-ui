@@ -26,6 +26,7 @@ export default {
     cancel: '取消',
     query: "查询",
     reset: "重置",
+    log: '日志',
     view: "查看",
     update: "更新",
     copy: '复制',

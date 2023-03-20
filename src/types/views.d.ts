@@ -233,7 +233,7 @@ declare interface RowDelayInstanceType {
   delayExtra: string;
   status: number;
   executeTime: string
-
+  workerAddress: string
   completeTime: string
   createTime: string;
 }

@@ -110,11 +110,11 @@
                          show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" width="300">
           <template #default="scope">
-            <el-button type="primary" size="default" @click="onOpenEditRole('update',scope.row)">
+            <el-button type="primary" size="default" @click="onOpenLogDrawer(scope.row)">
               <el-icon>
-                <ele-Edit/>
+                <ele-View/>
               </el-icon>
-              {{ $t('message.commonBtn.update') }}
+              {{ $t('message.commonBtn.log') }}
             </el-button>
             <el-button type="warning" size="default" v-if="scope.row.status === 15"
                        @click="onStop(scope.row)">
@@ -146,7 +146,7 @@
       >
       </el-pagination>
     </div>
-    <NsDialog ref="nsDialogRef" @refresh="getTableData()"/>
+    <JobDrawer ref="JobDrawerRef" @refresh="getTableData()"/>
   </div>
 </template>
 
@@ -171,11 +171,12 @@ const tableSearchRef = ref<FormInstance>();
 
 
 // 引入组件
-const NsDialog = defineAsyncComponent(() => import('/@/views/delay/instance/dialog.vue'));
+const JobDrawer = defineAsyncComponent(() => import('/@/views/delay/instance/drawer.vue'));
 
 // 定义变量内容
-const nsDialogRef = ref();
+const JobDrawerRef = ref();
 
+// 定义变量内容
 const selectState = reactive<any>({
   appList: [],
   topicList: [],
@@ -257,6 +258,7 @@ const getTableData = async () => {
       topic: item['topic'],
       delayParams: item['delayParams'],
       delayExtra: item['delayExtra'],
+      workerAddress: item['workerAddress'],
       createTime: formatDateByTimestamp(item['createTime']),
       executeTime: formatDateByTimestamp(item['executeTime']),
       completeTime: formatDateByTimestamp(item['completeTime']),
@@ -318,10 +320,11 @@ const onReset = () => {
   getTableData();
 };
 
-// 打开修改角色弹窗
-const onOpenEditRole = (type: string, row: Object) => {
-  nsDialogRef.value.openDialog(type, row);
+const onOpenLogDrawer = (row: RowDelayInstanceType) => {
+  JobDrawerRef.value.openDrawer(row);
 };
+
+
 // 删除角色
 const onDel = (row: RowNamespaceType) => {
   ElMessageBox.confirm(`此操作将永久删除角色名称：“${row.name}”，是否继续?`, '提示', {

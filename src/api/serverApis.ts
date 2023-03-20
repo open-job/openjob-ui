@@ -52,6 +52,7 @@ export const DELAY_INSTANCE_APIS = {
   list: '/admin/delay-instance/list',
   delete: '/admin/delay-instance/delete',
   stop: '/admin/delay-instance/stop',
+  listProcessorLog: '/admin/delay-instance/list-processor-log',
 }
 
 export const NAMESPACE_APIS = {
