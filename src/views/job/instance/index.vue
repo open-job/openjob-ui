@@ -355,7 +355,6 @@ const onStop = (row: RowJobInstanceType) => {
     });
 }
 
-// 删除角色
 const onDel = (row: RowJobInstanceType) => {
   ElMessageBox.confirm(t('message.job.instance.deleteTitle') + `(${row.id})?`, t('message.commonMsg.tip'), {
     confirmButtonText: t('message.commonBtn.confirm'),
