@@ -70,17 +70,6 @@
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="ready" :label="t('message.delay.job.ready')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="status" :label="t('message.delay.job.status')" width="200" show-overflow-tooltip>
-          <template #default="scope">
-            <el-switch
-              v-model="scope.row.status"
-              class="ml-2"
-              size="default"
-              @change="onSwitch($event, scope.row)"
-              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-            />
-          </template>
-        </el-table-column>
         <el-table-column prop="createTime" :label="t('message.delay.job.createTime')"
                          width="200" show-overflow-tooltip></el-table-column>
         <el-table-column :label="t('message.commonMsg.operation')" width="360">
@@ -139,10 +128,8 @@ import {defineAsyncComponent, reactive, onMounted, ref} from 'vue';
 import {ElMessageBox, ElMessage, FormInstance} from 'element-plus';
 import {useI18n} from 'vue-i18n';
 import {Local} from '/@/utils/storage';
-import {useAppApi} from "/@/api/app";
 import {useDelayApi} from "/@/api/delay";
 import {formatDateByTimestamp} from "/@/utils/formatTime";
-import {getHeaderNamespaceId} from "/@/utils/header";
 import {getAppSelectList} from "/@/utils/data";
 import router from "/@/router";
 
@@ -151,7 +138,6 @@ import router from "/@/router";
 const {t} = useI18n();
 
 // 定义接口
-const appApi = useAppApi();
 const delayApi = useDelayApi();
 
 // 定义变量内容
@@ -216,7 +202,6 @@ const getTableData = async () => {
       appName: item['appName'],
       namespaceId: item['namespaceId'],
       appId: item['appId'],
-      status: item['status'] === 1,
       description: item['description'],
       processorInfo: item['processorInfo'],
       topic: item['topic'],
@@ -235,14 +220,6 @@ const getTableData = async () => {
   setTimeout(() => {
     state.tableData.loading = false;
   }, 500);
-};
-
-const onSwitch = async (event: object, row: EmptyObjectType) => {
-  const statusValue = event ? 1 : 2;
-  await delayApi.updateStatus({
-    "id": row.id,
-    "status": statusValue,
-  });
 };
 
 const onSearch = (formEl: FormInstance | undefined) => {

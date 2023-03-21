@@ -151,7 +151,7 @@
       >
       </el-pagination>
     </div>
-    <JobDrawer ref="JobDrawerRef" @refresh="getTableData()"/>
+    <StandaloneDrawer ref="StandaloneDrawerRef" @refresh="getTableData()"/>
   </div>
 </template>
 
@@ -185,10 +185,10 @@ const instanceApi = useJobInstanceApi();
 const tableSearchRef = ref<FormInstance>();
 
 // 引入组件
-const JobDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer.vue'));
+const StandaloneDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-standalone.vue'));
 
 // 定义变量内容
-const JobDrawerRef = ref();
+const StandaloneDrawerRef = ref();
 
 const selectState = reactive<any>({
   appSelect: [],
@@ -286,7 +286,7 @@ const getTableData = async () => {
   }, 500);
 };
 
-const onAppChange = async (appId: number, isLoadingData :boolean) => {
+const onAppChange = async (appId: number, isLoadingData: boolean) => {
   searchState.form.jobId = '';
 
   let data = await useJobApi().getList({
@@ -305,7 +305,7 @@ const onAppChange = async (appId: number, isLoadingData :boolean) => {
     })
   });
 
-  if (isLoadingData){
+  if (isLoadingData) {
     await getTableData();
   }
 };
@@ -333,8 +333,13 @@ const onReset = () => {
   getTableData();
 };
 
-const onOpenViewRole = (type: string, row: Object) => {
-  JobDrawerRef.value.openDrawer(row);
+const onOpenViewRole = (type: string, row: RowJobInstanceType) => {
+  if (row.executeType == 'standalone') {
+    StandaloneDrawerRef.value.openDrawer(row);
+    return
+  }
+
+  ElMessage.success('Not supported! type=' + row.executeType);
 };
 
 const onStop = (row: RowJobInstanceType) => {

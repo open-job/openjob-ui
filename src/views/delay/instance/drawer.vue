@@ -31,8 +31,8 @@
     </template>
     <template #footer>
       <div style="flex: auto;text-align: left;padding-left: 30px;padding-bottom: 10px;">
-        <el-button type="primary" @click="confirmClick">confirm</el-button>
-        <el-button @click="cancelClick">cancel</el-button>
+        <el-button type="primary" @click="confirmClick" size="default">{{t('message.commonBtn.confirm')}}</el-button>
+        <el-button @click="cancelClick" size="default">{{t('message.commonBtn.cancel')}}</el-button>
       </div>
     </template>
   </el-drawer>

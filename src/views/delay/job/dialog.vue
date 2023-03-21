@@ -59,19 +59,6 @@
         </el-row>
         <el-row>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item :label="t('message.delay.job.status')" prop="status">
-              <el-switch
-                v-model="state.ruleForm.status"
-                class="ml-2"
-                name="status"
-                size="default"
-                style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949;"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.delay.job.failRetryTimes')" prop="failRetryTimes">
               <el-input-number v-model="state.ruleForm.failRetryTimes" clearable></el-input-number>
             </el-form-item>
@@ -158,14 +145,13 @@ const state = reactive({
     id: 0,
     name: '',
     topic: '',
-    status: true,
     description: '',
     processorInfo: '',
     failRetryTimes: 3,
-    failRetryInterval: 3000,
+    failRetryInterval: 3,
     concurrency: 1,
     blockingSize: 8,
-    executeTimeout: 60000,
+    executeTimeout: 60,
   },
   menuData: [] as TreeType[],
   menuProps: {
@@ -193,7 +179,6 @@ const openDialog = async (type: string, row: RowDelayType) => {
     // state.ruleForm=row 这种方式会导致，弹窗状态切换，列表里面数据状态也切换了
     state.ruleForm.name = row.name;
     state.ruleForm.description = row.description;
-    state.ruleForm.status = row.status;
     state.ruleForm.id = row.id;
     state.ruleForm.namespaceId = row.namespaceId
     state.ruleForm.appId = row.appId;
@@ -214,16 +199,15 @@ const openDialog = async (type: string, row: RowDelayType) => {
   } else {
     state.ruleForm.name = '';
     state.ruleForm.description = '';
-    state.ruleForm.status = true;
     state.ruleForm.namespaceId = ''
     state.ruleForm.appId = '';
     state.ruleForm.processorInfo = '';
     state.ruleForm.topic = '';
     state.ruleForm.failRetryTimes = 3;
-    state.ruleForm.failRetryInterval = 3000;
+    state.ruleForm.failRetryInterval = 3;
     state.ruleForm.concurrency = 1;
     state.ruleForm.blockingSize = 8;
-    state.ruleForm.executeTimeout = 60000;
+    state.ruleForm.executeTimeout = 60;
     state.ruleForm.namespaceId = Local.get("nid");
     state.dialog.title = t("message.delay.job.addJobTitle");
     state.dialog.submitTxt = t("message.commonBtn.add");
@@ -252,7 +236,6 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
 };
 
 const onSubmitApp = async ()=>{
-  const statusValue = state.ruleForm.status ? 1 : 2;
   if (state.dialog.type === 'update') {
     await delayApi.update({
       "id": state.ruleForm.id,
@@ -266,7 +249,6 @@ const onSubmitApp = async ()=>{
       "concurrency": state.ruleForm.concurrency,
       "blockingSize": state.ruleForm.blockingSize,
       "name": state.ruleForm.name,
-      "status": statusValue,
       "executeTimeout": state.ruleForm.executeTimeout
     });
   } else {
@@ -281,7 +263,6 @@ const onSubmitApp = async ()=>{
       "concurrency": state.ruleForm.concurrency,
       "blockingSize": state.ruleForm.blockingSize,
       "name": state.ruleForm.name,
-      "status": statusValue,
       "executeTimeout": state.ruleForm.executeTimeout
     });
   }

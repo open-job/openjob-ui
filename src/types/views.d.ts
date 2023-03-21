@@ -203,7 +203,6 @@ declare interface RowDelayType {
   concurrency: number;
   blockingSize: number;
   executeTimeout: number,
-  status: boolean;
   createTime: string;
 }
 
