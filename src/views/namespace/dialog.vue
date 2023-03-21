@@ -17,19 +17,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item :label="t('message.namespace.status')" prop="status">
-              <el-switch
-                v-model="state.ruleForm.status"
-                class="ml-2"
-                name="status"
-                size="default"
-                style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949;"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <template #footer>
 				<span class="dialog-footer">
@@ -63,7 +50,6 @@ const state = reactive({
   ruleForm: {
     id: 0,
     name: '',
-    status: true,
     uniqueId: '',
   },
   menuData: [] as TreeType[],
@@ -95,14 +81,12 @@ const openDialog = (type: string, row: RowNamespaceType) => {
     // state.ruleForm=row 这种方式会导致，弹窗状态切换，列表里面数据状态也切换了
     state.ruleForm.name = row.name;
     state.ruleForm.uniqueId = row.uniqueId;
-    state.ruleForm.status = row.status;
     state.ruleForm.id = row.id;
     state.dialog.title = t("message.namespace.editTitle");
     state.dialog.submitTxt = t("message.commonBtn.update");
   } else {
     state.ruleForm.name = '';
     state.ruleForm.uniqueId = '';
-    state.ruleForm.status = true;
     state.dialog.title = t("message.namespace.addTitle");
     state.dialog.submitTxt = t("message.commonBtn.add");
   }
@@ -130,17 +114,14 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
 };
 
 const onSubmitNs = async ()=>{
-  const statusValue = state.ruleForm.status ? 1 : 2;
   if (state.dialog.type === 'update') {
     await nsApi.update({
       "id": state.ruleForm.id,
       "name": state.ruleForm.name,
-      "status": statusValue,
     });
   } else {
     await nsApi.add({
       "name": state.ruleForm.name,
-      "status": statusValue,
     });
   }
 

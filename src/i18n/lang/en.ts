@@ -8,6 +8,7 @@ export default {
     deleteSuccess: 'Delete success!',
     updateSuccess: 'Update success!',
     stopSuccess: 'Kill success!',
+    operation: 'Operation',
   },
   dateMsg:{
     rangeMsg: 'Date Time',

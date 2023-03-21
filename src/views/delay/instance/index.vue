@@ -108,7 +108,7 @@
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="createTime" :label="t('message.delay.instance.createTime')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column label="操作" width="300">
+        <el-table-column :label="t('message.commonMsg.operation')" width="300">
           <template #default="scope">
             <el-button type="primary" size="default" @click="onOpenLogDrawer(scope.row)">
               <el-icon>

@@ -79,7 +79,6 @@ declare interface RowNamespaceType {
   id: number;
   name: string;
   uniqueId: string;
-  status: boolean;
   createTime: string;
 }
 
@@ -97,7 +96,6 @@ declare interface RowAppType {
   namespaceName: string;
   name: string;
   desc: string;
-  status: boolean;
   createTime: string;
 }
 

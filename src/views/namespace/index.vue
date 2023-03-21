@@ -43,20 +43,9 @@
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="uniqueId" :label="t('message.namespace.uniqueId')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="status" :label="t('message.namespace.status')" show-overflow-tooltip>
-          <template #default="scope">
-            <el-switch
-              v-model="scope.row.status"
-              class="ml-2"
-              size="default"
-              @change="onSwitch($event, scope.row)"
-              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-            />
-          </template>
-        </el-table-column>
         <el-table-column prop="createTime" :label="t('message.namespace.createTime')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column label="操作" width="300">
+        <el-table-column :label="t('message.commonMsg.operation')" width="300">
           <template #default="scope">
             <el-button type="primary" size="default" @click="onOpenEditRole('update',scope.row)">
               <el-icon>
@@ -64,7 +53,7 @@
               </el-icon>
               {{ $t('message.commonBtn.update') }}
             </el-button>
-            <el-button type="danger" size="default" @click="onDel(scope.row)">
+            <el-button type="danger" size="default" :disabled="scope.row.id === 1" @click="onDel(scope.row)">
               <el-icon>
                 <ele-Delete/>
               </el-icon>
@@ -151,7 +140,6 @@ const getTableData = async () => {
     state.tableData.data.push({
       id: item['id'],
       name: item['name'],
-      status: item['status'] === 1,
       uniqueId: item['uuid'],
       createTime: formatDateByTimestamp(item['createTime']),
     })
@@ -161,14 +149,6 @@ const getTableData = async () => {
   setTimeout(() => {
     state.tableData.loading = false;
   }, 500);
-};
-
-const onSwitch = async (event: object, row: EmptyObjectType) => {
-  const statusValue = event ? 1 : 2;
-  await nsApi.updateStatus({
-    "id": row.id,
-    "status": statusValue,
-  });
 };
 
 const onSearch = (formEl: FormInstance | undefined) => {

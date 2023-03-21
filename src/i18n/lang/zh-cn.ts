@@ -8,6 +8,7 @@ export default {
     deleteSuccess: '删除成功',
     updateSuccess: '更新成功',
     stopSuccess: '终止成功',
+    operation: '操作',
   },
   dateMsg:{
     rangeMsg: '时间范围',

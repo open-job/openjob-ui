@@ -30,19 +30,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item :label="t('message.app.status')" prop="status">
-              <el-switch
-                v-model="state.ruleForm.status"
-                class="ml-2"
-                name="status"
-                size="default"
-                style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949;"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <template #footer>
 				<span class="dialog-footer">
@@ -94,7 +81,6 @@ const state = reactive({
     namespaceId: 0,
     id: 0,
     name: '',
-    status: true,
     desc: '',
   },
   menuData: [] as TreeType[],
@@ -134,7 +120,6 @@ const openDialog = async (type: string, row: RowAppType) => {
     // state.ruleForm=row 这种方式会导致，弹窗状态切换，列表里面数据状态也切换了
     state.ruleForm.name = row.name;
     state.ruleForm.desc = row.desc;
-    state.ruleForm.status = row.status;
     state.ruleForm.id = row.id;
     state.ruleForm.namespaceId = row.namespaceId
     state.dialog.title = t("message.app.editTitle");
@@ -142,7 +127,6 @@ const openDialog = async (type: string, row: RowAppType) => {
   } else {
     state.ruleForm.name = '';
     state.ruleForm.desc = '';
-    state.ruleForm.status = true;
     state.ruleForm.namespaceId = Local.get("nid");
     state.dialog.title = t("message.app.addTitle");
     state.dialog.submitTxt = t("message.commonBtn.add");
@@ -171,21 +155,18 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
 };
 
 const onSubmitApp = async ()=>{
-  const statusValue = state.ruleForm.status ? 1 : 2;
   if (state.dialog.type === 'update') {
     await appApi.update({
       "id": state.ruleForm.id,
       "namespaceId": state.ruleForm.namespaceId,
       "desc": state.ruleForm.desc,
       "name": state.ruleForm.name,
-      "status": statusValue
     });
   } else {
     await appApi.add({
       "namespaceId": state.ruleForm.namespaceId,
       "desc": state.ruleForm.desc,
       "name": state.ruleForm.name,
-      "status": statusValue
     });
   }
 
