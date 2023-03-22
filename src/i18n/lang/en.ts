@@ -10,7 +10,7 @@ export default {
     stopSuccess: 'Kill success!',
     operation: 'Operation',
   },
-  dateMsg:{
+  dateMsg: {
     rangeMsg: 'Date Time',
     startDate: 'Start Date',
     endDate: 'End Date',
@@ -39,7 +39,7 @@ export default {
     stop: 'Kill',
     instance: 'Instance',
   },
-  instanceStatus:{
+  instanceStatus: {
     waiting: 'Waiting',
     running: 'Running',
     success: 'success',
@@ -47,7 +47,7 @@ export default {
     stop: 'Stop',
     cancel: 'Cancel',
   },
-  taskStatus:{
+  taskStatus: {
     init: 'Init',
     failover: 'Failover',
     running: 'Running',
@@ -271,8 +271,8 @@ export default {
     editTitle: "Edit Namespace",
     deleteTitle: 'Are you sure to delete namespace',
   },
-  app:{
-    id : "ID",
+  app: {
+    id: "ID",
     namespace: "Namespace",
     name: "Name",
     desc: "Desc",
@@ -419,6 +419,22 @@ export default {
       lastHeartbeatTime: 'Last Heartbeat',
       status: 'Status',
       createTime: "Create time",
+    },
+    system: {
+      version: 'System version',
+      maxSlot: 'Job slots',
+      workerSupervisorSlot: 'Node slots',
+      clusterVersion: 'Job version',
+      clusterDelayVersion: 'Delay version',
+      delayZsetSlot: 'Delay zset  slots',
+      delayAddListSlot: 'Delay list slots',
+      delayStatusListSlot: 'Delay status slots',
+      delayDeleteListSlot: 'Delay delete slots',
+      jobKeepDays: 'Keep job days',
+      delayKeepDays: 'Keep delay days',
+      serverKeepDays: 'Keep node days',
+      workerKeepDays: 'Keep worker days',
+      updateTitle: 'Are you sure to update system configuration?',
     }
   }
 };

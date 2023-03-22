@@ -4,7 +4,7 @@
       <el-form ref="appDialogFormRef" :model="state.ruleForm" label-width="150px"
                :rules="state.fromRules" size="default">
         <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="24" :xl="24" class="mb20">
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.server.system.version')" prop="description">
               <el-input v-model="state.ruleForm.version" disabled clearable
                         style="width: 96%;"></el-input>
@@ -12,39 +12,13 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="24" :xl="24" class="mb20">
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.server.system.maxSlot')" prop="name">
               <el-input v-model="state.ruleForm.maxSlot" disabled clearable
                         style="width: 96%;"></el-input>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="24" :xl="24" class="mb20">
-            <el-form-item :label="t('message.server.system.clusterVersion')" prop="name">
-              <el-input v-model="state.ruleForm.clusterVersion" disabled clearable
-                        style="width: 96%;"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="24" :xl="24" class="mb20">
-            <el-form-item :label="t('message.server.system.clusterDelayVersion')" prop="name">
-              <el-input v-model="state.ruleForm.clusterDelayVersion" disabled clearable
-                        style="width: 96%;"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="24" :xl="24" class="mb20">
-            <el-form-item :label="t('message.server.system.clusterSupervisorSlot')" prop="name">
-              <el-input v-model="state.ruleForm.clusterSupervisorSlot" disabled clearable
-                        style="width: 96%;"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="24" :xl="24" class="mb20">
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.server.system.workerSupervisorSlot')" prop="name">
               <el-input v-model="state.ruleForm.workerSupervisorSlot" disabled clearable
                         style="width: 96%;"></el-input>
@@ -52,34 +26,96 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="24" :xl="24" class="mb20">
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item :label="t('message.server.system.clusterVersion')" prop="name">
+              <el-input v-model="state.ruleForm.clusterVersion" disabled clearable
+                        style="width: 96%;"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item :label="t('message.server.system.clusterDelayVersion')" prop="name">
+              <el-input v-model="state.ruleForm.clusterDelayVersion" disabled clearable
+                        style="width: 96%;"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.server.system.delayZsetSlot')" prop="name">
               <el-input v-model="state.ruleForm.delayZsetSlot" clearable
                         style="width: 96%;"></el-input>
             </el-form-item>
           </el-col>
+            <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item :label="t('message.server.system.delayAddListSlot')" prop="name">
+                <el-input v-model="state.ruleForm.delayAddListSlot" clearable
+                          style="width: 96%;"></el-input>
+              </el-form-item>
+            </el-col>
         </el-row>
         <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="24" :xl="24" class="mb20">
-            <el-form-item :label="t('message.server.system.delayAddListSlot')" prop="name">
-              <el-input v-model="state.ruleForm.delayAddListSlot" clearable
-                        style="width: 96%;"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="24" :xl="24" class="mb20">
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.server.system.delayStatusListSlot')" prop="name">
               <el-input v-model="state.ruleForm.delayStatusListSlot" clearable
                         style="width: 96%;"></el-input>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="24" :xl="24" class="mb20">
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.server.system.delayDeleteListSlot')" prop="name">
               <el-input v-model="state.ruleForm.delayDeleteListSlot" clearable
                         style="width: 96%;"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item :label="t('message.server.system.jobKeepDays')" prop="name">
+              <el-select v-model="state.ruleForm.jobKeepDays" filterable class="m-2" style="width: 60%" placeholder="Select" size="default">
+                <el-option
+                  v-for="item in state.selectDays"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item :label="t('message.server.system.delayKeepDays')" prop="name">
+              <el-select v-model="state.ruleForm.delayKeepDays" filterable class="m-2" style="width: 60%" placeholder="Select" size="default">
+                <el-option
+                  v-for="item in state.selectDays"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item :label="t('message.server.system.serverKeepDays')" prop="name">
+              <el-select v-model="state.ruleForm.serverKeepDays" filterable class="m-2" style="width: 60%" placeholder="Select" size="default">
+                <el-option
+                  v-for="item in state.selectDays"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item :label="t('message.server.system.workerKeepDays')" prop="name">
+              <el-select v-model="state.ruleForm.workerKeepDays" filterable class="m-2" style="width: 60%" placeholder="Select" size="default">
+                <el-option
+                  v-for="item in state.selectDays"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -113,30 +149,53 @@ const emit = defineEmits(['refresh']);
 // 定义变量内容
 const appDialogFormRef = ref<FormInstance>();
 const state = reactive({
+  selectDays:[
+    {
+      value: 1,
+      label: '1天'
+    },
+    {
+      value: 7,
+      label: '1周'
+    },
+    {
+      value: 30,
+      label: '1月'
+    },
+    {
+      value: 90,
+      label: '3月'
+    },
+    {
+      value: 180,
+      label: '6月'
+    },
+    {
+      value: 365,
+      label: '1年'
+    },
+    {
+      value: 1095,
+      label: '3年'
+    },
+  ],
   fromRules: {
-    topic: {
-      required: false,
-      message: t('message.app.validateName'),
-      pattern: /^[0-9a-zA-Z_.-]*$/,
-      trigger: 'blur'
-    },
-    desc: {
-      required: true,
-      message: t('message.app.desc'),
-      trigger: 'blur'
-    },
+
   },
   ruleForm: {
     version: '',
     maxSlot: '256',
     clusterVersion: '',
     clusterDelayVersion: '',
-    clusterSupervisorSlot: '',
     workerSupervisorSlot: '',
     delayZsetSlot: '',
     delayAddListSlot: '',
     delayStatusListSlot: '',
     delayDeleteListSlot: '',
+    jobKeepDays: '',
+    delayKeepDays: '',
+    serverKeepDays: '',
+    workerKeepDays: '',
   },
 });
 
@@ -153,9 +212,9 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
 
 const onSubmitApp = async () => {
 
-  ElMessageBox.confirm(`是否确定修复系统参数`, '提示', {
-    confirmButtonText: '确认',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(t('message.server.system.updateTitle'), t('message.commonMsg.tip'), {
+    confirmButtonText: t('message.commonBtn.confirm'),
+    cancelButtonText: t('message.commonBtn.cancel'),
     type: 'warning',
   })
     .then(async () => {
@@ -164,14 +223,19 @@ const onSubmitApp = async () => {
         delayAddListSlot: state.ruleForm.delayAddListSlot,
         delayStatusListSlot: state.ruleForm.delayStatusListSlot,
         delayDeleteListSlot: state.ruleForm.delayDeleteListSlot,
+        jobKeepDays:state.ruleForm.jobKeepDays,
+        delayKeepDays:state.ruleForm.delayKeepDays,
+        serverKeepDays:state.ruleForm.serverKeepDays,
+        workerKeepDays:state.ruleForm.workerKeepDays,
+        maxSlot: state.ruleForm.maxSlot,
       });
 
-      ElMessage.success('更新成功');
+      ElMessage.success(t('message.commonMsg.updateSuccess'));
     })
     .catch(() => {
     });
-
 }
+
 
 const initSystem = async () => {
   let data = await useServerApi().getSystemInfo({});
@@ -179,12 +243,15 @@ const initSystem = async () => {
   state.ruleForm.maxSlot = data['maxSlot'];
   state.ruleForm.clusterVersion = data['clusterVersion'];
   state.ruleForm.clusterDelayVersion = data['clusterDelayVersion'];
-  state.ruleForm.clusterSupervisorSlot = data['clusterSupervisorSlot'];
   state.ruleForm.workerSupervisorSlot = data['workerSupervisorSlot'];
   state.ruleForm.delayZsetSlot = data['delayZsetSlot'];
   state.ruleForm.delayAddListSlot = data['delayAddListSlot'];
   state.ruleForm.delayStatusListSlot = data['delayStatusListSlot'];
   state.ruleForm.delayDeleteListSlot = data['delayDeleteListSlot'];
+  state.ruleForm.jobKeepDays = data['jobKeepDays'];
+  state.ruleForm.delayKeepDays = data['delayKeepDays'];
+  state.ruleForm.serverKeepDays = data['serverKeepDays'];
+  state.ruleForm.workerKeepDays = data['workerKeepDays'];
 }
 
 onMounted(() => {

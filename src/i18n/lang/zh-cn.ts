@@ -423,14 +423,18 @@ export default {
     system: {
       version: '系统版本',
       maxSlot: '任务分片',
-      clusterVersion: '集群版本',
-      clusterDelayVersion: '延时任务版本',
-      clusterSupervisorSlot: '集群监控分片',
-      workerSupervisorSlot: '工作节点健康分片',
+      workerSupervisorSlot: '节点分片',
+      clusterVersion: '任务版本',
+      clusterDelayVersion: '延时版本',
       delayZsetSlot: '延时有序集合分片',
       delayAddListSlot: '延时队列分片',
       delayStatusListSlot: '延时状态分片',
       delayDeleteListSlot: '延时删除分片',
+      jobKeepDays: '保持任务实例',
+      delayKeepDays: '保持延时实例',
+      serverKeepDays: '保持集群节点',
+      workerKeepDays: '保持工作节点',
+      updateTitle: '你确定更新系统参数?',
     }
   }
 };
