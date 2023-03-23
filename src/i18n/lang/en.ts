@@ -9,6 +9,7 @@ export default {
     updateSuccess: 'Update success!',
     stopSuccess: 'Kill success!',
     operation: 'Operation',
+    stopFail: 'Task instance is not running',
   },
   dateMsg: {
     rangeMsg: 'Date Time',

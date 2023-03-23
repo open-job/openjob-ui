@@ -349,9 +349,14 @@ const onStop = (row: RowJobInstanceType) => {
     type: 'warning',
   })
     .then(async () => {
-      await instanceApi.stop({
+      let data = await instanceApi.stop({
         id: row.id,
       });
+
+      if (Number(data.type) > 0) {
+        ElMessage.error(t('message.commonMsg.stopFail'));
+        return;
+      }
 
       await getTableData();
       ElMessage.success(t('message.commonMsg.stopSuccess'));

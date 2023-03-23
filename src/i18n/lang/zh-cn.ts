@@ -9,6 +9,8 @@ export default {
     updateSuccess: '更新成功',
     stopSuccess: '终止成功',
     operation: '操作',
+    stopFail: '任务实例未运行',
+
   },
   dateMsg:{
     rangeMsg: '时间范围',

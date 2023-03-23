@@ -157,7 +157,12 @@ import {useI18n} from 'vue-i18n';
 import {getHeaderNamespaceId} from "/@/utils/header";
 import {useDelayApi, useDelayInstanceApi} from "/@/api/delay";
 import {formatDateByTimestamp, getTimestampByString} from "/@/utils/formatTime";
-import {getAppSelectList, getShortcuts, getTaskStatusSelectList, getTaskStatusInfo} from "/@/utils/data";
+import {
+  getAppSelectList,
+  getShortcuts,
+  getTaskStatusSelectList,
+  getTaskStatusInfo
+} from "/@/utils/data";
 import router from "/@/router";
 
 // 定义变量内容
@@ -235,10 +240,10 @@ const getTableData = async () => {
     size: state.tableData.param.pageSize,
   };
 
-  if (searchState.form.dateSelect[0] !== null){
+  if (searchState.form.dateSelect[0] !== null) {
     request.beginTime = getTimestampByString(searchState.form.dateSelect[0]);
   }
-  if (searchState.form.dateSelect[1] !== null){
+  if (searchState.form.dateSelect[1] !== null) {
     request.endTime = getTimestampByString(searchState.form.dateSelect[1]);
   }
 
@@ -273,7 +278,7 @@ const getTableData = async () => {
 
 const shortcuts = getShortcuts();
 
-const onAppChange = async (appId: number, isLoading :boolean) => {
+const onAppChange = async (appId: number, isLoading: boolean) => {
   searchState.form.delayId = '';
 
   let data = await useDelayApi().getList({
@@ -292,7 +297,7 @@ const onAppChange = async (appId: number, isLoading :boolean) => {
     })
   });
 
-  if (isLoading){
+  if (isLoading) {
     await getTableData();
   }
 };
@@ -331,9 +336,14 @@ const onStop = (row: RowDelayInstanceType) => {
     type: 'warning',
   })
     .then(async () => {
-      await delayInstanceApi.stop({
+      let data = await delayInstanceApi.stop({
         taskId: row.taskId,
       });
+
+      if (Number(data.type) > 0) {
+        ElMessage.error(t('message.commonMsg.stopFail'));
+        return;
+      }
 
       await getTableData();
       ElMessage.success(t('message.commonMsg.stopSuccess'));
@@ -341,7 +351,6 @@ const onStop = (row: RowDelayInstanceType) => {
     .catch(() => {
     });
 }
-
 
 const onDel = (row: RowDelayInstanceType) => {
   ElMessageBox.confirm(t('message.delay.instance.deleteTitle') + `(${row.taskId})?`, t('message.commonMsg.tip'), {
