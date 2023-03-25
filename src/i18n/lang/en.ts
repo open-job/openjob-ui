@@ -54,6 +54,7 @@ export default {
     running: 'Running',
     success: 'Success',
     failed: 'Failed',
+    stop: 'Stop',
   },
   router: {
     // 路由

@@ -42,7 +42,7 @@
 import {ElMessage} from 'element-plus'
 import {useI18n} from "vue-i18n";
 import {defineAsyncComponent, reactive} from "vue";
-import {getInstanceStatusInfo} from "/@/utils/data";
+import {getInstanceStatusInfo, getTaskStatusInfo} from "/@/utils/data";
 import {useDelayInstanceApi} from "/@/api/delay";
 
 const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
@@ -82,8 +82,8 @@ const openDrawer = async (row: RowDelayInstanceType) => {
   state.descriptions.workerAddress = row.workerAddress;
   state.descriptions.createTime = row.createTime;
   state.descriptions.completeTime = row.completeTime;
-  state.descriptions.statusTag = getInstanceStatusInfo(row.status)['tag'];
-  state.descriptions.statusLabel = getInstanceStatusInfo(row.status)['label'];
+  state.descriptions.statusTag = getTaskStatusInfo(row.status)['tag'];
+  state.descriptions.statusLabel = getTaskStatusInfo(row.status)['label'];
 
   state.drawer.isShow = true;
   state.editor.value = '';

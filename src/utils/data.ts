@@ -185,13 +185,18 @@ export function getTaskStatusInfo(status: number): Object {
       };
     case 20:
       return {
-        tag: 'success',
-        label: t('message.taskStatus.success')
+        tag: 'danger',
+        label: t('message.taskStatus.failed')
       };
     case 25:
       return {
-        tag: 'danger',
-        label: t('message.taskStatus.failed')
+        tag: 'success',
+        label: t('message.taskStatus.success')
+      };
+    case 30:
+      return {
+        tag: 'warning',
+        label: t('message.taskStatus.stop')
       };
     default:
       return {
@@ -219,11 +224,15 @@ export function getTaskStatusSelectList(): Object[] {
     },
     {
       id: 20,
-      label: t('message.taskStatus.success')
+      label: t('message.taskStatus.failed')
     },
     {
       id: 25,
-      label: t('message.taskStatus.failed')
+      label: t('message.taskStatus.success')
+    },
+    {
+      id: 30,
+      label: t('message.taskStatus.stop')
     }
   ];
 }

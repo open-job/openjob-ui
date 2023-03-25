@@ -55,6 +55,7 @@ export default {
     running: '运行',
     success: '成功',
     failed: '失败',
+    stop: '停止',
   },
   router: {
     // 路由
