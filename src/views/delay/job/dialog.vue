@@ -1,19 +1,21 @@
 <template>
   <div class="system-role-dialog-container">
     <el-dialog :title="state.dialog.title" v-model="state.dialog.isShowDialog" width="769px">
-      <el-form ref="appDialogFormRef" :model="state.ruleForm" label-width="100px" :rules="state.fromRules" size="default">
+      <el-form ref="appDialogFormRef" :model="state.ruleForm" label-width="100px"
+               :rules="state.fromRules" size="default">
         <el-row>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item :label="t('message.app.namespace')" prop="namespaceName">
-                <el-select v-model="state.ruleForm.namespaceId" class="m-2" :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
+            <el-form-item :label="t('message.app.namespace')" prop="namespaceName">
+              <el-select v-model="state.ruleForm.namespaceId" class="m-2"
+                         :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
                 <el-option
                   v-for="ns in state.namespaceList"
                   :key="ns.id"
                   :label="ns.name"
                   :value="ns.id"
                 />
-                </el-select>
-              </el-form-item>
+              </el-select>
+            </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.delay.job.appName')" prop="appId">
@@ -39,7 +41,8 @@
         <el-row>
           <el-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20" class="mb20">
             <el-form-item :label="t('message.delay.job.description')" prop="description">
-              <el-input v-model="state.ruleForm.description" type="textarea" rows="3" clearable></el-input>
+              <el-input v-model="state.ruleForm.description" type="textarea" rows="3"
+                        clearable></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -58,14 +61,38 @@
           </el-col>
         </el-row>
         <el-row>
+          <el-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20" class="mb20">
+            <el-form-item :label="t('message.delay.job.failTopicEnable')" prop="failTopicEnable">
+              <el-switch
+                v-model="state.ruleForm.failTopicEnable"
+                inline-prompt
+                active-text="on"
+                inactive-text="off"
+                @change="onSwitch($event)"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row v-show="state.rowState.failConcurrency">
+          <el-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20" class="mb20">
+            <el-form-item :label="t('message.delay.job.failTopicConcurrency')"
+                          prop="failTopicConcurrency">
+              <el-input-number v-model="state.ruleForm.failTopicConcurrency"
+                               clearable></el-input-number>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.delay.job.failRetryTimes')" prop="failRetryTimes">
               <el-input-number v-model="state.ruleForm.failRetryTimes" clearable></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item :label="t('message.delay.job.failRetryInterval')" prop="failRetryInterval">
-              <el-input-number v-model="state.ruleForm.failRetryInterval" clearable></el-input-number>
+            <el-form-item :label="t('message.delay.job.failRetryInterval')"
+                          prop="failRetryInterval">
+              <el-input-number v-model="state.ruleForm.failRetryInterval"
+                               clearable></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>
@@ -92,9 +119,10 @@
       <template #footer>
 				<span class="dialog-footer">
           <el-button type="primary" @click="onSubmit(appDialogFormRef)" size="default">
-            {{t('message.commonBtn.confirm')}}
+            {{ t('message.commonBtn.confirm') }}
           </el-button>
-					<el-button @click="onCancel" size="default">{{t('message.commonBtn.cancel')}}</el-button>
+					<el-button @click="onCancel"
+                     size="default">{{ t('message.commonBtn.cancel') }}</el-button>
 				</span>
       </template>
     </el-dialog>
@@ -124,6 +152,9 @@ const emit = defineEmits(['refresh']);
 // 定义变量内容
 const appDialogFormRef = ref<FormInstance>();
 const state = reactive({
+  rowState: {
+    failConcurrency: true,
+  },
   fromRules: {
     topic: {
       required: false,
@@ -137,16 +168,20 @@ const state = reactive({
       trigger: 'blur'
     },
   },
-  namespaceList:<any>[],
-  appList:<any>[],
+  namespaceList: <any>[],
+  appList: <any>[],
   ruleForm: {
     namespaceId: '',
     appId: '',
     id: 0,
+    pid: 0,
+    cid: 0,
     name: '',
     topic: '',
     description: '',
     processorInfo: '',
+    failTopicEnable: true,
+    failTopicConcurrency: 1,
     failRetryTimes: 3,
     failRetryInterval: 3,
     concurrency: 1,
@@ -178,18 +213,23 @@ const openDialog = async (type: string, row: RowDelayType) => {
   if (type === 'update' || type == 'copy') {
     // state.ruleForm=row 这种方式会导致，弹窗状态切换，列表里面数据状态也切换了
     state.ruleForm.name = row.name;
+    state.ruleForm.pid = row.pid;
+    state.ruleForm.cid = row.cid;
     state.ruleForm.description = row.description;
     state.ruleForm.id = row.id;
     state.ruleForm.namespaceId = row.namespaceId
     state.ruleForm.appId = row.appId;
     state.ruleForm.processorInfo = row.processorInfo;
     state.ruleForm.topic = row.topic;
+    state.ruleForm.failTopicEnable = row.failTopicEnable == 1;
+    state.ruleForm.failTopicConcurrency = row.failTopicConcurrency;
     state.ruleForm.failRetryTimes = row.failRetryTimes;
     state.ruleForm.failRetryInterval = row.failRetryInterval;
     state.ruleForm.concurrency = row.concurrency;
     state.ruleForm.blockingSize = row.blockingSize;
     state.ruleForm.executeTimeout = row.executeTimeout;
     state.dialog.submitTxt = t("message.commonBtn.update");
+    state.rowState.failConcurrency = state.ruleForm.failTopicEnable;
 
     if (type == 'update') {
       state.dialog.title = t("message.delay.job.updateJobTitle");
@@ -203,6 +243,8 @@ const openDialog = async (type: string, row: RowDelayType) => {
     state.ruleForm.appId = '';
     state.ruleForm.processorInfo = '';
     state.ruleForm.topic = '';
+    state.ruleForm.failTopicEnable = true;
+    state.ruleForm.failTopicConcurrency = 1;
     state.ruleForm.failRetryTimes = 3;
     state.ruleForm.failRetryInterval = 3;
     state.ruleForm.concurrency = 1;
@@ -211,6 +253,7 @@ const openDialog = async (type: string, row: RowDelayType) => {
     state.ruleForm.namespaceId = Local.get("nid");
     state.dialog.title = t("message.delay.job.addJobTitle");
     state.dialog.submitTxt = t("message.commonBtn.add");
+    state.rowState.failConcurrency = true;
   }
   state.dialog.type = type
   state.dialog.isShowDialog = true;
@@ -235,10 +278,14 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
   });
 };
 
-const onSubmitApp = async ()=>{
+const onSubmitApp = async () => {
+  let statusValue = state.ruleForm.failTopicEnable ? 1 : 2;
+
   if (state.dialog.type === 'update') {
     await delayApi.update({
       "id": state.ruleForm.id,
+      "pid": state.ruleForm.pid,
+      "cid": state.ruleForm.cid,
       "namespaceId": state.ruleForm.namespaceId,
       "description": state.ruleForm.description,
       "appId": state.ruleForm.appId,
@@ -248,6 +295,8 @@ const onSubmitApp = async ()=>{
       "failRetryInterval": state.ruleForm.failRetryTimes,
       "concurrency": state.ruleForm.concurrency,
       "blockingSize": state.ruleForm.blockingSize,
+      "failTopicEnable": statusValue,
+      "failTopicConcurrency":  state.ruleForm.failTopicConcurrency,
       "name": state.ruleForm.name,
       "executeTimeout": state.ruleForm.executeTimeout
     });
@@ -263,6 +312,8 @@ const onSubmitApp = async ()=>{
       "concurrency": state.ruleForm.concurrency,
       "blockingSize": state.ruleForm.blockingSize,
       "name": state.ruleForm.name,
+      "failTopicEnable": statusValue,
+      "failTopicConcurrency":  state.ruleForm.failTopicConcurrency,
       "executeTimeout": state.ruleForm.executeTimeout
     });
   }
@@ -271,7 +322,11 @@ const onSubmitApp = async ()=>{
   emit('refresh');
 }
 
-const initNamespace = async ()=>{
+const onSwitch = async (event: boolean) => {
+  state.rowState.failConcurrency = event;
+};
+
+const initNamespace = async () => {
   let data = await nsApi.getList({
     page: 1,
     size: 30,

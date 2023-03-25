@@ -70,6 +70,8 @@
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="ready" :label="t('message.delay.job.ready')"
                          show-overflow-tooltip></el-table-column>
+        <el-table-column prop="failCount" :label="t('message.delay.job.failCount')"
+                         show-overflow-tooltip></el-table-column>
         <el-table-column prop="createTime" :label="t('message.delay.job.createTime')"
                          width="200" show-overflow-tooltip></el-table-column>
         <el-table-column :label="t('message.commonMsg.operation')" width="360">
@@ -198,6 +200,8 @@ const getTableData = async () => {
   data.list.forEach(function (item: Object) {
     state.tableData.data.push({
       id: item['id'],
+      pid: item['pid'],
+      cid: item['cid'],
       name: item['name'],
       appName: item['appName'],
       namespaceId: item['namespaceId'],
@@ -207,10 +211,13 @@ const getTableData = async () => {
       topic: item['topic'],
       total: item['total'],
       ready: item['ready'],
+      failCount: item['failCount'],
       failRetryTimes: item['failRetryTimes'],
       failRetryInterval: item['failRetryInterval'],
       concurrency: item['concurrency'],
       blockingSize: item['blockingSize'],
+      failTopicEnable: item['failTopicEnable'],
+      failTopicConcurrency: item['failTopicConcurrency'],
       executeTimeout: item['executeTimeout'],
       createTime: formatDateByTimestamp(item['createTime']),
     })

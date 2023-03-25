@@ -185,9 +185,10 @@ declare interface JobInstanceState {
  */
 declare interface RowDelayType {
   id: number;
+  pid: number;
+  cid: number
   namespaceId: number;
   appId: number;
-
   appName: string;
   name: string;
   description: string;
@@ -197,11 +198,14 @@ declare interface RowDelayType {
   total: number;
 
   ready: number;
+  failCount: number;
   failRetryTimes: number;
 
   failRetryInterval: number;
   concurrency: number;
   blockingSize: number;
+  failTopicEnable:number;
+  failTopicConcurrency:number;
   executeTimeout: number,
   createTime: string;
 }
