@@ -435,6 +435,7 @@ export default {
       delayAddListSlot: 'Delay list slots',
       delayStatusListSlot: 'Delay status slots',
       delayDeleteListSlot: 'Delay delete slots',
+      delayFailZsetSlot: 'Delay fail zset  slots',
       jobKeepDays: 'Keep job days',
       delayKeepDays: 'Keep delay days',
       serverKeepDays: 'Keep node days',

@@ -69,6 +69,14 @@
         </el-row>
         <el-row>
           <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item :label="t('message.server.system.delayFailZsetSlot')" prop="name">
+              <el-input v-model="state.ruleForm.delayFailZsetSlot" clearable
+                        style="width: 96%;"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.server.system.jobKeepDays')" prop="name">
               <el-select v-model="state.ruleForm.jobKeepDays" filterable class="m-2" style="width: 60%" placeholder="Select" size="default">
                 <el-option
@@ -189,6 +197,7 @@ const state = reactive({
     clusterDelayVersion: '',
     workerSupervisorSlot: '',
     delayZsetSlot: '',
+    delayFailZsetSlot: '',
     delayAddListSlot: '',
     delayStatusListSlot: '',
     delayDeleteListSlot: '',
@@ -220,6 +229,7 @@ const onSubmitApp = async () => {
     .then(async () => {
       await useServerApi().updateSystem({
         delayZsetSlot: state.ruleForm.delayZsetSlot,
+        delayFailZsetSlot:state.ruleForm.delayFailZsetSlot,
         delayAddListSlot: state.ruleForm.delayAddListSlot,
         delayStatusListSlot: state.ruleForm.delayStatusListSlot,
         delayDeleteListSlot: state.ruleForm.delayDeleteListSlot,
@@ -245,6 +255,7 @@ const initSystem = async () => {
   state.ruleForm.clusterDelayVersion = data['clusterDelayVersion'];
   state.ruleForm.workerSupervisorSlot = data['workerSupervisorSlot'];
   state.ruleForm.delayZsetSlot = data['delayZsetSlot'];
+  state.ruleForm.delayFailZsetSlot = data['delayFailZsetSlot'];
   state.ruleForm.delayAddListSlot = data['delayAddListSlot'];
   state.ruleForm.delayStatusListSlot = data['delayStatusListSlot'];
   state.ruleForm.delayDeleteListSlot = data['delayDeleteListSlot'];

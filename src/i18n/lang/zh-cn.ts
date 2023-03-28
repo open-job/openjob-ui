@@ -436,6 +436,7 @@ export default {
       delayAddListSlot: '延时队列分片',
       delayStatusListSlot: '延时状态分片',
       delayDeleteListSlot: '延时删除分片',
+      delayFailZsetSlot: '延时有序失败分片',
       jobKeepDays: '保持任务实例',
       delayKeepDays: '保持延时实例',
       serverKeepDays: '保持集群节点',
