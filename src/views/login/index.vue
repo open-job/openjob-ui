@@ -101,11 +101,11 @@ onMounted(() => {
 				span {
 					margin-left: 10px;
 					font-size: 28px;
-					color: #26a59a;
+					color: #00affc;
 				}
 				.login-left-logo-text-msg {
 					font-size: 12px;
-					color: #32a99e;
+					color: #0aa4e8;
 				}
 			}
 		}
