@@ -25,16 +25,16 @@
 								<el-tab-pane :label="$t('message.label.one1')" name="account">
 									<Account />
 								</el-tab-pane>
-								<el-tab-pane :label="$t('message.label.two2')" name="mobile">
-									<Mobile />
-								</el-tab-pane>
+<!--								<el-tab-pane :label="$t('message.label.two2')" name="mobile">-->
+<!--									<Mobile />-->
+<!--								</el-tab-pane>-->
 							</el-tabs>
 						</div>
 						<Scan v-if="state.isScan" />
-						<div class="login-content-main-sacn" @click="state.isScan = !state.isScan">
-							<i class="iconfont" :class="state.isScan ? 'icon-diannao1' : 'icon-barcode-qr'"></i>
-							<div class="login-content-main-sacn-delta"></div>
-						</div>
+<!--						<div class="login-content-main-sacn" @click="state.isScan = !state.isScan">-->
+<!--							<i class="iconfont" :class="state.isScan ? 'icon-diannao1' : 'icon-barcode-qr'"></i>-->
+<!--							<div class="login-content-main-sacn-delta"></div>-->
+<!--						</div>-->
 					</div>
 				</div>
 			</div>
