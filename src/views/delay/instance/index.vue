@@ -117,7 +117,7 @@
               {{ $t('message.commonBtn.log') }}
             </el-button>
             <el-button type="warning" size="default"
-                       v-if="scope.row.status !==5 && scope.row.completeTime === '-'"
+                       v-if="scope.row.status === 15"
                        @click="onStop(scope.row)">
               <el-icon>
                 <ele-Stopwatch/>
