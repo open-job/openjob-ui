@@ -141,9 +141,9 @@ export const useThemeConfig = defineStore('themeConfig', {
 			// 网站副标题（登录页顶部文字）
 			globalViceTitle: 'Openjob',
 			// 网站副标题（登录页顶部文字）
-			globalViceTitleMsg: '一款开源、免费、分布式高性能任务调度框架',
+			globalViceTitleMsg: 'A distributed high-performance task scheduling framework, Supports cron task, delay task, workflow, and unlimited scalability.',
 			// 默认初始语言，可选值"<zh-cn|en|zh-tw>"，默认 zh-cn
-			globalI18n: 'zh-cn',
+			globalI18n: 'en',
 			// 默认全局组件大小，可选值"<large|'default'|small>"，默认 'large'
 			globalComponentSize: 'large',
 		},
