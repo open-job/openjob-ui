@@ -1,5 +1,12 @@
 // 定义内容
 export default {
+  codeMsg:{
+    c200: 'Namespace already exists',
+    c201: 'Tasks or instances exist in the namespace',
+    c300: 'Application already exists',
+    c301: 'Tasks or instances exist in the application',
+    c400: 'Failed to parse time expression',
+  },
   commonMsg: {
     emptyInput: "Please enter",
     emptySelect: 'Select',

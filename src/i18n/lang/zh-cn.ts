@@ -1,5 +1,12 @@
 // 定义内容
 export default {
+  codeMsg: {
+    c200: '命名空间已存在',
+    c201: '命名空间下存在任务或实例',
+    c300: '应用名称已经存',
+    c301: '应用下存在任务或实例',
+    c400: '时间表达式解析失败',
+  },
   commonMsg:{
     emptyInput: '请输入',
     emptySelect: '请选择',

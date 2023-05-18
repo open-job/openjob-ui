@@ -3,6 +3,8 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { Session } from '/@/utils/storage';
 import { TOKEN_NAME } from '/@/consts';
 import qs from 'qs';
+import {i18n} from "/@/i18n";
+
 
 // 配置新建一个 axios 实例
 const service: AxiosInstance = axios.create({
@@ -41,12 +43,18 @@ service.interceptors.request.use(
 // 添加响应拦截器
 service.interceptors.response.use(
 	(response) => {
+    const {t} = i18n.global;
+
 		// 对响应数据做点什么
 		const resBody = response.data;
 		const stCode = response.status;
 
 		// 使用http status code 判断是否成功
 		if (stCode === 200) {
+      if (response.data.code !== 0) {
+        ElMessageBox.alert(t('message.codeMsg.c' + response.data.code), t('message.commonMsg.tip'), {type: 'warning'});
+        return Promise.reject(resBody);
+      }
 			return resBody.data;
 		}
 
