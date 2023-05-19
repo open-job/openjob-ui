@@ -265,6 +265,7 @@ const onDel = (row: RowDelayType) => {
     .then(async () => {
       await delayApi.delete({
         "id": row.id,
+        "cid": row.cid,
       });
 
       await getTableData();
