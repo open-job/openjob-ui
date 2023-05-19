@@ -382,32 +382,32 @@ const state = reactive({
       value: 'processor',
       label: 'processor',
     },
-    {
-      value: 'shell',
-      label: 'shell',
-    },
-    {
-      value: 'http',
-      label: 'http',
-    }
+    // {
+    //   value: 'shell',
+    //   label: 'shell',
+    // },
+    // {
+    //   value: 'http',
+    //   label: 'http',
+    // }
   ],
   executeType: [
     {
       value: 'standalone',
       label: t('message.job.job.executeTypeList.standalone'),
     },
-    {
-      value: 'broadcast',
-      label: t('message.job.job.executeTypeList.broadcast'),
-    },
-    {
-      value: 'mapReduce',
-      label: t('message.job.job.executeTypeList.mapReduce'),
-    },
-    {
-      value: 'sharding',
-      label: t('message.job.job.executeTypeList.sharding'),
-    }
+    // {
+    //   value: 'broadcast',
+    //   label: t('message.job.job.executeTypeList.broadcast'),
+    // },
+    // {
+    //   value: 'mapReduce',
+    //   label: t('message.job.job.executeTypeList.mapReduce'),
+    // },
+    // {
+    //   value: 'sharding',
+    //   label: t('message.job.job.executeTypeList.sharding'),
+    // }
   ],
   executeStrategy: [
     {
@@ -429,14 +429,14 @@ const state = reactive({
       value: 'cron',
       label: t('message.job.job.timeExpressionTypeList.cron'),
     },
-    {
-      value: 'secondDelay',
-      label: t('message.job.job.timeExpressionTypeList.secondDelay'),
-    },
-    {
-      value: 'fixedRate',
-      label: t('message.job.job.timeExpressionTypeList.fixedRate'),
-    },
+    // {
+    //   value: 'secondDelay',
+    //   label: t('message.job.job.timeExpressionTypeList.secondDelay'),
+    // },
+    // {
+    //   value: 'fixedRate',
+    //   label: t('message.job.job.timeExpressionTypeList.fixedRate'),
+    // },
     {
       value: 'oneTime',
       label: t('message.job.job.timeExpressionTypeList.oneTime'),
