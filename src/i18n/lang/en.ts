@@ -1,11 +1,13 @@
 // 定义内容
 export default {
-  codeMsg:{
-    c200: 'Namespace already exists',
-    c201: 'Tasks or instances exist in the namespace',
+  codeMsg: {
+    c200: 'Applications exist in the namespace',
     c300: 'Application already exists',
-    c301: 'Tasks or instances exist in the application',
+    c301: 'Job or delay exist in application',
     c400: 'Failed to parse time expression',
+    c401: 'Instance exist in the job',
+    c500: 'Topic already exists',
+    c501: 'Instance exist in the delay',
   },
   commonMsg: {
     emptyInput: "Please enter",
