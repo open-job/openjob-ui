@@ -1,3 +1,6 @@
+export const HOME_APIS = {
+  taskData: '/admin/home/task-data'
+}
 
 export const USER_APIS = {
     login: '/admin/login',

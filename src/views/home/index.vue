@@ -15,7 +15,7 @@
 					<div class="flex-margin flex w100" :class="` home-one-animation${k}`">
 						<div class="flex-auto">
 							<span class="font30">{{ v.num1 }}</span>
-							<span class="ml5 font16" :style="{ color: v.color1 }">{{ v.num2 }}%</span>
+							<span class="ml5 font16" :style="{ color: v.color1 }">+{{ v.num2 }}</span>
 							<div class="mt10">{{ v.num3 }}</div>
 						</div>
 						<div class="home-card-item-icon flex" :style="{ background: `var(${v.color2})` }">
@@ -40,7 +40,7 @@
           <div class="flex-margin flex w100" :class="` home-one-animation${k}`">
             <div class="flex-auto">
               <span class="font30">{{ v.num1 }}</span>
-              <span class="ml5 font16" :style="{ color: v.color1 }">{{ v.num2 }}%</span>
+              <span class="ml5 font16" :style="{ color: v.color1 }">{{ v.num2 }}</span>
               <div class="mt10">{{ v.num3 }}</div>
             </div>
             <div class="home-card-item-icon flex" :style="{ background: `var(${v.color2})` }">
@@ -84,12 +84,15 @@ import * as echarts from 'echarts';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
+import {useHomeApi} from "/@/api/home";
+import {Local} from "/@/utils/storage";
 
 // 定义变量内容
 const homeLineJobRef = ref();
 const homePieJobRef = ref();
 const homeLineDelayRef = ref();
 const homePieDelayRef = ref();
+const homeApi = useHomeApi();
 const storesTagsViewRoutes = useTagsViewRoutes();
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
@@ -102,50 +105,13 @@ const state = reactive({
 		homeCharFour: null,
 		dispose: [null, '', undefined],
 	} as any,
-	homeOne: [
-		{
-			num1: '12',
-			num2: '+12',
-			num3: '定时任务',
-			num4: 'fa fa-meetup',
-			color1: '#FF6462',
-			color2: '--next-color-primary-lighter',
-			color3: '--el-color-primary',
-		},
-		{
-			num1: '12',
-			num2: '+33',
-			num3: '定时实例',
-			num4: 'iconfont icon-ditu',
-			color1: '#6690F9',
-			color2: '--next-color-success-lighter',
-			color3: '--el-color-success',
-		},
-		{
-			num1: '125,65',
-			num2: '+17.32',
-			num3: '延时任务',
-			num4: 'iconfont icon-zaosheng',
-			color1: '#6690F9',
-			color2: '--next-color-warning-lighter',
-			color3: '--el-color-warning',
-		},
-		{
-			num1: '520,43',
-			num2: '-10.01',
-			num3: '延时实例',
-			num4: 'fa fa-github-alt',
-			color1: '#FF6462',
-			color2: '--next-color-danger-lighter',
-			color3: '--el-color-danger',
-		},
-	],
+	homeOne: [],
   homeTwo: [
     {
       num1: '12',
       num2: '+12',
       num3: '应用总数',
-      num4: 'fa fa-meetup',
+      num4: 'fa fa-clone',
       color1: '#FF6462',
       color2: '--next-color-primary-lighter',
       color3: '--el-color-primary',
@@ -154,7 +120,7 @@ const state = reactive({
       num1: '12',
       num2: '+33',
       num3: '集群节点',
-      num4: 'iconfont icon-ditu',
+      num4: 'fa fa-server',
       color1: '#6690F9',
       color2: '--next-color-success-lighter',
       color3: '--el-color-success',
@@ -163,7 +129,7 @@ const state = reactive({
       num1: '125,65',
       num2: '+17.32',
       num3: '工作节点',
-      num4: 'iconfont icon-zaosheng',
+      num4: 'fa fa-desktop',
       color1: '#6690F9',
       color2: '--next-color-warning-lighter',
       color3: '--el-color-warning',
@@ -172,7 +138,7 @@ const state = reactive({
       num1: '520,43',
       num2: '-10.01',
       num3: '任务分片',
-      num4: 'fa fa-github-alt',
+      num4: 'fa fa-copy',
       color1: '#FF6462',
       color2: '--next-color-danger-lighter',
       color3: '--el-color-danger',
@@ -535,9 +501,60 @@ const initEchartsResizeFun = () => {
 const initEchartsResize = () => {
 	window.addEventListener('resize', initEchartsResizeFun);
 };
+
+const getTaskData = async () => {
+  let request = {
+    namespaceId: Local.get("nid"),
+  };
+  // Font Awesome icon
+  let data = await homeApi.getTaskData(request)
+  state.homeOne[0] = {
+    num1: data['job']['total'],
+    num2: data['job']['newTotal'],
+    num3: '定时任务',
+    num4: 'fa fa-history',
+    color1: '#FF6462',
+    color2: '--next-color-primary-lighter',
+    color3: '--el-color-primary',
+  }
+
+  state.homeOne[1] = {
+    num1: data['jobInstance']['total'],
+    num2: data['jobInstance']['newTotal'],
+    num3: '定时实例',
+    num4: 'fa fa-file',
+    color1: '#6690F9',
+    color2: '--next-color-success-lighter',
+    color3: '--el-color-success',
+  }
+
+  state.homeOne[2] = {
+    num1: data['job']['total'],
+    num2: data['job']['newTotal'],
+    num3: '延时任务',
+    num4: 'fa fa-tasks',
+    color1: '#6690F9',
+    color2: '--next-color-warning-lighter',
+    color3: '--el-color-warning',
+  }
+
+  state.homeOne[3] = {
+    num1: data['delayInstance']['total'],
+    num2: data['delayInstance']['newTotal'],
+    num3: '延时实例',
+    num4: 'fa fa-clipboard',
+    color1: '#FF6462',
+    color2: '--next-color-danger-lighter',
+    color3: '--el-color-danger',
+  }
+}
+
 // 页面加载时
-onMounted(() => {
-	initEchartsResize();
+onMounted(async () => {
+  initEchartsResize();
+
+  // Task data
+  await getTaskData()
 });
 // 由于页面缓存原因，keep-alive
 onActivated(() => {
