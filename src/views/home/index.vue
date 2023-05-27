@@ -105,7 +105,17 @@ const state = reactive({
 		homeCharFour: null,
 		dispose: [null, '', undefined],
 	} as any,
-	homeOne: [],
+	homeOne: [
+    {
+      num1: "0",
+      num2: "0",
+      num3: '定时任务',
+      num4: 'fa fa-history',
+      color1: '#FF6462',
+      color2: '--next-color-primary-lighter',
+      color3: '--el-color-primary',
+    }
+  ],
   homeTwo: [
     {
       num1: '12',
