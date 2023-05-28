@@ -50,29 +50,67 @@
         </div>
       </el-col>
     </el-row>
-		<el-row :gutter="15" class="home-card-two mb15">
-			<el-col :xs="24" :sm="14" :md="14" :lg="16" :xl="16">
-				<div class="home-card-item">
-					<div style="height: 100%" ref="homeLineJobRef"></div>
-				</div>
-			</el-col>
-			<el-col :xs="24" :sm="10" :md="10" :lg="8" :xl="8" class="home-media">
-				<div class="home-card-item">
-					<div style="height: 100%" ref="homePieJobRef"></div>
-				</div>
-			</el-col>
-		</el-row>
-
-    <el-row :gutter="15" class="home-card-two mb15">
-      <el-col :xs="24" :sm="14" :md="14" :lg="16" :xl="16">
-        <div class="home-card-item">
-          <div style="height: 100%" ref="homeLineDelayRef"></div>
-        </div>
+    <el-row :gutter="15" class="home-card-job mb15">
+      <el-col>
+        <el-card class="box-card" shadow="hover" body-style="padding-bottom:0px;">
+          <template #header>
+            <div class="card-header">
+              时间筛选：
+              <el-date-picker
+                v-model="value1"
+                type="datetimerange"
+                range-separator="-"
+                :start-placeholder="t('message.dateMsg.startDate')"
+                :end-placeholder="t('message.dateMsg.endDate')"
+                size="default"
+              />
+            </div>
+          </template>
+              <el-row :gutter="15" class="home-card-two mb15">
+                <el-col :xs="24" :sm="14" :md="14" :lg="16" :xl="16">
+                  <div class="home-card-item">
+                    <div style="height: 100%" ref="homeLineJobRef"></div>
+                  </div>
+                </el-col>
+                <el-col :xs="24" :sm="10" :md="10" :lg="8" :xl="8" class="home-media">
+                  <div class="home-card-item">
+                    <div style="height: 100%" ref="homePieJobRef"></div>
+                  </div>
+                </el-col>
+              </el-row>
+        </el-card>
       </el-col>
-      <el-col :xs="24" :sm="10" :md="10" :lg="8" :xl="8" class="home-media">
-        <div class="home-card-item">
-          <div style="height: 100%" ref="homePieDelayRef"></div>
-        </div>
+    </el-row>
+
+    <el-row :gutter="15" class="home-card-delay mb15">
+      <el-col>
+        <el-card class="box-card" shadow="hover" body-style="padding-bottom:0px;">
+          <template #header>
+            <div class="card-header">
+              时间筛选：
+              <el-date-picker
+                v-model="value1"
+                type="datetimerange"
+                range-separator="-"
+                :start-placeholder="t('message.dateMsg.startDate')"
+                :end-placeholder="t('message.dateMsg.endDate')"
+                size="default"
+              />
+            </div>
+          </template>
+          <el-row :gutter="15" class="home-card-two mb15">
+            <el-col :xs="24" :sm="14" :md="14" :lg="16" :xl="16">
+              <div class="home-card-item">
+                <div style="height: 100%" ref="homeLineDelayRef"></div>
+              </div>
+            </el-col>
+            <el-col :xs="24" :sm="10" :md="10" :lg="8" :xl="8" class="home-media">
+              <div class="home-card-item">
+                <div style="height: 100%" ref="homePieDelayRef"></div>
+              </div>
+            </el-col>
+          </el-row>
+        </el-card>
       </el-col>
     </el-row>
 	</div>
@@ -86,6 +124,10 @@ import { useThemeConfig } from '/@/stores/themeConfig';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import {useHomeApi} from "/@/api/home";
 import {Local} from "/@/utils/storage";
+import {useI18n} from "vue-i18n";
+
+// 定义变量内容
+const {t} = useI18n();
 
 // 定义变量内容
 const homeLineJobRef = ref();
@@ -716,5 +758,9 @@ $homeNavLengh: 8;
 			}
 		}
 	}
+
+  .home-card-delay{
+    margin-top: 16px;
+  }
 }
 </style>
