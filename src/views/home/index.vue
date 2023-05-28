@@ -109,7 +109,7 @@ const state = reactive({
     {
       num1: "0",
       num2: "0",
-      num3: '定时任务',
+      num3: '',
       num4: 'fa fa-history',
       color1: '#FF6462',
       color2: '--next-color-primary-lighter',
@@ -120,7 +120,7 @@ const state = reactive({
     {
       num1: '12',
       num2: '+12',
-      num3: '应用总数',
+      num3: '',
       num4: 'fa fa-clone',
       color1: '#FF6462',
       color2: '--next-color-primary-lighter',
