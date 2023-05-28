@@ -19,6 +19,13 @@ export function useHomeApi() {
         method: 'get',
         params,
       });
+    },
+    getSystemData: (params?: object) => {
+      return request({
+        url: HOME_APIS.systemData,
+        method: 'get',
+        params,
+      });
     }
   };
 }

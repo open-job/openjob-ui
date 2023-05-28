@@ -40,7 +40,7 @@
           <div class="flex-margin flex w100" :class="` home-one-animation${k}`">
             <div class="flex-auto">
               <span class="font30">{{ v.num1 }}</span>
-              <span class="ml5 font16" :style="{ color: v.color1 }">{{ v.num2 }}</span>
+<!--              <span class="ml5 font16" :style="{ color: v.color1 }">{{ v.num2 }}</span>-->
               <div class="mt10">{{ v.num3 }}</div>
             </div>
             <div class="home-card-item-icon flex" :style="{ background: `var(${v.color2})` }">
@@ -125,34 +125,7 @@ const state = reactive({
       color1: '#FF6462',
       color2: '--next-color-primary-lighter',
       color3: '--el-color-primary',
-    },
-    {
-      num1: '12',
-      num2: '+33',
-      num3: '集群节点',
-      num4: 'fa fa-server',
-      color1: '#6690F9',
-      color2: '--next-color-success-lighter',
-      color3: '--el-color-success',
-    },
-    {
-      num1: '125,65',
-      num2: '+17.32',
-      num3: '工作节点',
-      num4: 'fa fa-desktop',
-      color1: '#6690F9',
-      color2: '--next-color-warning-lighter',
-      color3: '--el-color-warning',
-    },
-    {
-      num1: '520,43',
-      num2: '-10.01',
-      num3: '任务分片',
-      num4: 'fa fa-copy',
-      color1: '#FF6462',
-      color2: '--next-color-danger-lighter',
-      color3: '--el-color-danger',
-    },
+    }
   ],
 	myCharts: [] as EmptyArrayType,
 	charts: {
@@ -559,12 +532,62 @@ const getTaskData = async () => {
   }
 }
 
+const getSystemData = async () => {
+  let request = {
+    namespaceId: Local.get("nid"),
+  };
+  // Font Awesome icon
+  let data = await homeApi.getSystemData(request)
+  state.homeTwo[0] = {
+    num1: data['app']['total'],
+    num2: data['app']['newTotal'],
+    num3: '应用总数',
+    num4: 'fa fa-clone',
+    color1: '#FF6462',
+    color2: '--next-color-primary-lighter',
+    color3: '--el-color-primary',
+  };
+
+  state.homeTwo[1] = {
+    num1: data['server']['total'],
+    num2: data['server']['newTotal'],
+    num3: '集群节点',
+    num4: 'fa fa-server',
+    color1: '#6690F9',
+    color2: '--next-color-success-lighter',
+    color3: '--el-color-success',
+  };
+
+  state.homeTwo[2] = {
+    num1: data['worker']['total'],
+    num2: data['worker']['newTotal'],
+    num3: '工作节点',
+    num4: 'fa fa-desktop',
+    color1: '#6690F9',
+    color2: '--next-color-warning-lighter',
+    color3: '--el-color-warning',
+  };
+
+  state.homeTwo[3] = {
+    num1: data['slot']['total'],
+    num2: data['slot']['newTotal'],
+    num3: '任务分片',
+    num4: 'fa fa-copy',
+    color1: '#FF6462',
+    color2: '--next-color-danger-lighter',
+    color3: '--el-color-danger',
+  };
+}
+
 // 页面加载时
 onMounted(async () => {
   initEchartsResize();
 
   // Task data
   await getTaskData()
+
+  // System data
+  await getSystemData();
 });
 // 由于页面缓存原因，keep-alive
 onActivated(() => {
