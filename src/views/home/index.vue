@@ -192,7 +192,7 @@ const initLineJobChart = () => {
 		tooltip: { trigger: 'axis' },
 		legend: { data: ['成功', '失败'], right: 0 },
 		xAxis: {
-			data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+			data: ['05-27 12:00', '05-27 12:00', '05-27 12:00', '05-27 12:00', '05-27 12:00', '05-27 12:00'],
 		},
 		yAxis: [
 			{
@@ -208,7 +208,7 @@ const initLineJobChart = () => {
 				symbolSize: 6,
 				symbol: 'circle',
 				smooth: true,
-				data: [0, 41.1, 30.4, 65.1, 53.3, 53.3, 53.3, 41.1, 30.4, 65.1, 53.3, 10],
+				data: [0, 41.1, 30.4, 65.1, 53.3, 53.3, 53.3, 41.1, 30.4, 65.1, 53.3, 10,0, 41.1, 30.4, 65.1, 53.3, 53.3, 53.3, 41.1, 30.4, 65.1, 53.3, 10],
 				lineStyle: { color: '#fe9a8b' },
 				itemStyle: { color: '#fe9a8b', borderColor: '#fe9a8b' },
 				areaStyle: {
@@ -224,7 +224,7 @@ const initLineJobChart = () => {
 				symbolSize: 6,
 				symbol: 'circle',
 				smooth: true,
-				data: [0, 24.1, 7.2, 15.5, 42.4, 42.4, 42.4, 24.1, 7.2, 15.5, 42.4, 0],
+				data: [0, 24.1, 7.2, 15.5, 42.4, 42.4, 42.4, 24.1, 7.2, 15.5, 42.4, 0,0, 24.1, 7.2, 15.5, 42.4, 42.4, 42.4, 24.1, 7.2, 15.5, 42.4, 0],
 				lineStyle: { color: '#9E87FF' },
 				itemStyle: { color: '#9E87FF', borderColor: '#9E87FF' },
 				areaStyle: {
