@@ -160,13 +160,40 @@ const state = reactive({
   ],
   homeTwo: [
     {
-      num1: '12',
-      num2: '+12',
+      num1: '',
+      num2: '',
       num3: '',
-      num4: 'fa fa-clone',
-      color1: '#FF6462',
-      color2: '--next-color-primary-lighter',
-      color3: '--el-color-primary',
+      num4: '',
+      color1: '',
+      color2: '',
+      color3: '',
+    },
+    {
+      num1: '',
+      num2: '',
+      num3: '',
+      num4: '',
+      color1: '',
+      color2: '',
+      color3: '',
+    },
+    {
+      num1: '',
+      num2: '',
+      num3: '',
+      num4: '',
+      color1: '',
+      color2: '',
+      color3: '',
+    },
+    {
+      num1: '',
+      num2: '',
+      num3: '',
+      num4: '',
+      color1: '',
+      color2: '',
+      color3: '',
     }
   ],
 	myCharts: [] as EmptyArrayType,
@@ -194,6 +221,11 @@ const initLineJobChart = () => {
 		xAxis: {
 			data: ['05-27 12:00', '05-27 12:00', '05-27 12:00', '05-27 12:00', '05-27 12:00', '05-27 12:00'],
 		},
+    dataZoom: [
+      {
+        xAxisIndex: [0]
+      }
+    ],
 		yAxis: [
 			{
 				type: 'value',
@@ -629,7 +661,9 @@ onMounted(async () => {
   await getTaskData()
 
   // System data
-  await getSystemData();
+  setTimeout(async () => {
+    await getSystemData();
+  }, 1000)
 });
 // 由于页面缓存原因，keep-alive
 onActivated(() => {
