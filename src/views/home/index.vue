@@ -57,12 +57,14 @@
             <div class="card-header">
               时间筛选：
               <el-date-picker
-                v-model="value1"
+                v-model="state.dayDateSelect"
                 type="datetimerange"
+                :shortcuts="shortcuts"
                 range-separator="-"
+                size="default"
                 :start-placeholder="t('message.dateMsg.startDate')"
                 :end-placeholder="t('message.dateMsg.endDate')"
-                size="default"
+                @change="initLineJobChart()"
               />
             </div>
           </template>
@@ -125,9 +127,14 @@ import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import {useHomeApi} from "/@/api/home";
 import {Local} from "/@/utils/storage";
 import {useI18n} from "vue-i18n";
+import {getShortcuts} from "/@/utils/data";
+import {getTimestampByString} from "/@/utils/formatTime";
+
 
 // 定义变量内容
 const {t} = useI18n();
+
+const shortcuts = getShortcuts();
 
 // 定义变量内容
 const homeLineJobRef = ref();
@@ -139,7 +146,20 @@ const storesTagsViewRoutes = useTagsViewRoutes();
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
 const { isTagsViewCurrenFull } = storeToRefs(storesTagsViewRoutes);
+
+const end = new Date()
+const start = new Date()
+start.setTime(start.getTime() - 3600 * 1000 * 24)
+
 const state = reactive({
+  dayDateSelect: [
+    start,
+    end,
+  ],
+  hourDateSelect: [
+    start,
+    end,
+  ],
 	global: {
 		homeChartOne: null,
 		homeChartTwo: null,
@@ -233,11 +253,10 @@ const state = reactive({
 
 // 折线图
 const initLineJobChart = async () => {
-
   let request = {
     namespaceId: Local.get("nid"),
-    beginTime: 1684542944,
-    endTime: 1685608544
+    beginTime: Date.parse(state.dayDateSelect[0].toString())/1000,
+    endTime: Date.parse(state.dayDateSelect[1].toString())/1000,
   };
   // Font Awesome icon
   let data = await homeApi.getJobChart(request)
