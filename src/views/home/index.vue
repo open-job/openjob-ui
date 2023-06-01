@@ -57,7 +57,7 @@
             <div class="card-header">
               时间筛选：
               <el-date-picker
-                v-model="state.dayDateSelect"
+                v-model="state.jobDateSelect"
                 type="datetimerange"
                 :shortcuts="shortcuts"
                 range-separator="-"
@@ -91,12 +91,14 @@
             <div class="card-header">
               时间筛选：
               <el-date-picker
-                v-model="value1"
+                v-model="state.delayDateSelect"
                 type="datetimerange"
+                :shortcuts="shortcuts"
                 range-separator="-"
+                size="default"
                 :start-placeholder="t('message.dateMsg.startDate')"
                 :end-placeholder="t('message.dateMsg.endDate')"
-                size="default"
+                @change="initLineDelayChart()"
               />
             </div>
           </template>
@@ -128,7 +130,6 @@ import {useHomeApi} from "/@/api/home";
 import {Local} from "/@/utils/storage";
 import {useI18n} from "vue-i18n";
 import {getShortcuts} from "/@/utils/data";
-import {getTimestampByString} from "/@/utils/formatTime";
 
 
 // 定义变量内容
@@ -152,11 +153,11 @@ const start = new Date()
 start.setTime(start.getTime() - 3600 * 1000 * 24)
 
 const state = reactive({
-  dayDateSelect: [
+  jobDateSelect: [
     start,
     end,
   ],
-  hourDateSelect: [
+  delayDateSelect: [
     start,
     end,
   ],
@@ -255,8 +256,8 @@ const state = reactive({
 const initLineJobChart = async () => {
   let request = {
     namespaceId: Local.get("nid"),
-    beginTime: Date.parse(state.dayDateSelect[0].toString())/1000,
-    endTime: Date.parse(state.dayDateSelect[1].toString())/1000,
+    beginTime: Date.parse(state.jobDateSelect[0].toString())/1000,
+    endTime: Date.parse(state.jobDateSelect[1].toString())/1000,
   };
   // Font Awesome icon
   let data = await homeApi.getJobChart(request)
@@ -437,7 +438,21 @@ const initPieJobChart = (percentValues : number[]) => {
 	state.myCharts.push(state.global.homeChartTwo);
 };
 
-const initLineDelayChart = () => {
+const initLineDelayChart = async () => {
+
+  let request = {
+    namespaceId: Local.get("nid"),
+    beginTime: Date.parse(state.jobDateSelect[0].toString()) / 1000,
+    endTime: Date.parse(state.jobDateSelect[1].toString()) / 1000,
+  };
+  // Font Awesome icon
+  let data = await homeApi.getDelayChart(request)
+  let percentValues: number[] = [];
+  let percentList = data['percentList'];
+  for (const percentValue in percentList) {
+    percentValues.push(Number(percentList[percentValue])/100);
+  }
+
   if (!state.global.dispose.some((b: any) => b === state.global.homeCharThree)) state.global.homeCharThree.dispose();
   state.global.homeCharThree = markRaw(echarts.init(homeLineDelayRef.value, state.charts.theme));
   const option = {
@@ -445,19 +460,19 @@ const initLineDelayChart = () => {
     title: {
       text: '延时任务调度图',
       x: 'left',
-      textStyle: { fontSize: '15', color: state.charts.color },
+      textStyle: {fontSize: '15', color: state.charts.color},
     },
-    grid: { top: 70, right: 20, bottom: 30, left: 30 },
-    tooltip: { trigger: 'axis' },
-    legend: { data: ['成功', '失败'], right: 0 },
+    grid: {top: 70, right: 20, bottom: 30, left: 30},
+    tooltip: {trigger: 'axis'},
+    legend: {data: ['成功', '失败'], right: 0},
     xAxis: {
-      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+      data: data['axisData'],
     },
     yAxis: [
       {
         type: 'value',
         name: '任务数',
-        splitLine: { show: true, lineStyle: { type: 'dashed', color: '#f5f5f5' } },
+        splitLine: {show: true, lineStyle: {type: 'dashed', color: '#f5f5f5'}},
       },
     ],
     series: [
@@ -467,13 +482,13 @@ const initLineDelayChart = () => {
         symbolSize: 6,
         symbol: 'circle',
         smooth: true,
-        data: [0, 41.1, 30.4, 65.1, 53.3, 53.3, 53.3, 41.1, 30.4, 65.1, 53.3, 10],
-        lineStyle: { color: '#fe9a8b' },
-        itemStyle: { color: '#fe9a8b', borderColor: '#fe9a8b' },
+        data: data['successData'],
+        lineStyle: {color: '#fe9a8b'},
+        itemStyle: {color: '#fe9a8b', borderColor: '#fe9a8b'},
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#fe9a8bb3' },
-            { offset: 1, color: '#fe9a8b03' },
+            {offset: 0, color: '#fe9a8bb3'},
+            {offset: 1, color: '#fe9a8b03'},
           ]),
         },
       },
@@ -483,13 +498,13 @@ const initLineDelayChart = () => {
         symbolSize: 6,
         symbol: 'circle',
         smooth: true,
-        data: [0, 24.1, 7.2, 15.5, 42.4, 42.4, 42.4, 24.1, 7.2, 15.5, 42.4, 0],
-        lineStyle: { color: '#9E87FF' },
-        itemStyle: { color: '#9E87FF', borderColor: '#9E87FF' },
+        data: data['failData'],
+        lineStyle: {color: '#9E87FF'},
+        itemStyle: {color: '#9E87FF', borderColor: '#9E87FF'},
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#9E87FFb3' },
-            { offset: 1, color: '#9E87FF03' },
+            {offset: 0, color: '#9E87FFb3'},
+            {offset: 1, color: '#9E87FF03'},
           ]),
         },
         emphasis: {
@@ -500,12 +515,12 @@ const initLineDelayChart = () => {
               y: 0.5,
               r: 0.5,
               colorStops: [
-                { offset: 0, color: '#9E87FF' },
-                { offset: 0.4, color: '#9E87FF' },
-                { offset: 0.5, color: '#fff' },
-                { offset: 0.7, color: '#fff' },
-                { offset: 0.8, color: '#fff' },
-                { offset: 1, color: '#fff' },
+                {offset: 0, color: '#9E87FF'},
+                {offset: 0.4, color: '#9E87FF'},
+                {offset: 0.5, color: '#fff'},
+                {offset: 0.7, color: '#fff'},
+                {offset: 0.8, color: '#fff'},
+                {offset: 1, color: '#fff'},
               ],
             },
             borderColor: '#9E87FF',
@@ -517,14 +532,18 @@ const initLineDelayChart = () => {
   };
   state.global.homeCharThree.setOption(option);
   state.myCharts.push(state.global.homeCharThree);
+
+  setTimeout(() => {
+    initPieDelayChart(percentValues);
+  }, 500);
 };
 
 // 饼图
-const initPieDelayChart = () => {
+const initPieDelayChart = (percentValues : number[]) => {
   if (!state.global.dispose.some((b: any) => b === state.global.homeCharFour)) state.global.homeCharFour.dispose();
   state.global.homeCharFour = markRaw(echarts.init(homePieDelayRef.value, state.charts.theme));
-  var getname = ['运行中', '成功', '失败', '终止'];
-  var getvalue = [34.2, 38.87, 17.88,12.35];
+  var getname = ['待执行','运行中', '成功', '失败', '终止'];
+  var getvalue = percentValues;
   var data = [];
   for (var i = 0; i < getname.length; i++) {
     data.push({ name: getname[i], value: getvalue[i] });
@@ -747,11 +766,8 @@ watch(
 			setTimeout(async () => {
         await initLineJobChart();
       }, 500);
-			setTimeout(() => {
-        initLineDelayChart();
-			}, 700);
-      setTimeout(() => {
-        initPieDelayChart();
+			setTimeout(async () => {
+        await initLineDelayChart();
       }, 700);
 		});
 	},
