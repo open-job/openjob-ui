@@ -26,6 +26,20 @@ export function useHomeApi() {
         method: 'get',
         params,
       });
+    },
+    getJobChart: (params?: object) => {
+      return request({
+        url: HOME_APIS.jobChart,
+        method: 'get',
+        params,
+      });
+    },
+    getDelayChart: (params?: object) => {
+      return request({
+        url: HOME_APIS.delayChart,
+        method: 'get',
+        params,
+      });
     }
   };
 }

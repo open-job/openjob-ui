@@ -1,6 +1,8 @@
 export const HOME_APIS = {
   taskData: '/admin/home/task-data',
-  systemData: '/admin/home/system-data'
+  systemData: '/admin/home/system-data',
+  jobChart: '/admin/home/job-chart',
+  delayChart: '/admin/home/delay-chart',
 }
 
 export const USER_APIS = {

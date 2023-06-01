@@ -149,13 +149,40 @@ const state = reactive({
 	} as any,
 	homeOne: [
     {
-      num1: "0",
-      num2: "0",
+      num1: '',
+      num2: '',
       num3: '',
-      num4: 'fa fa-history',
-      color1: '#FF6462',
-      color2: '--next-color-primary-lighter',
-      color3: '--el-color-primary',
+      num4: '',
+      color1: '',
+      color2: '',
+      color3: '',
+    },
+    {
+      num1: '',
+      num2: '',
+      num3: '',
+      num4: '',
+      color1: '',
+      color2: '',
+      color3: '',
+    },
+    {
+      num1: '',
+      num2: '',
+      num3: '',
+      num4: '',
+      color1: '',
+      color2: '',
+      color3: '',
+    },
+    {
+      num1: '',
+      num2: '',
+      num3: '',
+      num4: '',
+      color1: '',
+      color2: '',
+      color3: '',
     }
   ],
   homeTwo: [
@@ -205,98 +232,112 @@ const state = reactive({
 });
 
 // 折线图
-const initLineJobChart = () => {
-	if (!state.global.dispose.some((b: any) => b === state.global.homeChartOne)) state.global.homeChartOne.dispose();
-	state.global.homeChartOne = markRaw(echarts.init(homeLineJobRef.value, state.charts.theme));
-	const option = {
-		backgroundColor: state.charts.bgColor,
-		title: {
-			text: '定时任务调度图',
-			x: 'left',
-			textStyle: { fontSize: '15', color: state.charts.color },
-		},
-		grid: { top: 70, right: 20, bottom: 30, left: 30 },
-		tooltip: { trigger: 'axis' },
-		legend: { data: ['成功', '失败'], right: 0 },
-		xAxis: {
-			data: ['05-27 12:00', '05-27 12:00', '05-27 12:00', '05-27 12:00', '05-27 12:00', '05-27 12:00'],
-		},
-    dataZoom: [
+const initLineJobChart = async () => {
+
+  let request = {
+    namespaceId: Local.get("nid"),
+    beginTime: 1684542944,
+    endTime: 1685608544
+  };
+  // Font Awesome icon
+  let data = await homeApi.getJobChart(request)
+
+  let percentValues: number[] = [];
+  let percentList = data['percentList'];
+  for (const percentValue in percentList) {
+    percentValues.push(Number(percentList[percentValue])/100);
+  }
+
+  if (!state.global.dispose.some((b: any) => b === state.global.homeChartOne)) state.global.homeChartOne.dispose();
+  state.global.homeChartOne = markRaw(echarts.init(homeLineJobRef.value, state.charts.theme));
+  const option = {
+    backgroundColor: state.charts.bgColor,
+    title: {
+      text: '定时任务调度图',
+      x: 'left',
+      textStyle: {fontSize: '15', color: state.charts.color},
+    },
+    grid: {top: 70, right: 20, bottom: 30, left: 30},
+    tooltip: {trigger: 'axis'},
+    legend: {data: ['成功', '失败'], right: 0},
+    xAxis: {
+      data: data['axisData'],
+    },
+    yAxis: [
       {
-        xAxisIndex: [0]
-      }
+        type: 'value',
+        name: '任务数',
+        splitLine: {show: true, lineStyle: {type: 'dashed', color: '#f5f5f5'}},
+      },
     ],
-		yAxis: [
-			{
-				type: 'value',
-				name: '任务数',
-				splitLine: { show: true, lineStyle: { type: 'dashed', color: '#f5f5f5' } },
-			},
-		],
-		series: [
-			{
-				name: '成功',
-				type: 'line',
-				symbolSize: 6,
-				symbol: 'circle',
-				smooth: true,
-				data: [0, 41.1, 30.4, 65.1, 53.3, 53.3, 53.3, 41.1, 30.4, 65.1, 53.3, 10,0, 41.1, 30.4, 65.1, 53.3, 53.3, 53.3, 41.1, 30.4, 65.1, 53.3, 10],
-				lineStyle: { color: '#fe9a8b' },
-				itemStyle: { color: '#fe9a8b', borderColor: '#fe9a8b' },
-				areaStyle: {
-					color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-						{ offset: 0, color: '#fe9a8bb3' },
-						{ offset: 1, color: '#fe9a8b03' },
-					]),
-				},
-			},
-			{
-				name: '失败',
-				type: 'line',
-				symbolSize: 6,
-				symbol: 'circle',
-				smooth: true,
-				data: [0, 24.1, 7.2, 15.5, 42.4, 42.4, 42.4, 24.1, 7.2, 15.5, 42.4, 0,0, 24.1, 7.2, 15.5, 42.4, 42.4, 42.4, 24.1, 7.2, 15.5, 42.4, 0],
-				lineStyle: { color: '#9E87FF' },
-				itemStyle: { color: '#9E87FF', borderColor: '#9E87FF' },
-				areaStyle: {
-					color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-						{ offset: 0, color: '#9E87FFb3' },
-						{ offset: 1, color: '#9E87FF03' },
-					]),
-				},
-				emphasis: {
-					itemStyle: {
-						color: {
-							type: 'radial',
-							x: 0.5,
-							y: 0.5,
-							r: 0.5,
-							colorStops: [
-								{ offset: 0, color: '#9E87FF' },
-								{ offset: 0.4, color: '#9E87FF' },
-								{ offset: 0.5, color: '#fff' },
-								{ offset: 0.7, color: '#fff' },
-								{ offset: 0.8, color: '#fff' },
-								{ offset: 1, color: '#fff' },
-							],
-						},
-						borderColor: '#9E87FF',
-						borderWidth: 2,
-					},
-				},
-			},
-		],
-	};
-	state.global.homeChartOne.setOption(option);
-	state.myCharts.push(state.global.homeChartOne);
+    series: [
+      {
+        name: '成功',
+        type: 'line',
+        symbolSize: 6,
+        symbol: 'circle',
+        smooth: true,
+        data: data['successData'],
+        lineStyle: {color: '#fe9a8b'},
+        itemStyle: {color: '#fe9a8b', borderColor: '#fe9a8b'},
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: '#fe9a8bb3'},
+            {offset: 1, color: '#fe9a8b03'},
+          ]),
+        },
+      },
+      {
+        name: '失败',
+        type: 'line',
+        symbolSize: 6,
+        symbol: 'circle',
+        smooth: true,
+        data: data['failData'],
+        lineStyle: {color: '#9E87FF'},
+        itemStyle: {color: '#9E87FF', borderColor: '#9E87FF'},
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: '#9E87FFb3'},
+            {offset: 1, color: '#9E87FF03'},
+          ]),
+        },
+        emphasis: {
+          itemStyle: {
+            color: {
+              type: 'radial',
+              x: 0.5,
+              y: 0.5,
+              r: 0.5,
+              colorStops: [
+                {offset: 0, color: '#9E87FF'},
+                {offset: 0.4, color: '#9E87FF'},
+                {offset: 0.5, color: '#fff'},
+                {offset: 0.7, color: '#fff'},
+                {offset: 0.8, color: '#fff'},
+                {offset: 1, color: '#fff'},
+              ],
+            },
+            borderColor: '#9E87FF',
+            borderWidth: 2,
+          },
+        },
+      },
+    ],
+  };
+  state.global.homeChartOne.setOption(option);
+  state.myCharts.push(state.global.homeChartOne);
+
+  setTimeout(() => {
+    initPieJobChart(percentValues);
+  }, 500);
 };
 // 饼图
-const initPieJobChart = () => {
+const initPieJobChart = (percentValues : number[]) => {
 	if (!state.global.dispose.some((b: any) => b === state.global.homeChartTwo)) state.global.homeChartTwo.dispose();
 	state.global.homeChartTwo = markRaw(echarts.init(homePieJobRef.value, state.charts.theme));
-  var getname = ['运行中', '成功', '失败', '终止'];
-  var getvalue = [34.2, 38.87, 17.88,12.35];
+  var getname = ['待执行','运行中', '成功', '失败', '终止'];
+  var getvalue = percentValues;
 	var data = [];
 	for (var i = 0; i < getname.length; i++) {
 		data.push({ name: getname[i], value: getvalue[i] });
@@ -663,7 +704,7 @@ onMounted(async () => {
   // System data
   setTimeout(async () => {
     await getSystemData();
-  }, 1000)
+  }, 300)
 });
 // 由于页面缓存原因，keep-alive
 onActivated(() => {
@@ -684,18 +725,15 @@ watch(
 			state.charts.theme = isIsDark ? 'dark' : '';
 			state.charts.bgColor = isIsDark ? 'transparent' : '';
 			state.charts.color = isIsDark ? '#dadada' : '#303133';
-			setTimeout(() => {
-				initLineJobChart();
-			}, 500);
-			setTimeout(() => {
-				initPieJobChart();
-			}, 700);
+			setTimeout(async () => {
+        await initLineJobChart();
+      }, 500);
 			setTimeout(() => {
         initLineDelayChart();
-			}, 1000);
+			}, 700);
       setTimeout(() => {
         initPieDelayChart();
-      }, 1500);
+      }, 700);
 		});
 	},
 	{
