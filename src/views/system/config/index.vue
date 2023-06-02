@@ -131,7 +131,7 @@
           <el-col>
             <el-button type="primary" @click="onSubmit(appDialogFormRef)" size="default"
                        style="margin-left:150px;">
-              更新配置
+              {{t('message.commonBtn.update')}}
             </el-button>
           </el-col>
         </el-row>
@@ -160,31 +160,31 @@ const state = reactive({
   selectDays:[
     {
       value: 1,
-      label: '1天'
+      label: t('message.server.system.selectDays.oneDay')
     },
     {
       value: 7,
-      label: '1周'
+      label: t('message.server.system.selectDays.oneWeek')
     },
     {
       value: 30,
-      label: '1月'
+      label: t('message.server.system.selectDays.oneMonth')
     },
     {
       value: 90,
-      label: '3月'
+      label: t('message.server.system.selectDays.threeMonth')
     },
     {
       value: 180,
-      label: '6月'
+      label: t('message.server.system.selectDays.SixMonth')
     },
     {
       value: 365,
-      label: '1年'
+      label: t('message.server.system.selectDays.oneYear')
     },
     {
       value: 1095,
-      label: '3年'
+      label: t('message.server.system.selectDays.threeYear')
     },
   ],
   fromRules: {

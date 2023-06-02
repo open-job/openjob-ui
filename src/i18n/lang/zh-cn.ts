@@ -30,8 +30,10 @@ export default {
     fifteenMinute: '15分钟',
     oneHours: '1小时',
     today: '今天',
-    oneDay: '1天',
-    oneWeek: '1周',
+    oneDay: '近1天',
+    oneWeek: '近1周',
+    halfMonth:'近15天',
+    oneMonth:'近1月',
   },
   commonBtn: {
     confirm: '确认',
@@ -467,6 +469,15 @@ export default {
       createTime: "创建时间",
     },
     system: {
+      selectDays:{
+        oneDay: '1天',
+        oneWeek: '1周',
+        oneMonth: '1月',
+        threeMonth: '3月',
+        SixMonth: '6月',
+        oneYear: '1年',
+        threeYear: '3年',
+      },
       version: '系统版本',
       maxSlot: '任务分片',
       workerSupervisorSlot: '节点分片',

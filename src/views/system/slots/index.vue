@@ -42,6 +42,7 @@
 import {reactive, onMounted} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {useServerApi} from "/@/api/server";
+import {formatDateByTimestamp} from "/@/utils/formatTime";
 
 
 // 定义变量内容
@@ -78,8 +79,8 @@ const getTableData = async () => {
       serverId: item['serverId'],
       serverAddress: item['akkaAddress'],
       serverStatus: item['serverStatus'],
-      createTime: item['createTime'],
-      updateTime: item['updateTime']
+      createTime: formatDateByTimestamp(item['createTime']),
+      updateTime: formatDateByTimestamp(item['updateTime'])
     })
   });
 

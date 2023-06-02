@@ -1,7 +1,7 @@
 <template>
   <div class="system-role-dialog-container">
     <el-dialog :title="state.dialog.title" v-model="state.dialog.isShowDialog" width="800">
-      <el-form ref="appDialogFormRef" :model="state.ruleForm" label-width="100px"
+      <el-form ref="appDialogFormRef" :model="state.ruleForm" label-width="110px"
                :rules="state.fromRules" size="default">
         <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">

@@ -129,13 +129,13 @@ import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import {useHomeApi} from "/@/api/home";
 import {Local} from "/@/utils/storage";
 import {useI18n} from "vue-i18n";
-import {getShortcuts} from "/@/utils/data";
+import {getChartShortcuts} from "/@/utils/data";
 
 
 // 定义变量内容
 const {t} = useI18n();
 
-const shortcuts = getShortcuts();
+const shortcuts = getChartShortcuts();
 
 // 定义变量内容
 const homeLineJobRef = ref();

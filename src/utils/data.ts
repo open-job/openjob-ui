@@ -3,6 +3,49 @@ import {useAppApi} from "/@/api/app";
 import {getHeaderNamespaceId} from "/@/utils/header";
 import {i18n} from "/@/i18n";
 
+export function getChartShortcuts(): Object[] {
+  // 定义变量内容
+  const {t} = useI18n();
+  return [
+    {
+      text: t('message.dateMsg.oneDay'),
+      value: () => {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000 * 24)
+        return [start, end]
+      },
+    },
+    {
+      text: t('message.dateMsg.oneWeek'),
+      value: () => {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+        return [start, end]
+      },
+    },
+    {
+      text: t('message.dateMsg.halfMonth'),
+      value: () => {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000 * 24 * 15)
+        return [start, end]
+      },
+    },
+    {
+      text: t('message.dateMsg.oneMonth'),
+      value: () => {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+        return [start, end]
+      },
+    },
+  ];
+}
+
 export function getShortcuts(): Object[] {
   // 定义变量内容
   const {t} = useI18n();
