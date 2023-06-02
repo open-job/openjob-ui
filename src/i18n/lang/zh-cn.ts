@@ -273,6 +273,37 @@ export default {
     btnTwo: '马上更新',
     btnTwoLoading: '更新中',
   },
+  home:{
+    countOne: {
+      one: '定时任务',
+      two: '定时实例',
+      three: '延时任务',
+      four: '延时实例',
+    },
+    countTwo:{
+      one: '应用总数',
+      two: '集群节点',
+      three: '工作节点',
+      four: '任务分片',
+    },
+    timeSelect:'时间选择',
+    taskNum:'任务数',
+    status:{
+      waiting: '待执行',
+      running: '运行中',
+      success: '成功',
+      fail: '失败',
+      stop: '终止',
+    },
+    job:{
+      chartTitle: '定时任务调度',
+      percentTitle: '定时任务比例',
+    },
+    delay:{
+      chartTitle: '延时任务调度',
+      percentTitle: '延时任务比例',
+    }
+  },
   namespace: {
     id: '空间ID',
     name: '空间名称',

@@ -272,6 +272,37 @@ export default {
     btnTwo: 'Update now',
     btnTwoLoading: 'Updating',
   },
+  home:{
+    countOne: {
+      one: 'Cronjob',
+      two: 'Cron Instance',
+      three: 'Delay Job',
+      four: 'Delay Instance',
+    },
+    countTwo:{
+      one: 'Application',
+      two: 'Node',
+      three: 'Worker',
+      four: 'Slots',
+    },
+    timeSelect:'Time Select',
+    taskNum:'Num',
+    status:{
+      waiting: 'Waiting',
+      running: 'Running',
+      success: 'Success',
+      fail: 'Fail',
+      stop: 'Stop',
+    },
+    job:{
+      chartTitle: 'Cronjob Scheduling',
+      percentTitle: 'Cronjob',
+    },
+    delay:{
+      chartTitle: 'Delay Scheduling',
+      percentTitle: 'Delay',
+    }
+  },
   namespace: {
     id: 'id',
     name: 'Name',

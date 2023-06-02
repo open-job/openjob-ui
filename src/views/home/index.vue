@@ -55,7 +55,7 @@
         <el-card class="box-card" shadow="hover" body-style="padding-bottom:0px;">
           <template #header>
             <div class="card-header">
-              时间筛选：
+              {{t('message.home.timeSelect')}}：
               <el-date-picker
                 v-model="state.jobDateSelect"
                 type="datetimerange"
@@ -89,7 +89,7 @@
         <el-card class="box-card" shadow="hover" body-style="padding-bottom:0px;">
           <template #header>
             <div class="card-header">
-              时间筛选：
+              {{t('message.home.timeSelect')}}：
               <el-date-picker
                 v-model="state.delayDateSelect"
                 type="datetimerange"
@@ -273,26 +273,26 @@ const initLineJobChart = async () => {
   const option = {
     backgroundColor: state.charts.bgColor,
     title: {
-      text: '定时任务调度图',
+      text: t('message.home.job.chartTitle'),
       x: 'left',
       textStyle: {fontSize: '15', color: state.charts.color},
     },
     grid: {top: 70, right: 20, bottom: 30, left: 30},
     tooltip: {trigger: 'axis'},
-    legend: {data: ['成功', '失败'], right: 0},
+    legend: {data: [t('message.home.status.success'), t('message.home.status.fail')], right: 0},
     xAxis: {
       data: data['axisData'],
     },
     yAxis: [
       {
         type: 'value',
-        name: '任务数',
+        name: t('message.home.taskNum'),
         splitLine: {show: true, lineStyle: {type: 'dashed', color: '#f5f5f5'}},
       },
     ],
     series: [
       {
-        name: '成功',
+        name: t('message.home.status.success'),
         type: 'line',
         symbolSize: 6,
         symbol: 'circle',
@@ -308,7 +308,7 @@ const initLineJobChart = async () => {
         },
       },
       {
-        name: '失败',
+        name: t('message.home.status.fail'),
         type: 'line',
         symbolSize: 6,
         symbol: 'circle',
@@ -356,7 +356,13 @@ const initLineJobChart = async () => {
 const initPieJobChart = (percentValues : number[]) => {
 	if (!state.global.dispose.some((b: any) => b === state.global.homeChartTwo)) state.global.homeChartTwo.dispose();
 	state.global.homeChartTwo = markRaw(echarts.init(homePieJobRef.value, state.charts.theme));
-  var getname = ['待执行','运行中', '成功', '失败', '终止'];
+  var getname = [
+    t('message.home.status.waiting'),
+    t('message.home.status.running'),
+    t('message.home.status.success'),
+    t('message.home.status.fail'),
+    t('message.home.status.stop'),
+  ];
   var getvalue = percentValues;
 	var data = [];
 	for (var i = 0; i < getname.length; i++) {
@@ -366,7 +372,7 @@ const initPieJobChart = (percentValues : number[]) => {
 	const option = {
 		backgroundColor: state.charts.bgColor,
 		title: {
-			text: '定时比例图',
+			text: t('message.home.job.percentTitle'),
 			x: 'left',
 			textStyle: { fontSize: '15', color: state.charts.color },
 		},
@@ -458,26 +464,26 @@ const initLineDelayChart = async () => {
   const option = {
     backgroundColor: state.charts.bgColor,
     title: {
-      text: '延时任务调度图',
+      text: t('message.home.delay.chartTitle'),
       x: 'left',
       textStyle: {fontSize: '15', color: state.charts.color},
     },
     grid: {top: 70, right: 20, bottom: 30, left: 30},
     tooltip: {trigger: 'axis'},
-    legend: {data: ['成功', '失败'], right: 0},
+    legend: {data: [t('message.home.status.success'), t('message.home.status.fail')], right: 0},
     xAxis: {
       data: data['axisData'],
     },
     yAxis: [
       {
         type: 'value',
-        name: '任务数',
+        name: t('message.home.taskNum'),
         splitLine: {show: true, lineStyle: {type: 'dashed', color: '#f5f5f5'}},
       },
     ],
     series: [
       {
-        name: '成功',
+        name: t('message.home.status.success'),
         type: 'line',
         symbolSize: 6,
         symbol: 'circle',
@@ -493,7 +499,7 @@ const initLineDelayChart = async () => {
         },
       },
       {
-        name: '失败',
+        name: t('message.home.status.fail'),
         type: 'line',
         symbolSize: 6,
         symbol: 'circle',
@@ -542,7 +548,13 @@ const initLineDelayChart = async () => {
 const initPieDelayChart = (percentValues : number[]) => {
   if (!state.global.dispose.some((b: any) => b === state.global.homeCharFour)) state.global.homeCharFour.dispose();
   state.global.homeCharFour = markRaw(echarts.init(homePieDelayRef.value, state.charts.theme));
-  var getname = ['待执行','运行中', '成功', '失败', '终止'];
+  var getname = [
+    t('message.home.status.waiting'),
+    t('message.home.status.running'),
+    t('message.home.status.success'),
+    t('message.home.status.fail'),
+    t('message.home.status.stop'),
+  ];
   var getvalue = percentValues;
   var data = [];
   for (var i = 0; i < getname.length; i++) {
@@ -552,7 +564,7 @@ const initPieDelayChart = (percentValues : number[]) => {
   const option = {
     backgroundColor: state.charts.bgColor,
     title: {
-      text: '延时比例图',
+      text: t('message.home.delay.percentTitle'),
       x: 'left',
       textStyle: { fontSize: '15', color: state.charts.color },
     },
@@ -647,7 +659,7 @@ const getTaskData = async () => {
   state.homeOne[0] = {
     num1: data['job']['total'],
     num2: data['job']['newTotal'],
-    num3: '定时任务',
+    num3: t('message.home.countOne.one'),
     num4: 'fa fa-history',
     color1: '#FF6462',
     color2: '--next-color-primary-lighter',
@@ -657,7 +669,7 @@ const getTaskData = async () => {
   state.homeOne[1] = {
     num1: data['jobInstance']['total'],
     num2: data['jobInstance']['newTotal'],
-    num3: '定时实例',
+    num3: t('message.home.countOne.two'),
     num4: 'fa fa-file',
     color1: '#6690F9',
     color2: '--next-color-success-lighter',
@@ -667,7 +679,7 @@ const getTaskData = async () => {
   state.homeOne[2] = {
     num1: data['job']['total'],
     num2: data['job']['newTotal'],
-    num3: '延时任务',
+    num3: t('message.home.countOne.three'),
     num4: 'fa fa-tasks',
     color1: '#6690F9',
     color2: '--next-color-warning-lighter',
@@ -677,7 +689,7 @@ const getTaskData = async () => {
   state.homeOne[3] = {
     num1: data['delayInstance']['total'],
     num2: data['delayInstance']['newTotal'],
-    num3: '延时实例',
+    num3: t('message.home.countOne.four'),
     num4: 'fa fa-clipboard',
     color1: '#FF6462',
     color2: '--next-color-danger-lighter',
@@ -694,7 +706,7 @@ const getSystemData = async () => {
   state.homeTwo[0] = {
     num1: data['app']['total'],
     num2: data['app']['newTotal'],
-    num3: '应用总数',
+    num3: t('message.home.countTwo.one'),
     num4: 'fa fa-clone',
     color1: '#FF6462',
     color2: '--next-color-primary-lighter',
@@ -704,7 +716,7 @@ const getSystemData = async () => {
   state.homeTwo[1] = {
     num1: data['server']['total'],
     num2: data['server']['newTotal'],
-    num3: '集群节点',
+    num3: t('message.home.countTwo.two'),
     num4: 'fa fa-server',
     color1: '#6690F9',
     color2: '--next-color-success-lighter',
@@ -714,7 +726,7 @@ const getSystemData = async () => {
   state.homeTwo[2] = {
     num1: data['worker']['total'],
     num2: data['worker']['newTotal'],
-    num3: '工作节点',
+    num3: t('message.home.countTwo.three'),
     num4: 'fa fa-desktop',
     color1: '#6690F9',
     color2: '--next-color-warning-lighter',
@@ -724,7 +736,7 @@ const getSystemData = async () => {
   state.homeTwo[3] = {
     num1: data['slot']['total'],
     num2: data['slot']['newTotal'],
-    num3: '任务分片',
+    num3: t('message.home.countTwo.four'),
     num4: 'fa fa-copy',
     color1: '#FF6462',
     color2: '--next-color-danger-lighter',
