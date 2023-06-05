@@ -754,7 +754,7 @@ onMounted(async () => {
   // System data
   setTimeout(async () => {
     await getSystemData();
-  }, 300)
+  }, 800)
 });
 // 由于页面缓存原因，keep-alive
 onActivated(() => {
