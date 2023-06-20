@@ -74,21 +74,60 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <el-row v-show="state.rowState.kettleProcessor">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item :label="t('message.job.job.kettleCommand')" prop="kettleProcessorInfo">
+                <el-input v-model="state.ruleForm.kettleProcessorInfo"/>
+              </el-form-item>
+
+              <el-radio-group v-model="state.ruleForm.kettleProcessorType" style="margin-left: 120px;">
+                <el-radio v-for="t in state.shellType" :key="t.value" :label="t.label"
+                          @click="onChangeKettleType(t.value)">{{t.value}}</el-radio>
+              </el-radio-group>
+            </el-col>
+          </el-row>
           <el-row v-show="state.rowState.shellProcessor">
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-              <el-form-item :label="t('message.job.job.processorInfo')" prop="shellProcessorInfo">
-                <MonacoEditor
-                  ref="shellProcessorMonacoEditor"
-                  :editorStyle="state.shellEditor.editorStyle"
-                  :language="state.shellEditor.language"
-                  :value="state.ruleForm.shellProcessorInfo"
-                  :syncValue="state.syncEditor"
-                  @updateContent="onShellUpdateContent"
-                />
-              </el-form-item>
+              <MonacoEditor
+                ref="shellProcessorMonacoEditor"
+                :editorStyle="state.shellEditor.editorStyle"
+                :language="state.shellEditor.language"
+                :value="state.ruleForm.shellProcessorInfo"
+                :syncValue="state.syncEditor"
+                @updateContent="onShellUpdateContent"
+                style="margin-left: 120px;"
+              />
+              <el-radio-group v-model="state.ruleForm.shellProcessorType" style="margin-left: 120px;">
+                <el-radio v-for="t in state.shellType" :key="t.value" :label="t.label"
+                          @click="onChangeShellType(t.value)">{{t.value}}</el-radio>
+              </el-radio-group>
             </el-col>
           </el-row>
           <el-row>
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item :label="t('message.job.job.executeType')" prop="">
+                <el-select v-model="state.ruleForm.executeType" class="m-2"
+                           :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
+                  <el-option
+                    v-for="ns in state.executeType"
+                    :key="ns.value"
+                    :label="ns.label"
+                    :value="ns.value"
+                    @click="onChangeExecuteType(ns.value)"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row v-show="state.rowState.shardingParams">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item :label="t('message.job.job.shardingParams')" prop="shardingParams">
+                <el-input type="textarea" rows="3" v-model="state.ruleForm.shardingParams"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.processorParams">
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.paramsType')" prop="paramsType">
                 <el-radio-group v-model="state.ruleForm.paramsType">
@@ -98,7 +137,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row v-show="state.rowState.processorParams">
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.params')" prop="params">
                 <MonacoEditor
@@ -112,7 +151,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row v-show="state.rowState.processorParams">
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.extendParamsType')" prop="extendParamsType">
                 <el-radio-group v-model="state.ruleForm.extendParamsType">
@@ -122,7 +161,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row v-show="state.rowState.processorParams">
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item :label="t('message.job.job.extendParams')" prop="extendParams">
                 <MonacoEditor
@@ -206,19 +245,6 @@
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item :label="t('message.job.job.executeType')" prop="">
-                <el-select v-model="state.ruleForm.executeType" class="m-2"
-                           :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
-                  <el-option
-                    v-for="ns in state.executeType"
-                    :key="ns.value"
-                    :label="ns.label"
-                    :value="ns.value"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item :label="t('message.job.job.executeStrategy')" prop="executeStrategy">
                 <el-select v-model="state.ruleForm.executeStrategy" class="m-2"
                            :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
@@ -229,6 +255,12 @@
                     :value="ns.value"
                   />
                 </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item :label="t('message.job.job.concurrency')" prop="concurrency">
+                <el-input-number v-model="state.ruleForm.concurrency" :min="1" :max="128"
+                                 style="width: 100%"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -246,14 +278,6 @@
                             prop="failRetryInterval">
                 <el-input-number v-model="state.ruleForm.failRetryInterval"
                                  :step="state.ruleForm.intervalStep" :min="1"
-                                 style="width: 100%"/>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item :label="t('message.job.job.concurrency')" prop="concurrency">
-                <el-input-number v-model="state.ruleForm.concurrency" :min="1" :max="128"
                                  style="width: 100%"/>
               </el-form-item>
             </el-col>
@@ -299,7 +323,10 @@ const state = reactive({
   dialogTitle: '',
   rowState:{
     inputProcessor: true,
+    kettleProcessor: false,
     shellProcessor: false,
+    shardingParams: false,
+    processorParams: true,
     timeExpression: true,
     executeTime: false,
     fixedDelay: false,
@@ -329,6 +356,16 @@ const state = reactive({
     processorInfo: {
       required: true,
       message: t('message.job.job.processorInfo'),
+      trigger: 'blur'
+    },
+    shardingParams: {
+      required: true,
+      message: t('message.job.job.shardingParams'),
+      trigger: 'blur'
+    },
+    kettleProcessorInfo: {
+      required: true,
+      message: t('message.job.job.kettleCommand'),
       trigger: 'blur'
     },
     shellProcessorInfo: {
@@ -377,15 +414,29 @@ const state = reactive({
       label: 'properties',
     },
   ],
+  shellType: [
+    {
+      value: 'unix',
+      label: 'unix',
+    },
+    {
+      value: 'windows',
+      label: 'windows',
+    }
+  ],
   processorType: [
     {
       value: 'processor',
       label: 'processor',
     },
-    // {
-    //   value: 'shell',
-    //   label: 'shell',
-    // },
+    {
+      value: 'shell',
+      label: 'shell',
+    },
+    {
+      value: 'kettle',
+      label: 'kettle',
+    },
     // {
     //   value: 'http',
     //   label: 'http',
@@ -396,18 +447,18 @@ const state = reactive({
       value: 'standalone',
       label: t('message.job.job.executeTypeList.standalone'),
     },
-    // {
-    //   value: 'broadcast',
-    //   label: t('message.job.job.executeTypeList.broadcast'),
-    // },
+    {
+      value: 'broadcast',
+      label: t('message.job.job.executeTypeList.broadcast'),
+    },
     // {
     //   value: 'mapReduce',
     //   label: t('message.job.job.executeTypeList.mapReduce'),
     // },
-    // {
-    //   value: 'sharding',
-    //   label: t('message.job.job.executeTypeList.sharding'),
-    // }
+    {
+      value: 'sharding',
+      label: t('message.job.job.executeTypeList.sharding'),
+    }
   ],
   executeStrategy: [
     {
@@ -462,6 +513,10 @@ const state = reactive({
     processorType: 'processor',
     processorInfo: '',
     shellProcessorInfo: '',
+    shellProcessorType: 'unix',
+    kettleProcessorInfo: '',
+    kettleProcessorType: 'unix',
+    shardingParams:'',
     namespaceId: 0,
     appId: 1,
     id: 0,
@@ -704,11 +759,37 @@ const onChangeProcessorType = (type :string)=>{
   if (type == 'shell'){
     state.rowState.inputProcessor = false;
     state.rowState.shellProcessor = true;
+    state.rowState.kettleProcessor = false;
+    state.rowState.processorParams = false;
+    return
+  }
+
+  if (type == 'kettle'){
+    state.rowState.inputProcessor = false;
+    state.rowState.shellProcessor = false;
+    state.rowState.kettleProcessor = true;
+    state.rowState.processorParams = false;
     return
   }
 
   state.rowState.inputProcessor = true;
   state.rowState.shellProcessor = false;
+  state.rowState.kettleProcessor = false;
+  state.rowState.processorParams = true;
+}
+
+const onChangeExecuteType = (type :string)=>{
+  if (type == 'standalone' || type == 'broadcast'){
+    state.rowState.processorParams = true;
+    state.rowState.shardingParams = false;
+    return
+  }
+
+  if (type == 'sharding'){
+    state.rowState.processorParams = false;
+    state.rowState.shardingParams = true;
+    return
+  }
 }
 
 const onChangeTimeType = (type :string)=>{
@@ -773,6 +854,14 @@ const onChangePramsType = (type :string)=>{
 
 const onChangeExtPramsType = (type :string)=>{
   state.ruleForm.extendParamsType = type;
+}
+
+const onChangeShellType = (type :string)=>{
+  state.ruleForm.shellProcessorType = type;
+}
+
+const onChangeKettleType = (type :string)=>{
+  state.ruleForm.kettleProcessorType = type;
 }
 
 const onShellUpdateContent = (value :string)=>{

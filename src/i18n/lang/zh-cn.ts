@@ -341,6 +341,8 @@ export default {
       workflowId: '工作流ID',
       processorType: '执行器类型',
       processorInfo: '执行器',
+      kettleCommand: '执行命令',
+      shardingParams: '分片参数',
       executeType: '执行方式',
       paramsType: '参数类型',
       params: '参数',

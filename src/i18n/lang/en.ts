@@ -340,6 +340,8 @@ export default {
       workflowId: 'Workflow ID',
       processorType: 'Processor Type',
       processorInfo: 'Processor',
+      kettleCommand: 'Command',
+      shardingParams: 'Sharding',
       executeType: 'Method',
       paramsType: 'Params Type',
       params: 'Params',
