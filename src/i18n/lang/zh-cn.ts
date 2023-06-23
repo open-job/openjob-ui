@@ -387,6 +387,33 @@ export default {
       addJobTitle: '新增任务',
       updateJobTitle: '更新任务',
       copyJobTitle: '复制任务',
+      shardingParamsLabel:{
+        one: '格式: 分片号=分片参数，多个分片逗号分隔，',
+        two: '比如 0=a,1=b,2=c',
+      },
+      processorInfoLabel:{
+        one: '执行器类名或Bean 名称',
+        two: '类 名: io.openjob.xxx.StandaloneProcessor',
+        three: 'Bean: xxxProcessor',
+      },
+      executeTypeLabel: {
+        one:'单机：随机选一台机器执行任务',
+        two:'广播：所有机器同时执行并等待全部结束',
+        three:'MapReduce：常规 MapReduce 任务模型',
+        four:'分片：按分片参数调度',
+      },
+      executeStrategyLabel: {
+        one:'执行任务存在时',
+        two:'*丢弃：丢弃之后任务',
+        three:'*覆盖：覆盖之前任务',
+        four:'*并发：任务并发执行',
+      },
+      timeExpressionTypeLabel: {
+        one:'定时任务：执行周期必须大于等于 60s',
+        two:'秒级任务：执行周期必须小于 60s',
+        three:'固定频率：执行频率必须大于 60s',
+        four:'一 次 性 ：只执行一次',
+      },
     },
     instance: {
       id: '实例ID',

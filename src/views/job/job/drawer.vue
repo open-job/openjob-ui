@@ -4,8 +4,8 @@
       <h4>{{state.dialogTitle}}</h4>
     </template>
     <template #default>
-      <div class="system-role-dialog-container" style="padding: 10px;">
-        <el-form ref="jobFormRef" :model="state.ruleForm" label-width="120px"
+      <div class="system-role-dialog-container" style="padding: 20px;">
+        <el-form ref="jobFormRef" :model="state.ruleForm" label-width="130px" label-position="right"
                  :rules="state.fromRules" size="default">
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
@@ -69,8 +69,19 @@
           </el-row>
           <el-row v-show="state.rowState.inputProcessor">
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-              <el-form-item :label="t('message.job.job.processorInfo')" prop="processorInfo">
-                <el-input v-model="state.ruleForm.processorInfo"/>
+              <el-form-item  prop="processorInfo">
+                <template #label>
+                  {{ $t('message.job.job.processorInfo') }}
+                  <el-tooltip class="box-item" effect="dark" placement="top">
+                    <template #content>
+                      {{ $t('message.job.job.processorInfoLabel.one') }}<br>
+                      {{ $t('message.job.job.processorInfoLabel.two') }}<br>
+                      {{ $t('message.job.job.processorInfoLabel.three') }}<br>
+                    </template>
+                    <el-icon style="margin-top: 9px;"><ele-QuestionFilled/></el-icon>
+                  </el-tooltip>
+                </template>
+                <el-input v-model="state.ruleForm.processorInfo" style="width: 80%;"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -105,7 +116,20 @@
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item :label="t('message.job.job.executeType')" prop="">
+              <el-form-item prop="">
+                <template #label>
+                  {{ $t('message.job.job.executeType') }}
+                  <el-tooltip class="box-item" effect="dark" placement="top">
+                    <template #content>
+                      {{ $t('message.job.job.executeTypeLabel.one') }}<br>
+                      {{ $t('message.job.job.executeTypeLabel.two') }}<br>
+                      {{ $t('message.job.job.executeTypeLabel.two') }}<br>
+                      {{ $t('message.job.job.executeTypeLabel.four') }}<br>
+                    </template>
+                    <el-icon style="margin-top: 9px;"><ele-QuestionFilled/></el-icon>
+                  </el-tooltip>
+                </template>
+
                 <el-select v-model="state.ruleForm.executeType" class="m-2"
                            :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
                   <el-option
@@ -121,7 +145,17 @@
           </el-row>
           <el-row v-show="state.rowState.shardingParams">
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-              <el-form-item :label="t('message.job.job.shardingParams')" prop="shardingParams">
+              <el-form-item prop="shardingParams">
+                <template #label>
+                  {{ $t('message.job.job.shardingParams') }}
+                  <el-tooltip class="box-item" effect="dark" placement="top">
+                    <template #content>
+                      {{ $t('message.job.job.shardingParamsLabel.one') }}<br>
+                      {{ $t('message.job.job.shardingParamsLabel.two') }}
+                    </template>
+                    <el-icon style="margin-top: 9px;"><ele-QuestionFilled/></el-icon>
+                  </el-tooltip>
+                </template>
                 <el-input type="textarea" rows="3" v-model="state.ruleForm.shardingParams"/>
               </el-form-item>
             </el-col>
@@ -178,6 +212,19 @@
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item :label="t('message.job.job.timeExpressionType')" prop="">
+                <template #label>
+                  {{ $t('message.job.job.timeExpressionType') }}
+                  <el-tooltip class="box-item" effect="dark" placement="top">
+                    <template #content>
+                      {{ $t('message.job.job.timeExpressionTypeLabel.one') }}<br>
+                      {{ $t('message.job.job.timeExpressionTypeLabel.two') }}<br>
+                      {{ $t('message.job.job.timeExpressionTypeLabel.three') }}<br>
+                      {{ $t('message.job.job.timeExpressionTypeLabel.four') }}<br>
+                    </template>
+                    <el-icon style="margin-top: 9px;"><ele-QuestionFilled/></el-icon>
+                  </el-tooltip>
+                </template>
+
                 <el-select v-model="state.ruleForm.timeExpressionType" class="m-2"
                            :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
                   <el-option
@@ -201,7 +248,7 @@
               <el-button type="success" plain size="default"
                          @click="onClickTimeExpression()"
                          style="margin-left: 10px;">
-                执行时间
+                {{t('message.job.instance.executeTime')}}
               </el-button>
             </el-col>
           </el-row>
@@ -245,7 +292,20 @@
           </el-row>
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item :label="t('message.job.job.executeStrategy')" prop="executeStrategy">
+              <el-form-item prop="executeStrategy">
+                <template #label>
+                  {{ $t('message.job.job.executeStrategy') }}
+                  <el-tooltip class="box-item" effect="dark" placement="top">
+                    <template #content>
+                      {{ $t('message.job.job.executeStrategyLabel.one') }}<br>
+                      {{ $t('message.job.job.executeStrategyLabel.two') }}<br>
+                      {{ $t('message.job.job.executeStrategyLabel.three') }}<br>
+                      {{ $t('message.job.job.executeStrategyLabel.four') }}<br>
+                    </template>
+                    <el-icon style="margin-top: 9px;"><ele-QuestionFilled/></el-icon>
+                  </el-tooltip>
+                </template>
+
                 <el-select v-model="state.ruleForm.executeStrategy" class="m-2"
                            :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
                   <el-option
@@ -303,6 +363,7 @@ import {getHeaderNamespaceId} from "/@/utils/header";
 import {useJobApi} from "/@/api/job";
 import {formatDateByTimestamp, getTimestampByString} from "/@/utils/formatTime";
 import {getAppSelectList} from "/@/utils/data";
+import Breadcrumb from "/@/layout/navBars/breadcrumb/breadcrumb.vue";
 
 const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
 
