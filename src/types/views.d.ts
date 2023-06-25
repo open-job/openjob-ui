@@ -117,6 +117,11 @@ declare interface RowJobType {
   description: string;
   processorType: string;
   processorInfo: string;
+  shellProcessorType: string
+  shellProcessorInfo: string
+  kettleProcessorType: string
+  kettleProcessorInfo: string
+  shardingParams: string
   executeType: string;
   paramsType: string;
   params: string;

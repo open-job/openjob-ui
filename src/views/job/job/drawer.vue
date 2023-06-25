@@ -54,7 +54,7 @@
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item :label="t('message.job.job.processorType')" prop="processorType">
-                <el-select v-model="state.ruleForm.processorType" class="m-2"
+                <el-select v-model="state.ruleForm.processorType" :disabled="state.isUpdate" class="m-2"
                            :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
                   <el-option
                     v-for="ns in state.processorType"
@@ -381,6 +381,7 @@ const jobFormRef = ref();
 const emit = defineEmits(['refresh']);
 
 const state = reactive({
+  isUpdate: false,
   dialogTitle: '',
   rowState:{
     inputProcessor: true,
@@ -619,6 +620,7 @@ const openDrawer = async (type: string, selectAppId: number, row: RowJobType) =>
   state.drawer.isShow = true;
 
   if (type === 'add') {
+    state.isUpdate = false;
     state.dialogTitle = t('message.job.job.addJobTitle')
 
     state.syncEditor = true;
@@ -627,6 +629,7 @@ const openDrawer = async (type: string, selectAppId: number, row: RowJobType) =>
     return;
   }
 
+  state.isUpdate = true
   if (type == 'update'){
     state.dialogTitle = t('message.job.job.updateJobTitle')
   }else{
@@ -665,6 +668,11 @@ const resetJobContent = async (selectAppId: number) => {
   state.ruleForm.fixedRate = '';
   state.ruleForm.status = true;
   state.ruleForm.executeType = 'standalone';
+  state.ruleForm.shellProcessorType='unix';
+  state.ruleForm.shellProcessorInfo='';
+  state.ruleForm.kettleProcessorType='unix';
+  state.ruleForm.kettleProcessorInfo='';
+  state.ruleForm.shardingParams = '';
   state.ruleForm.executeStrategy = 1;
   state.ruleForm.failRetryTimes = 1;
   state.ruleForm.failRetryInterval = 3000;
@@ -692,19 +700,27 @@ const initJobContent = async (row: RowJobType) => {
   state.ruleForm.failRetryTimes = row.failRetryTimes;
   state.ruleForm.failRetryInterval = row.failRetryInterval;
   state.ruleForm.concurrency = row.concurrency;
+  state.ruleForm.processorInfo = row.processorInfo;
 
   onChangeTimeType(row.timeExpressionType);
 
   onChangeProcessorType(row.processorType);
 
-  if (row.processorType == 'shell') {
-    state.ruleForm.shellProcessorInfo = row.processorInfo;
-    state.ruleForm.processorInfo = '';
-  } else {
-    state.ruleForm.processorInfo = row.processorInfo;
-    state.ruleForm.shellProcessorInfo = '';
+  onChangeExecuteType(row.executeType)
+
+  if (row.executeType == 'sharding'){
+    state.ruleForm.shardingParams = row.shardingParams
   }
 
+  if (row.shellProcessorType != null){
+    onChangeShellType(row.shellProcessorType)
+    state.ruleForm.shellProcessorInfo = row.shellProcessorInfo
+  }
+
+  if (row.kettleProcessorType != null){
+    onChangeKettleType(row.kettleProcessorType)
+    state.ruleForm.kettleProcessorInfo = row.kettleProcessorInfo
+  }
 
   if (row.timeExpressionType == 'secondDelay') {
     state.ruleForm.fixedDelay = row.timeExpressionValue.toString();
@@ -741,6 +757,8 @@ const confirmClick = async (formEl: FormInstance | undefined) => {
 
   if (state.ruleForm.processorType == 'shell') {
     validFields.push('shellProcessorInfo');
+  } else if (state.ruleForm.processorType == 'kettle') {
+    validFields.push('kettleProcessorInfo');
   } else {
     validFields.push('processorInfo');
   }
@@ -818,6 +836,15 @@ const onSubmitRequest = async ()=>{
 }
 
 const onChangeProcessorType = (type :string)=>{
+  // sharding
+  if (type == 'processor' && state.ruleForm.executeType == 'sharding'){
+    state.rowState.inputProcessor = true;
+    state.rowState.shellProcessor = false;
+    state.rowState.kettleProcessor = false;
+    state.rowState.processorParams = false;
+    return;
+  }
+
   if (type == 'shell'){
     state.rowState.inputProcessor = false;
     state.rowState.shellProcessor = true;
@@ -840,18 +867,21 @@ const onChangeProcessorType = (type :string)=>{
   state.rowState.processorParams = true;
 }
 
-const onChangeExecuteType = (type :string)=>{
-  if (type == 'standalone' || type == 'broadcast'){
+const onChangeExecuteType = (type: string) => {
+  if (state.ruleForm.processorType == 'processor' && type != 'sharding') {
     state.rowState.processorParams = true;
     state.rowState.shardingParams = false;
-    return
+    return;
   }
 
-  if (type == 'sharding'){
+  if (type == 'sharding') {
     state.rowState.processorParams = false;
     state.rowState.shardingParams = true;
     return
   }
+
+  state.rowState.processorParams = false;
+  state.rowState.shardingParams = false;
 }
 
 const onChangeTimeType = (type :string)=>{

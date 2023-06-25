@@ -61,7 +61,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row v-show="state.rowState.paramsProcessor">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.paramsType')" prop="paramsType">
               <el-radio-group v-model="state.ruleForm.paramsType">
@@ -71,7 +71,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row v-show="state.rowState.paramsProcessor">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.params')" prop="params">
               <MonacoEditor
@@ -85,7 +85,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row v-show="state.rowState.paramsProcessor">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.extendParamsType')" prop="extendParamsType">
               <el-radio-group v-model="state.ruleForm.extendParamsType">
@@ -95,7 +95,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row v-show="state.rowState.paramsProcessor">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.extendParams')" prop="extendParams">
               <MonacoEditor
@@ -147,6 +147,7 @@ const state = reactive({
   rowState:{
     inputProcessor: true,
     shellProcessor: false,
+    paramsProcessor: false,
   },
   syncEditor: false,
   shellEditor: {
@@ -314,8 +315,9 @@ const initJob = async (row :RowJobType) => {
 
   if (row.processorType == 'shell'){
     state.rowState.inputProcessor = false;
+    state.rowState.paramsProcessor = false;
     state.rowState.shellProcessor = true;
-    state.ruleForm.shellProcessorInfo = row.processorInfo;
+    state.ruleForm.shellProcessorInfo = row.shellProcessorInfo;
   }else{
     state.rowState.inputProcessor = true;
     state.rowState.shellProcessor = false;
