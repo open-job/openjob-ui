@@ -775,10 +775,6 @@ const onSubmitRequest = async ()=>{
     timeExpressionValue = getTimestampByString(state.ruleForm.executeTime);
   }
 
-  if (state.ruleForm.processorType == 'shell') {
-    state.ruleForm.processorInfo = state.ruleForm.shellProcessorInfo;
-  }
-
   let request = {
     id: state.ruleForm.id,
     namespaceId: state.ruleForm.namespaceId,
@@ -799,7 +795,12 @@ const onSubmitRequest = async ()=>{
     failRetryTimes: state.ruleForm.failRetryTimes,
     failRetryInterval: state.ruleForm.failRetryInterval,
     concurrency: state.ruleForm.concurrency,
-    status: (state.ruleForm.status ? 1 : 2)
+    status: (state.ruleForm.status ? 1 : 2),
+    shellProcessorInfo: state.ruleForm.shellProcessorInfo,
+    shellProcessorType: state.ruleForm.shellProcessorType,
+    kettleProcessorType: state.ruleForm.kettleProcessorType,
+    kettleProcessorInfo: state.ruleForm.kettleProcessorInfo,
+    shardingParams: state.ruleForm.shardingParams,
   };
 
   if (state.drawer.type === 'add' || state.drawer.type === 'copy') {
