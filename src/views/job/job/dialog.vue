@@ -46,6 +46,18 @@
             </el-form-item>
           </el-col>
         </el-row>
+
+        <el-row v-show="state.rowState.kettleProcessor">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+            <el-form-item :label="t('message.job.job.kettleCommand')" prop="kettleProcessorInfo">
+              <el-input v-model="state.ruleForm.kettleProcessorInfo"/>
+            </el-form-item>
+            <el-radio-group v-model="state.ruleForm.kettleProcessorType" style="margin-left: 120px;">
+              <el-radio v-for="t in state.shellType" :key="t.value" :label="t.label" disabled>{{t.value}}</el-radio>
+            </el-radio-group>
+          </el-col>
+        </el-row>
+
         <el-row v-show="state.rowState.shellProcessor">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.processorInfo')" prop="shellProcessorInfo">
@@ -58,9 +70,13 @@
                 :readOnly="true"
                 @updateContent="onShellUpdateContent"
               />
+              <el-radio-group v-model="state.ruleForm.shellProcessorType" style="margin-left: 120px;">
+                <el-radio v-for="t in state.shellType" :key="t.value" :label="t.label" disabled>{{t.value}}</el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
+
         <el-row v-show="state.rowState.paramsProcessor">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.paramsType')" prop="paramsType">
@@ -146,7 +162,10 @@ const appDialogFormRef = ref<FormInstance>();
 const state = reactive({
   rowState:{
     inputProcessor: true,
+    kettleProcessor: false,
+    httpProcessor: false,
     shellProcessor: false,
+    shardingParams: false,
     paramsProcessor: false,
   },
   syncEditor: false,
@@ -160,6 +179,16 @@ const state = reactive({
   paramsExtEditor: {
     editorStyle: 'width: 95%;height: 120px;',
   },
+  shellType: [
+    {
+      value: 'unix',
+      label: 'unix',
+    },
+    {
+      value: 'windows',
+      label: 'windows',
+    }
+  ],
   processorType: [
     {
       value: 'processor',
@@ -168,6 +197,10 @@ const state = reactive({
     {
       value: 'shell',
       label: 'shell',
+    },
+    {
+      value: 'kettle',
+      label: 'kettle',
     },
     {
       value: 'http',
@@ -201,6 +234,9 @@ const state = reactive({
     processorType: 'java',
     processorInfo: '',
     shellProcessorInfo: '',
+    shellProcessorType: 'unix',
+    kettleProcessorInfo: '',
+    kettleProcessorType: 'unix',
     paramsType: 'text',
     params: '',
     extendParamsType:'text',
@@ -308,19 +344,42 @@ const initJob = async (row :RowJobType) => {
   state.ruleForm.name = row.name;
   state.ruleForm.processorType = row.processorType;
   state.ruleForm.processorInfo = row.processorInfo;
-  state.ruleForm.paramsType = row.paramsType;
-  state.ruleForm.params = row.params;
-  state.ruleForm.extendParamsType = row.extendParamsType;
-  state.ruleForm.extendParams = row.extendParams;
-
-  if (row.processorType == 'shell'){
+  const  type = row.processorType
+  if (type == 'shell') {
     state.rowState.inputProcessor = false;
-    state.rowState.paramsProcessor = false;
     state.rowState.shellProcessor = true;
-    state.ruleForm.shellProcessorInfo = row.shellProcessorInfo;
-  }else{
+    state.rowState.kettleProcessor = false;
+    state.rowState.paramsProcessor = false;
+    state.rowState.httpProcessor = false;
+
+    state.ruleForm.shellProcessorInfo = row.shellProcessorInfo
+    state.ruleForm.shellProcessorType = row.shellProcessorType
+  } else if (type == 'kettle') {
+    state.rowState.inputProcessor = false;
+    state.rowState.shellProcessor = false;
+    state.rowState.kettleProcessor = true;
+    state.rowState.paramsProcessor = false;
+    state.rowState.httpProcessor = false;
+
+    state.ruleForm.kettleProcessorType = row.kettleProcessorType
+    state.ruleForm.kettleProcessorInfo = row.kettleProcessorInfo
+  } else if (type == 'http') {
+    state.rowState.inputProcessor = false;
+    state.rowState.shellProcessor = false;
+    state.rowState.kettleProcessor = false;
+    state.rowState.paramsProcessor = false;
+    state.rowState.httpProcessor = true;
+  } else {
     state.rowState.inputProcessor = true;
     state.rowState.shellProcessor = false;
+    state.rowState.kettleProcessor = false;
+    state.rowState.paramsProcessor = true;
+    state.rowState.httpProcessor = false;
+
+    state.ruleForm.paramsType = row.paramsType;
+    state.ruleForm.params = row.params;
+    state.ruleForm.extendParamsType = row.extendParamsType;
+    state.ruleForm.extendParams = row.extendParams;
   }
 }
 
