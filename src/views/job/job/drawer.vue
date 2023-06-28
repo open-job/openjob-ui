@@ -97,6 +97,7 @@
               </el-radio-group>
             </el-col>
           </el-row>
+
           <el-row v-show="state.rowState.shellProcessor">
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <MonacoEditor
@@ -114,6 +115,31 @@
               </el-radio-group>
             </el-col>
           </el-row>
+
+          <el-row v-show="state.rowState.httpProcessor">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item label="URL" prop="httpUrl">
+                <el-input v-model="state.ruleForm.httpUrl"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.httpProcessor">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item label="Method" prop="httpMethod">
+                <el-select v-model="state.ruleForm.httpMethod" class="m-2"
+                           :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
+                  <el-option
+                    v-for="ns in state.httpMethod"
+                    :key="ns.value"
+                    :label="ns.label"
+                    :value="ns.value"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item prop="">
@@ -386,6 +412,7 @@ const state = reactive({
   rowState:{
     inputProcessor: true,
     kettleProcessor: false,
+    httpProcessor: false,
     shellProcessor: false,
     shardingParams: false,
     processorParams: true,
@@ -486,6 +513,16 @@ const state = reactive({
       label: 'windows',
     }
   ],
+  httpMethod: [
+    {
+      value: 'GET',
+      label: 'GET',
+    },
+    {
+      value: 'POST',
+      label: 'POST',
+    }
+  ],
   processorType: [
     {
       value: 'processor',
@@ -499,10 +536,10 @@ const state = reactive({
       value: 'kettle',
       label: 'kettle',
     },
-    // {
-    //   value: 'http',
-    //   label: 'http',
-    // }
+    {
+      value: 'http',
+      label: 'http',
+    }
   ],
   executeType: [
     {
@@ -513,10 +550,10 @@ const state = reactive({
       value: 'broadcast',
       label: t('message.job.job.executeTypeList.broadcast'),
     },
-    // {
-    //   value: 'mapReduce',
-    //   label: t('message.job.job.executeTypeList.mapReduce'),
-    // },
+    {
+      value: 'mapReduce',
+      label: t('message.job.job.executeTypeList.mapReduce'),
+    },
     {
       value: 'sharding',
       label: t('message.job.job.executeTypeList.sharding'),
@@ -574,6 +611,8 @@ const state = reactive({
     executeType: 'standalone',
     processorType: 'processor',
     processorInfo: '',
+    httpUrl:'',
+    httpMethod:'GET',
     shellProcessorInfo: '',
     shellProcessorType: 'unix',
     kettleProcessorInfo: '',
@@ -842,6 +881,7 @@ const onChangeProcessorType = (type :string)=>{
     state.rowState.shellProcessor = false;
     state.rowState.kettleProcessor = false;
     state.rowState.processorParams = false;
+    state.rowState.httpProcessor = false;
     return;
   }
 
@@ -850,6 +890,7 @@ const onChangeProcessorType = (type :string)=>{
     state.rowState.shellProcessor = true;
     state.rowState.kettleProcessor = false;
     state.rowState.processorParams = false;
+    state.rowState.httpProcessor = false;
     return
   }
 
@@ -858,6 +899,16 @@ const onChangeProcessorType = (type :string)=>{
     state.rowState.shellProcessor = false;
     state.rowState.kettleProcessor = true;
     state.rowState.processorParams = false;
+    state.rowState.httpProcessor = false;
+    return
+  }
+
+  if (type == 'http'){
+    state.rowState.inputProcessor = false;
+    state.rowState.shellProcessor = false;
+    state.rowState.kettleProcessor = false;
+    state.rowState.processorParams = false;
+    state.rowState.httpProcessor = true;
     return
   }
 
@@ -865,6 +916,7 @@ const onChangeProcessorType = (type :string)=>{
   state.rowState.shellProcessor = false;
   state.rowState.kettleProcessor = false;
   state.rowState.processorParams = true;
+  state.rowState.httpProcessor = false;
 }
 
 const onChangeExecuteType = (type: string) => {
