@@ -579,14 +579,14 @@ const state = reactive({
       value: 'cron',
       label: t('message.job.job.timeExpressionTypeList.cron'),
     },
-    // {
-    //   value: 'secondDelay',
-    //   label: t('message.job.job.timeExpressionTypeList.secondDelay'),
-    // },
-    // {
-    //   value: 'fixedRate',
-    //   label: t('message.job.job.timeExpressionTypeList.fixedRate'),
-    // },
+    {
+      value: 'secondDelay',
+      label: t('message.job.job.timeExpressionTypeList.secondDelay'),
+    },
+    {
+      value: 'fixedRate',
+      label: t('message.job.job.timeExpressionTypeList.fixedRate'),
+    },
     {
       value: 'oneTime',
       label: t('message.job.job.timeExpressionTypeList.oneTime'),
@@ -874,66 +874,106 @@ const onSubmitRequest = async ()=>{
   emit('refresh');
 }
 
-const onChangeProcessorType = (type :string)=>{
-  // sharding
-  if (type == 'processor' && state.ruleForm.executeType == 'sharding'){
-    state.rowState.inputProcessor = true;
-    state.rowState.shellProcessor = false;
-    state.rowState.kettleProcessor = false;
-    state.rowState.processorParams = false;
-    state.rowState.httpProcessor = false;
-    return;
-  }
-
-  if (type == 'shell'){
+const onChangeProcessorType = (type: string) => {
+  if (type == 'shell') {
     state.rowState.inputProcessor = false;
     state.rowState.shellProcessor = true;
     state.rowState.kettleProcessor = false;
     state.rowState.processorParams = false;
     state.rowState.httpProcessor = false;
-    return
-  }
-
-  if (type == 'kettle'){
+    state.executeType = [
+      {
+        value: 'standalone',
+        label: t('message.job.job.executeTypeList.standalone'),
+      },
+      {
+        value: 'broadcast',
+        label: t('message.job.job.executeTypeList.broadcast'),
+      },
+      {
+        value: 'sharding',
+        label: t('message.job.job.executeTypeList.sharding'),
+      }
+    ];
+  } else if (type == 'kettle') {
     state.rowState.inputProcessor = false;
     state.rowState.shellProcessor = false;
     state.rowState.kettleProcessor = true;
     state.rowState.processorParams = false;
     state.rowState.httpProcessor = false;
-    return
-  }
 
-  if (type == 'http'){
+    state.executeType = [
+      {
+        value: 'standalone',
+        label: t('message.job.job.executeTypeList.standalone'),
+      },
+      {
+        value: 'broadcast',
+        label: t('message.job.job.executeTypeList.broadcast'),
+      }
+    ];
+  } else if (type == 'http') {
     state.rowState.inputProcessor = false;
     state.rowState.shellProcessor = false;
     state.rowState.kettleProcessor = false;
     state.rowState.processorParams = false;
     state.rowState.httpProcessor = true;
-    return
+
+    state.executeType = [
+      {
+        value: 'standalone',
+        label: t('message.job.job.executeTypeList.standalone'),
+      },
+      {
+        value: 'broadcast',
+        label: t('message.job.job.executeTypeList.broadcast'),
+      }
+    ];
+  } else {
+    state.rowState.inputProcessor = true;
+    state.rowState.shellProcessor = false;
+    state.rowState.kettleProcessor = false;
+    state.rowState.processorParams = true;
+    state.rowState.httpProcessor = false;
+    state.executeType = [
+      {
+        value: 'standalone',
+        label: t('message.job.job.executeTypeList.standalone'),
+      },
+      {
+        value: 'broadcast',
+        label: t('message.job.job.executeTypeList.broadcast'),
+      },
+      {
+        value: 'mapReduce',
+        label: t('message.job.job.executeTypeList.mapReduce'),
+      },
+      {
+        value: 'sharding',
+        label: t('message.job.job.executeTypeList.sharding'),
+      }
+    ];
   }
 
-  state.rowState.inputProcessor = true;
-  state.rowState.shellProcessor = false;
-  state.rowState.kettleProcessor = false;
-  state.rowState.processorParams = true;
-  state.rowState.httpProcessor = false;
+  state.ruleForm.executeType = 'standalone';
+  onChangeExecuteType("standalone");
 }
 
 const onChangeExecuteType = (type: string) => {
-  if (state.ruleForm.processorType == 'processor' && type != 'sharding') {
-    state.rowState.processorParams = true;
-    state.rowState.shardingParams = false;
-    return;
-  }
-
   if (type == 'sharding') {
-    state.rowState.processorParams = false;
-    state.rowState.shardingParams = true;
+    if (state.ruleForm.processorType == 'processor') {
+      state.rowState.processorParams = false;
+      state.rowState.shardingParams = true;
+    } else {
+      state.rowState.shardingParams = true;
+    }
     return
+  } else {
+    if (state.ruleForm.processorType == 'processor') {
+      state.rowState.processorParams = true;
+    }
+    state.rowState.shardingParams = false;
   }
-
-  state.rowState.processorParams = false;
-  state.rowState.shardingParams = false;
 }
 
 const onChangeTimeType = (type :string)=>{
