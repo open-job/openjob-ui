@@ -27,26 +27,26 @@
 				</template>
 			</el-input>
 		</el-form-item>
-<!--		<el-form-item class="login-animation3">-->
-<!--			<el-col :span="15">-->
-<!--				<el-input-->
-<!--					text-->
-<!--					maxlength="4"-->
-<!--					:placeholder="$t('message.account.accountPlaceholder3')"-->
-<!--					v-model="state.ruleForm.code"-->
-<!--					clearable-->
-<!--					autocomplete="off"-->
-<!--				>-->
-<!--					<template #prefix>-->
-<!--						<el-icon class="el-input__icon"><ele-Position /></el-icon>-->
-<!--					</template>-->
-<!--				</el-input>-->
-<!--			</el-col>-->
-<!--			<el-col :span="1"></el-col>-->
-<!--			<el-col :span="8">-->
-<!--				<el-button class="login-content-code" v-waves>1234</el-button>-->
-<!--			</el-col>-->
-<!--		</el-form-item>-->
+		<el-form-item class="login-animation3">
+			<el-col :span="15">
+				<el-input
+					text
+					maxlength="4"
+					:placeholder="$t('message.account.accountPlaceholder3')"
+					v-model="state.ruleForm.code"
+					clearable
+					autocomplete="off"
+				>
+					<template #prefix>
+						<el-icon class="el-input__icon"><ele-Position /></el-icon>
+					</template>
+				</el-input>
+			</el-col>
+			<el-col :span="1"></el-col>
+			<el-col :span="8">
+				<el-button class="login-content-code" v-waves>{{state.randomCode}}</el-button>
+			</el-col>
+		</el-form-item>
 		<el-form-item class="login-animation4">
 			<el-button type="primary" class="login-content-submit" round v-waves @click="onSignIn" :loading="state.loading.signIn">
 				<span>{{ $t('message.account.accountBtnText') }}</span>
@@ -58,7 +58,7 @@
 <script setup lang="ts" name="loginAccount">
 import { reactive, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { ElMessage } from 'element-plus';
+import {ElMessage, ElMessageBox} from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import Cookies from 'js-cookie';
 // import md5 from 'js-md5';
@@ -82,13 +82,29 @@ const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
 const route = useRoute();
 const router = useRouter();
+
+
+let getVerificationCode = (codeLength = 4) => {
+  let verification_code_str = "0123456789";
+  function getRandom( min :number, max :number) {
+    return Math.round(Math.random() * (max - min) + min);
+  }
+
+  let newStr = '';
+  for (var i = 0; i < codeLength; i++) {
+    newStr += verification_code_str[getRandom(0, verification_code_str.length - 1)];
+  }
+  return newStr
+}
+
 const state = reactive({
 	isShowPassword: false,
+  randomCode: getVerificationCode(),
 	ruleForm: {
 		username: '',
 		password: '',
 		keeplive: true,
-		code: '1234',
+		code: '',
 	},
 	loading: {
 		signIn: false,
@@ -102,6 +118,12 @@ const currentTime = computed(() => {
 
 // 登录
 const onSignIn = async () => {
+  if (state.randomCode != state.ruleForm.code){
+    await ElMessageBox.alert(t('message.codeMsg.c105'), t('message.commonMsg.tip'), {type: 'warning'});
+    return
+  }
+
+
 	state.loading.signIn = true;
 	// let token = 'tk' + new Date().getTime().toString(16) + Math.floor(Math.random() * 10000 + 1000);
 

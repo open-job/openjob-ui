@@ -8,6 +8,11 @@ export default {
     c401: 'Instance exist in the job',
     c500: 'Topic already exists',
     c501: 'Instance exist in the delay',
+    c101: 'User not exist',
+    c102: 'User deleted',
+    c103: 'Wrong password',
+    c104: 'User role not exist',
+    c105: 'Verification code invalid',
   },
   commonMsg: {
     emptyInput: "Please enter",

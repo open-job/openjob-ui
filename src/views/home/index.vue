@@ -255,9 +255,9 @@ const state = reactive({
 // 折线图
 const initLineJobChart = async () => {
   let request = {
-    namespaceId: Local.get("nid"),
-    beginTime: Date.parse(state.jobDateSelect[0].toString())/1000,
-    endTime: Date.parse(state.jobDateSelect[1].toString())/1000,
+    namespaceId: Local.get("nid") == null ? 1 : Local.get("nid"),
+    beginTime: Date.parse(state.jobDateSelect[0].toString()) / 1000,
+    endTime: Date.parse(state.jobDateSelect[1].toString()) / 1000,
   };
   // Font Awesome icon
   let data = await homeApi.getJobChart(request)
@@ -447,7 +447,7 @@ const initPieJobChart = (percentValues : number[]) => {
 const initLineDelayChart = async () => {
 
   let request = {
-    namespaceId: Local.get("nid"),
+    namespaceId: Local.get("nid") == null ? 1 : Local.get("nid"),
     beginTime: Date.parse(state.jobDateSelect[0].toString()) / 1000,
     endTime: Date.parse(state.jobDateSelect[1].toString()) / 1000,
   };
@@ -651,8 +651,9 @@ const initEchartsResize = () => {
 };
 
 const getTaskData = async () => {
+  alert(Local.get("nid"))
   let request = {
-    namespaceId: Local.get("nid"),
+    namespaceId: Local.get("nid") == null ? 1 : Local.get("nid"),
   };
   // Font Awesome icon
   let data = await homeApi.getTaskData(request)
@@ -699,7 +700,7 @@ const getTaskData = async () => {
 
 const getSystemData = async () => {
   let request = {
-    namespaceId: Local.get("nid"),
+    namespaceId: Local.get("nid") == null ? 1 : Local.get("nid"),
   };
   // Font Awesome icon
   let data = await homeApi.getSystemData(request)
