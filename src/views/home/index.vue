@@ -651,7 +651,6 @@ const initEchartsResize = () => {
 };
 
 const getTaskData = async () => {
-  alert(Local.get("nid"))
   let request = {
     namespaceId: Local.get("nid") == null ? 1 : Local.get("nid"),
   };
