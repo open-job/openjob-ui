@@ -40,7 +40,6 @@
 </template>
 
 <script setup lang="ts" name="jobDrawerName">
-import {ElMessage} from 'element-plus'
 import {useI18n} from "vue-i18n";
 import {defineAsyncComponent, reactive} from "vue";
 import {useJobInstanceApi} from "/@/api/job";
