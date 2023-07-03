@@ -50,9 +50,9 @@
         <el-row v-show="state.rowState.kettleProcessor">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.kettleCommand')" prop="kettleProcessorInfo">
-              <el-input v-model="state.ruleForm.kettleProcessorInfo"/>
+              <el-input v-model="state.ruleForm.kettleProcessorInfo" disabled/>
             </el-form-item>
-            <el-radio-group v-model="state.ruleForm.kettleProcessorType" style="margin-left: 120px;">
+            <el-radio-group v-model="state.ruleForm.kettleProcessorType" style="margin-left: 110px;">
               <el-radio v-for="t in state.shellType" :key="t.value" :label="t.label" disabled>{{t.value}}</el-radio>
             </el-radio-group>
           </el-col>
@@ -70,10 +70,10 @@
                 :readOnly="true"
                 @updateContent="onShellUpdateContent"
               />
-              <el-radio-group v-model="state.ruleForm.shellProcessorType" style="margin-left: 120px;">
-                <el-radio v-for="t in state.shellType" :key="t.value" :label="t.label" disabled>{{t.value}}</el-radio>
-              </el-radio-group>
             </el-form-item>
+            <el-radio-group v-model="state.ruleForm.shellProcessorType" style="margin-left: 110px;">
+              <el-radio v-for="t in state.shellType" :key="t.value" :label="t.label" disabled>{{t.value}}</el-radio>
+            </el-radio-group>
           </el-col>
         </el-row>
 

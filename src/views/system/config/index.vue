@@ -42,13 +42,13 @@
         <el-row>
           <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.server.system.delayZsetSlot')" prop="name">
-              <el-input v-model="state.ruleForm.delayZsetSlot" clearable
+              <el-input v-model="state.ruleForm.delayZsetSlot" clearable disabled
                         style="width: 96%;"></el-input>
             </el-form-item>
           </el-col>
             <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item :label="t('message.server.system.delayAddListSlot')" prop="name">
-                <el-input v-model="state.ruleForm.delayAddListSlot" clearable
+                <el-input v-model="state.ruleForm.delayAddListSlot" clearable disabled
                           style="width: 96%;"></el-input>
               </el-form-item>
             </el-col>
@@ -56,13 +56,13 @@
         <el-row>
           <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.server.system.delayStatusListSlot')" prop="name">
-              <el-input v-model="state.ruleForm.delayStatusListSlot" clearable
+              <el-input v-model="state.ruleForm.delayStatusListSlot" clearable disabled
                         style="width: 96%;"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.server.system.delayDeleteListSlot')" prop="name">
-              <el-input v-model="state.ruleForm.delayDeleteListSlot" clearable
+              <el-input v-model="state.ruleForm.delayDeleteListSlot" clearable disabled
                         style="width: 96%;"></el-input>
             </el-form-item>
           </el-col>
@@ -70,7 +70,7 @@
         <el-row>
           <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item :label="t('message.server.system.delayFailZsetSlot')" prop="name">
-              <el-input v-model="state.ruleForm.delayFailZsetSlot" clearable
+              <el-input v-model="state.ruleForm.delayFailZsetSlot" clearable disabled
                         style="width: 96%;"></el-input>
             </el-form-item>
           </el-col>
