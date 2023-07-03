@@ -30,10 +30,11 @@
       </div>
     </template>
     <template #footer>
-      <div style="flex: auto;text-align: left;padding-left: 30px;padding-bottom: 10px;">
-        <el-button type="primary" @click="confirmClick" size="default">{{t('message.commonBtn.confirm')}}</el-button>
-        <el-button @click="cancelClick" size="default">{{t('message.commonBtn.cancel')}}</el-button>
-      </div>
+        <div style="text-align: center;height: 30px;">
+          <el-icon class="is-loading" size="30px" v-show="state.loadingShow" >
+            <Loading />
+          </el-icon>
+        </div>
     </template>
   </el-drawer>
 </template>
@@ -53,6 +54,8 @@ const {t} = useI18n();
 const jobInstanceApi = useJobInstanceApi();
 
 const state = reactive({
+  loadingShow: false,
+  closeStatus: false,
   editor: {
     editorStyle: 'width: 100%;height: 100%;',
     language: 'shell',
@@ -88,15 +91,17 @@ const openDrawer = async (row: RowJobInstanceType) => {
   state.drawer.isShow = true;
   state.editor.value = '';
   loadingState.time = 0;
-  await loadingLog(row, false, 2);
+  state.closeStatus = false;
+  state.loadingShow = false
+  await loadingLog(row, 2);
 }
 
-const loadingLog = async (row: RowJobInstanceType, isTimer: boolean, loading :number) => {
-  if (isTimer) {
-    state.editor.value += '\n';
+const loadingLog = async (row: RowJobInstanceType, loading :number) => {
+  if (state.closeStatus){
+    return
   }
 
-  let size = 30;
+  let size = 50;
   let data = await jobInstanceApi.getProcessorList({
     jobId: row.jobId,
     jobInstanceId: row.id,
@@ -107,10 +112,13 @@ const loadingLog = async (row: RowJobInstanceType, isTimer: boolean, loading :nu
     size: size,
   });
 
+  let loadingValue = ""
   data.list.forEach(function (line: string) {
-    state.editor.value += line + '\n'
+    loadingValue += line + '\n'
   });
+  state.editor.value += loadingValue
 
+  state.loadingShow = false
   if (data.time > 0) {
     loadingState.time = data.time;
   }
@@ -120,32 +128,23 @@ const loadingLog = async (row: RowJobInstanceType, isTimer: boolean, loading :nu
   }
 
   if (data.list.length > 0) {
+    state.loadingShow = true;
     setTimeout(async () => {
-      await loadingLog(row, false, 2)
-    }, 500);
+      await loadingLog(row, 2)
+    }, 1000);
     return;
   }
 
-  loadingState.timerId = setInterval(() => {
-    state.editor.value += '.';
-    loadingState.counter += 1;
-    if (loadingState.counter % 6 == 0) {
-      clearInterval(loadingState.timerId);
-      loadingLog(row, true, 1);
-    }
-  }, 500);
+  state.loadingShow = true;
+  loadingState.timerId = setInterval(async () => {
+    clearInterval(loadingState.timerId);
+    await loadingLog(row, 1);
+  }, 3000);
 }
 
 const onDrawerClose = () => {
+  state.closeStatus = true
   clearInterval(loadingState.timerId);
-}
-
-const cancelClick = () => {
-  state.drawer.isShow = false;
-  clearInterval(loadingState.timerId);
-}
-const confirmClick = async () => {
-  ElMessage.success('更新成功');
 }
 
 // 暴露变量
