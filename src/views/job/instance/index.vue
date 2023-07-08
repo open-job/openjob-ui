@@ -343,7 +343,7 @@ const onReset = () => {
 };
 
 const onOpenViewRole = (type: string, row: RowJobInstanceType) => {
-  row.executeType = "sharding";
+  // row.executeType = "sharding";
   if (row.executeType == 'standalone') {
     StandaloneDrawerRef.value.openDrawer(row);
     return
