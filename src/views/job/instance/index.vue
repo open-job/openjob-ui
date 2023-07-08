@@ -152,6 +152,7 @@
       </el-pagination>
     </div>
     <StandaloneDrawer ref="StandaloneDrawerRef" @refresh="getTableData()"/>
+    <ShardingDrawer ref="ShardingDrawerRef" @refresh="getShardingData()"/>
   </div>
 </template>
 
@@ -187,8 +188,13 @@ const tableSearchRef = ref<FormInstance>();
 // 引入组件
 const StandaloneDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-standalone.vue'));
 
+// Sharding
+const ShardingDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-sharding.vue'));
+
+
 // 定义变量内容
 const StandaloneDrawerRef = ref();
+const ShardingDrawerRef = ref();
 
 const selectState = reactive<any>({
   appSelect: [],
@@ -286,6 +292,9 @@ const getTableData = async () => {
   }, 500);
 };
 
+const getShardingData = async () => {
+}
+
 const onAppChange = async (appId: number, isLoadingData: boolean) => {
   searchState.form.jobId = '';
 
@@ -334,8 +343,14 @@ const onReset = () => {
 };
 
 const onOpenViewRole = (type: string, row: RowJobInstanceType) => {
+  row.executeType = "sharding";
   if (row.executeType == 'standalone') {
     StandaloneDrawerRef.value.openDrawer(row);
+    return
+  }
+
+  if (row.executeType == 'sharding') {
+    ShardingDrawerRef.value.openDrawer(row);
     return
   }
 
