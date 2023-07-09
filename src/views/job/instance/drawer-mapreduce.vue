@@ -6,9 +6,9 @@
       </div>
     </template>
     <template #default>
-      <el-tabs  type="border-card" style="border-top: none;height: 100%;">
-        <el-tab-pane label="基本信息">User</el-tab-pane>
-        <el-tab-pane label="任务列表">
+      <el-tabs v-model="state.tabsValue"  type="border-card" style="border-top: none;height: 100%;" @tab-change="onTabChange">
+        <el-tab-pane name="base" label="基本信息">User</el-tab-pane>
+        <el-tab-pane name="list" label="任务列表">
           <el-table
             :data="tableData1"
             style="width: 100%"
@@ -19,14 +19,40 @@
             :show-header="false"
             :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
           >
-            <el-table-column prop="date" label="Date" />
-            <el-table-column prop="name" label="Name" />
-            <el-table-column prop="address" label="Address" />
+            <el-table-column prop="taskName" label="taskName" />
+            <el-table-column prop="workerAddress" label="workerAddress" />
+            <el-table-column prop="taskStatus" label="taskStatus"/>
+            <el-table-column prop="createTIme" label="createTIme" />
+            <el-table-column prop="completeTime" label="completeTime" />
+            <el-table-column fixed="right" label="操作" width="120">
+              <template #default>
+                <el-button link type="primary" size="small" @click="handleClick">
+                  详情
+                </el-button>
+                <el-button link type="danger" size="small">
+                  终止
+                </el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </el-tab-pane>
       </el-tabs>
     </template>
     <template #footer>
+      <el-pagination
+        v-show="state.pageShow"
+        v-model:current-page="currentPage4"
+        v-model:page-size="pageSize4"
+        :page-sizes="[100, 200, 300, 400]"
+        :small="small"
+        :disabled="disabled"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        style="margin-left: 12px; padding-bottom: 12px"
+      />
     </template>
   </el-drawer>
 </template>
@@ -39,6 +65,8 @@ const {t} = useI18n();
 
 // 定义接口
 const state = reactive({
+  tabsValue: 'base',
+  pageShow: false,
   drawer: {
     isShow: false
   },
@@ -60,44 +88,48 @@ const openDrawer = async (row: RowJobInstanceType) => {
   state.descriptions.statusTag = getInstanceStatusInfo(row.status)['tag'];
   state.descriptions.statusLabel = getInstanceStatusInfo(row.status)['label'];
 
+  state.tabsValue='base'
+  state.pageShow = false;
   state.drawer.isShow = true;
+}
+
+const onTabChange = (name: string) => {
+  if (name == 'list') {
+    state.pageShow = true;
+    return
+  }
+  state.pageShow = false;
 }
 
 
 interface User {
   id: number
-  date: string
-  name: string
-  address: string
+  workerAddress: string
+  taskName: string
+  taskStatus: string
+  createTIme: string
+  completeTime: string
   hasChildren?: boolean
   children?: User[]
 }
 
 const tableData1: User[] = [
   {
-    id: 1,
-    date: '2016-05-02',
-    name: 'wangxiaohu',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    id: 2,
-    date: '2016-05-04',
-    name: 'wangxiaohu',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
     id: 3,
-    date: '2016-05-01',
-    name: 'wangxiaohu',
+    workerAddress: '172.20.0.253:25588',
+    taskName: 'wangxiaohu',
+    taskStatus: 'waiting',
+    createTIme: '2023-07-03 20:51:41',
+    completeTime: '2023-07-03 20:51:41',
     hasChildren: true,
-    address: 'No. 189, Grove St, Los Angeles',
   },
   {
     id: 4,
-    date: '2016-05-03',
-    name: 'wangxiaohu',
-    address: 'No. 189, Grove St, Los Angeles',
+    workerAddress: '172.20.0.253:25588',
+    taskName: 'wangxiaohu',
+    taskStatus: 'success',
+    createTIme: '2023-07-03 20:51:41',
+    completeTime: '2023-07-03 20:51:41',
     hasChildren: true
   },
 ];
@@ -111,16 +143,12 @@ const load = (
     resolve([
       {
         id: 31,
-        date: '2016-05-01',
-        name: 'wangxiaohu',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
-      {
-        id: 32,
-        date: '2016-05-01',
-        name: 'wangxiaohu',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
+        workerAddress: '192.20.0.253:25588',
+        taskName: 'wangxiaohu',
+        taskStatus: '成功',
+        createTIme: '2023-07-03 20:51:41',
+        completeTime: '2023-07-03 20:51:41',
+      }
     ])
     return
   }
@@ -129,16 +157,12 @@ const load = (
     resolve([
       {
         id: 311,
-        date: '2016-05-01',
-        name: 'wangxiaohu',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
-      {
-        id: 321,
-        date: '2016-05-01',
-        name: 'wangxiaohu',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
+        workerAddress: '192.20.0.253:25588',
+        taskName: 'wangxiaohu',
+        taskStatus: '成功',
+        createTIme: '2023-07-03 20:51:41',
+        completeTime: '2023-07-03 20:51:41',
+      }
     ])
     return
   }
@@ -146,17 +170,13 @@ const load = (
   resolve([
     {
       id: 131,
-      date: '2016-05-01',
-      name: 'wangxiaoh1u',
-      address: 'No. 189, Grove St, Los Angeles',
+      workerAddress: '192.20.0.253:25588',
+      taskName: 'wangxiaohu',
+      taskStatus: '成功',
+      createTIme: '2023-07-03 20:51:41',
+      completeTime: '2023-07-03 20:51:41',
       hasChildren: true,
-    },
-    {
-      id: 132,
-      date: '2016-05-01',
-      name: 'wangxiaoh1u',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
+    }
   ])
 }
 

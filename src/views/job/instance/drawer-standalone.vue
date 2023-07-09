@@ -100,7 +100,7 @@ const loadingLog = async (row: RowJobInstanceType, loading :number) => {
     return
   }
 
-  let size = 50;
+  let size = 200;
   let data = await jobInstanceApi.getProcessorList({
     jobId: row.jobId,
     jobInstanceId: row.id,
@@ -128,9 +128,7 @@ const loadingLog = async (row: RowJobInstanceType, loading :number) => {
 
   if (data.list.length > 0) {
     state.loadingShow = true;
-    setTimeout(async () => {
-      await loadingLog(row, 2)
-    }, 1000);
+    await loadingLog(row, 2)
     return;
   }
 
@@ -138,7 +136,7 @@ const loadingLog = async (row: RowJobInstanceType, loading :number) => {
   loadingState.timerId = setInterval(async () => {
     clearInterval(loadingState.timerId);
     await loadingLog(row, 1);
-  }, 3000);
+  }, 1000);
 }
 
 const onDrawerClose = () => {

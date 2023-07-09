@@ -359,7 +359,7 @@ const onReset = () => {
 };
 
 const onOpenViewRole = (type: string, row: RowJobInstanceType) => {
-  row.executeType = "mapReduce";
+  // row.executeType = "mapReduce";
   if (row.executeType == 'standalone') {
     StandaloneDrawerRef.value.openDrawer(row);
     return
