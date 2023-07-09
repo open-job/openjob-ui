@@ -152,6 +152,8 @@
       </el-pagination>
     </div>
     <StandaloneDrawer ref="StandaloneDrawerRef" @refresh="getTableData()"/>
+    <BroadcastDrawer ref="BroadcastDrawerRef" @refresh="getBroadcastData()"/>
+    <MapReduceDrawer ref="MapReduceDrawerRef" @refresh="getMapRedceData()"/>
     <ShardingDrawer ref="ShardingDrawerRef" @refresh="getShardingData()"/>
   </div>
 </template>
@@ -188,6 +190,12 @@ const tableSearchRef = ref<FormInstance>();
 // 引入组件
 const StandaloneDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-standalone.vue'));
 
+//Broadcast
+const BroadcastDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-broadcast.vue'));
+
+// MapReduce
+const MapReduceDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-mapreduce.vue'));
+
 // Sharding
 const ShardingDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-sharding.vue'));
 
@@ -195,6 +203,8 @@ const ShardingDrawer = defineAsyncComponent(() => import('/@/views/job/instance/
 // 定义变量内容
 const StandaloneDrawerRef = ref();
 const ShardingDrawerRef = ref();
+const BroadcastDrawerRef = ref();
+const MapReduceDrawerRef = ref();
 
 const selectState = reactive<any>({
   appSelect: [],
@@ -292,6 +302,12 @@ const getTableData = async () => {
   }, 500);
 };
 
+const getBroadcastData = async () => {
+}
+
+const getMapRedceData = async () => {
+}
+
 const getShardingData = async () => {
 }
 
@@ -343,9 +359,19 @@ const onReset = () => {
 };
 
 const onOpenViewRole = (type: string, row: RowJobInstanceType) => {
-  // row.executeType = "sharding";
+  row.executeType = "mapReduce";
   if (row.executeType == 'standalone') {
     StandaloneDrawerRef.value.openDrawer(row);
+    return
+  }
+
+  if (row.executeType == 'broadcast') {
+    BroadcastDrawerRef.value.openDrawer(row);
+    return
+  }
+
+  if (row.executeType == 'mapReduce') {
+    MapReduceDrawerRef.value.openDrawer(row);
     return
   }
 
