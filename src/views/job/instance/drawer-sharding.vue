@@ -1,5 +1,5 @@
 <template>
-  <el-drawer v-model="state.drawer.isShow" direction="rtl" size="60%" @close="onDrawerClose()">
+  <el-drawer v-model="state.drawer.isShow" direction="rtl" size="50%" @close="onDrawerClose()">
     <template #header>
       <div>
         <h4>任务实例详情</h4>
@@ -7,10 +7,19 @@
     </template>
     <template #default>
       <el-tabs  type="border-card" style="border-top: none;height: 100%;">
-        <el-tab-pane label="基本信息">User</el-tab-pane>
+        <el-tab-pane label="基本信息">
+          <el-descriptions column="1" border>
+            <el-descriptions-item label="任务应用">openjob</el-descriptions-item>
+            <el-descriptions-item label="任务名称">kooriookami</el-descriptions-item>
+            <el-descriptions-item label="调度节点">kooriookami</el-descriptions-item>
+            <el-descriptions-item label="分片参数">kooriookami</el-descriptions-item>
+            <el-descriptions-item label="任务状态">成功</el-descriptions-item>
+            <el-descriptions-item label="创建时间">2023-07-03 20:51:38</el-descriptions-item>
+            <el-descriptions-item label="完成时间">2023-07-03 20:51:38</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
         <el-tab-pane label="任务分片">
           <el-table :data="tableData" size="default" style="width: 100%">
-            <el-table-column prop="taskId" label="任务ID" v-show="false"/>
             <el-table-column prop="workerAddress" label="执行机器" v-show="false"/>
             <el-table-column prop="taskStatus" label="任务状态" v-show="false"/>
             <el-table-column prop="createTIme" label="开始时间"  v-show="false" />
@@ -42,7 +51,6 @@ import {getInstanceStatusInfo} from "/@/utils/data";
 
 const tableData = [
   {
-    taskId: '2_4_0_0',
     workerAddress: '172.20.0.253:25588',
     taskStatus: '成功',
     createTIme: '2023-07-03 20:51:41',

@@ -1,5 +1,5 @@
 <template>
-  <el-drawer v-model="state.drawer.isShow" direction="rtl" size="60%" @close="onDrawerClose()">
+  <el-drawer v-model="state.drawer.isShow" direction="rtl" size="50%" @close="onDrawerClose()">
     <template #header>
       <div>
         <h4>任务实例详情</h4>
@@ -7,7 +7,16 @@
     </template>
     <template #default>
       <el-tabs v-model="state.tabsValue"  type="border-card" style="border-top: none;height: 100%;" @tab-change="onTabChange">
-        <el-tab-pane name="base" label="基本信息">User</el-tab-pane>
+        <el-tab-pane name="base" label="基本信息">
+          <el-descriptions column="1" border>
+            <el-descriptions-item label="任务应用">openjob</el-descriptions-item>
+            <el-descriptions-item label="任务名称">kooriookami</el-descriptions-item>
+            <el-descriptions-item label="调度节点">kooriookami</el-descriptions-item>
+            <el-descriptions-item label="任务状态">成功</el-descriptions-item>
+            <el-descriptions-item label="创建时间">2023-07-03 20:51:38</el-descriptions-item>
+            <el-descriptions-item label="完成时间">2023-07-03 20:51:38</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
         <el-tab-pane name="list" label="任务列表">
           <el-table
             :data="tableData1"
