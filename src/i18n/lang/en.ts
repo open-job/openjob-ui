@@ -89,6 +89,8 @@ export default {
     systemManager: 'System',
     systemConfiguration: 'Configuration',
     systemSlots: 'Slots',
+    alert: 'Alert',
+    alertRule: 'Alert Rule',
 
     // 框架默认路由
     home: 'home',
@@ -447,6 +449,17 @@ export default {
       deleteTitle: 'Are you sure to delete delay instance',
       stopTitle: 'Are you sure to stop delay instance',
     }
+  },
+  alert: {
+    name: "Name",
+    method: "Method",
+    events: "Event",
+    nsAndApp: "Target",
+    metrics: "Metric",
+    url: "Address",
+    status: "Status",
+    createTime: "Create Time",
+    updateTime: "Update Time",
   },
   server: {
     slots: {

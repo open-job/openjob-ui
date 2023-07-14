@@ -90,6 +90,8 @@ export default {
     systemManager: '系统管理',
     systemConfiguration: '系统配置',
     systemSlots: '系统分片',
+    alert: '报警管理',
+    alertRule: '报警规则',
 
     // 框架默认路由
     home: '首页',
@@ -475,6 +477,17 @@ export default {
       deleteTitle: '你确定要删除延时任务实例',
       stopTitle: '你确定要终止延时任务实例',
     }
+  },
+  alert: {
+    name: "名称",
+    method: "通知方式",
+    events: "事件",
+    nsAndApp: "目标",
+    metrics: "指标",
+    url: "通知地址",
+    status: "状态",
+    createTime: "创建时间",
+    updateTime: "更新时间",
   },
   server: {
     slots: {

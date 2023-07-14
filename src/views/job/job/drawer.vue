@@ -886,14 +886,14 @@ const onChangeProcessorType = (type: string) => {
         value: 'standalone',
         label: t('message.job.job.executeTypeList.standalone'),
       },
-      // {
-      //   value: 'broadcast',
-      //   label: t('message.job.job.executeTypeList.broadcast'),
-      // },
-      // {
-      //   value: 'sharding',
-      //   label: t('message.job.job.executeTypeList.sharding'),
-      // }
+      {
+        value: 'broadcast',
+        label: t('message.job.job.executeTypeList.broadcast'),
+      },
+      {
+        value: 'sharding',
+        label: t('message.job.job.executeTypeList.sharding'),
+      }
     ];
   } else if (type == 'kettle') {
     state.rowState.inputProcessor = false;
@@ -907,10 +907,10 @@ const onChangeProcessorType = (type: string) => {
         value: 'standalone',
         label: t('message.job.job.executeTypeList.standalone'),
       },
-      // {
-      //   value: 'broadcast',
-      //   label: t('message.job.job.executeTypeList.broadcast'),
-      // }
+      {
+        value: 'broadcast',
+        label: t('message.job.job.executeTypeList.broadcast'),
+      }
     ];
   } else if (type == 'http') {
     state.rowState.inputProcessor = false;
@@ -924,10 +924,10 @@ const onChangeProcessorType = (type: string) => {
         value: 'standalone',
         label: t('message.job.job.executeTypeList.standalone'),
       },
-      // {
-      //   value: 'broadcast',
-      //   label: t('message.job.job.executeTypeList.broadcast'),
-      // }
+      {
+        value: 'broadcast',
+        label: t('message.job.job.executeTypeList.broadcast'),
+      }
     ];
   } else {
     state.rowState.inputProcessor = true;
@@ -940,18 +940,18 @@ const onChangeProcessorType = (type: string) => {
         value: 'standalone',
         label: t('message.job.job.executeTypeList.standalone'),
       },
-      // {
-      //   value: 'broadcast',
-      //   label: t('message.job.job.executeTypeList.broadcast'),
-      // },
-      // {
-      //   value: 'mapReduce',
-      //   label: t('message.job.job.executeTypeList.mapReduce'),
-      // },
-      // {
-      //   value: 'sharding',
-      //   label: t('message.job.job.executeTypeList.sharding'),
-      // }
+      {
+        value: 'broadcast',
+        label: t('message.job.job.executeTypeList.broadcast'),
+      },
+      {
+        value: 'mapReduce',
+        label: t('message.job.job.executeTypeList.mapReduce'),
+      },
+      {
+        value: 'sharding',
+        label: t('message.job.job.executeTypeList.sharding'),
+      }
     ];
   }
 
