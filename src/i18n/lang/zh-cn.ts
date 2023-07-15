@@ -479,11 +479,11 @@ export default {
     }
   },
   alert: {
-    name: "名称",
+    name: "规则名称",
     method: "通知方式",
-    events: "事件",
-    nsAndApp: "目标",
-    metrics: "指标",
+    events: "报警事件",
+    nsAndApp: "报警应用",
+    metrics: "报警指标",
     url: "通知地址",
     status: "状态",
     createTime: "创建时间",

@@ -451,10 +451,10 @@ export default {
     }
   },
   alert: {
-    name: "Name",
+    name: "Rule Name",
     method: "Method",
     events: "Event",
-    nsAndApp: "Target",
+    nsAndApp: "Application",
     metrics: "Metric",
     url: "Address",
     status: "Status",

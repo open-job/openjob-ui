@@ -107,7 +107,7 @@
       >
       </el-pagination>
     </div>
-    <NsDialog ref="nsDialogRef" @refresh="getTableData()"/>
+    <AlertDrawer ref="AlertDrawerRef"/>
   </div>
 </template>
 
@@ -130,12 +130,10 @@ const delayApi = useDelayApi();
 // 定义变量内容
 const tableSearchRef = ref<FormInstance>();
 
+const AlertDrawer = defineAsyncComponent(() => import('/@/views/alert/drawer.vue'));
 
-// 引入组件
-const NsDialog = defineAsyncComponent(() => import('/@/views/delay/job/dialog.vue'));
 
-// 定义变量内容
-const nsDialogRef = ref();
+const AlertDrawerRef = ref();
 
 const appState = reactive<any>({
   list: [],
@@ -248,11 +246,12 @@ const onReset = () => {
 
 // 打开新增角色弹窗
 const onOpenAddRole = (type: string) => {
-  nsDialogRef.value.openDialog(type);
+  AlertDrawerRef.value.openDrawer('add', 1, null);
+  return;
 };
 // 打开修改角色弹窗
 const onOpenEditRole = (type: string, row: Object) => {
-  nsDialogRef.value.openDialog(type, row);
+
 };
 // 删除角色
 const onDel = (row: RowDelayType) => {
