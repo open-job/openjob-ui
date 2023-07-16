@@ -261,24 +261,12 @@ declare interface NamespaceMenuState {
   list: RowNamespaceType[]
 }
 
-declare interface RowNamespaceAppIdsType {
-
-}
-
-declare interface RowEventsType {
-
-}
-
-declare interface RowMetricsType{
-
-}
-
 declare interface RowAlertRuleType {
   id: number;
   name: string;
-  namespaceAppIds: RowNamespaceAppIdsType;
-  events: RowEventsType;
-  metrics: RowMetricsType;
+  namespaceAppIds: [];
+  events: [];
+  metrics: [];
   method: string;
   url: string;
   status: boolean;

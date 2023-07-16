@@ -60,7 +60,7 @@
                          width="200" show-overflow-tooltip></el-table-column>
         <el-table-column prop="updateTime" :label="t('message.alert.updateTime')"
                          width="200" show-overflow-tooltip></el-table-column>
-        <el-table-column :label="t('message.commonMsg.operation')" width="360">
+        <el-table-column :label="t('message.commonMsg.operation')" width="300">
           <template #default="scope">
             <el-button type="primary" size="default" @click="onOpenEditRole('update',scope.row)">
               <el-icon>
@@ -68,28 +68,13 @@
               </el-icon>
               {{ $t('message.commonBtn.update') }}
             </el-button>
-            <el-button type="success" size="default" @click="onJumpInstance(scope.row)">
+            <el-button type="danger" size="default" @click="onDel(scope.row)">
               <el-icon>
-                <ele-Monitor/>
+                <ele-Delete/>
               </el-icon>
-              {{ $t('message.commonBtn.instance') }}
+              {{ $t('message.commonBtn.delete') }}
             </el-button>
-            <el-dropdown split-button type="info" size="default" style="margin-left: 12px"
-                         @command="onMoreCommand($event, scope.row)">
-              {{ $t('message.commonBtn.more') }}
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="copy">{{
-                      $t('message.commonBtn.copy')
-                    }}
-                  </el-dropdown-item>
-                  <el-dropdown-item command="delete">{{
-                      $t('message.commonBtn.delete')
-                    }}
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
+
           </template>
         </el-table-column>
       </el-table>
@@ -107,7 +92,7 @@
       >
       </el-pagination>
     </div>
-    <AlertDrawer ref="AlertDrawerRef"/>
+    <AlertDrawer ref="AlertDrawerRef" @refresh="getTableData()"/>
   </div>
 </template>
 
@@ -119,6 +104,7 @@ import {useDelayApi} from "/@/api/delay";
 import {formatDateByTimestamp} from "/@/utils/formatTime";
 import {getAppSelectList} from "/@/utils/data";
 import router from "/@/router";
+import {useAlertRuleApi} from "/@/api/alert";
 
 
 // 定义变量内容
@@ -126,6 +112,7 @@ const {t} = useI18n();
 
 // 定义接口
 const delayApi = useDelayApi();
+const alertRuleApi = useAlertRuleApi();
 
 // 定义变量内容
 const tableSearchRef = ref<FormInstance>();
@@ -167,43 +154,11 @@ const state = reactive<AlertRuleState>({
 // 初始化表格数据
 const getTableData = async () => {
   state.tableData.loading = true;
-  // let data = await delayApi.getList({
-  //   namespaceId: Local.get("nid"),
-  //   appId: searchState.form.appId,
-  //   name: searchState.form.name,
-  //   topic: searchState.form.topic,
-  //   page: state.tableData.param.pageNum,
-  //   size: state.tableData.param.pageSize,
-  // });
-let data = {
-  total: 1,
-  list:[
-    {
-      id: 1,
-      name: "test",
-      namespaceAppIds: {},
-      events: {},
-      metrics: {},
-      method: "webhook",
-      url: "http://localhost:8080",
-      status: true,
-      createTime: 1669972320,
-      updateTime: 1669972320
-    },
-    {
-      id: 2,
-      name: "test2",
-      namespaceAppIds: {},
-      events: {},
-      metrics: {},
-      method: "webhook",
-      url: "http://localhost:8080",
-      status: false,
-      createTime: 1669972320,
-      updateTime: 1669972320
-    }
-  ]
-}
+  let data = await alertRuleApi.getList({
+    name: searchState.form.name,
+    page: state.tableData.param.pageNum,
+    size: state.tableData.param.pageSize,
+  });
 
   // 清空列表数据
   state.tableData.data = [];
@@ -246,24 +201,23 @@ const onReset = () => {
 
 // 打开新增角色弹窗
 const onOpenAddRole = (type: string) => {
-  AlertDrawerRef.value.openDrawer('add', 1, null);
-  return;
+  AlertDrawerRef.value.openDrawer(type, 1, null);
 };
 // 打开修改角色弹窗
 const onOpenEditRole = (type: string, row: Object) => {
-
+  AlertDrawerRef.value.openDrawer(type, row);
 };
+
 // 删除角色
-const onDel = (row: RowDelayType) => {
+const onDel = (row: RowAlertRuleType) => {
   ElMessageBox.confirm(t('message.delay.job.deleteTitle') + `(${row.name})?`, t('message.commonMsg.tip'), {
     confirmButtonText: t('message.commonBtn.confirm'),
     cancelButtonText: t('message.commonBtn.cancel'),
     type: 'warning',
   })
     .then(async () => {
-      await delayApi.delete({
+      await alertRuleApi.delete({
         "id": row.id,
-        "cid": row.cid,
       });
 
       await getTableData();
@@ -271,28 +225,6 @@ const onDel = (row: RowDelayType) => {
     })
     .catch(() => {
     });
-};
-
-const onJumpInstance = ( row: RowDelayType) => {
-  router.push({
-    path: '/admin/delay-instance/list',
-    query: {
-      appId: row.appId,
-      delayId: row.id
-    }
-  })
-};
-
-const onMoreCommand = (command: string, row: RowDelayType) => {
-  if (command === 'copy') {
-    nsDialogRef.value.openDialog('copy', row);
-    return;
-  }
-
-  if (command === 'delete') {
-    onDel(row);
-    return;
-  }
 };
 
 // 分页改变
@@ -308,7 +240,10 @@ const onHandleCurrentChange = (val: number) => {
 
 const onSwitch = async (event: object, row: EmptyObjectType) => {
   const statusValue = event ? 1 : 2;
-  console.log(statusValue);
+  await alertRuleApi.updateStatus({
+    "id": row.id,
+    "status": statusValue,
+  });
 };
 
 // 页面加载时

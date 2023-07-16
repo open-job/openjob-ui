@@ -78,6 +78,14 @@ export const APP_APIS = {
   list: '/admin/app/list',
 }
 
+export const ALERT_RULE_APIS = {
+  add: '/admin/alert-rule/add',
+  update: '/admin/alert-rule/update',
+  updateStatus: '/admin/alert-rule/update-status',
+  delete: '/admin/alert-rule/delete',
+  list: '/admin/alert-rule/list',
+}
+
 export const SERVER_APIS = {
   serverList: '/admin/server/list-server',
   slotsList: '/admin/server/list-job-slots',
