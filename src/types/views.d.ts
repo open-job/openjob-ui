@@ -261,6 +261,27 @@ declare interface NamespaceMenuState {
   list: RowNamespaceType[]
 }
 
+declare interface RowAlertRuleType {
+  id: number;
+  name: string;
+  namespaceAppIds: [];
+  events: [];
+  metrics: [];
+  method: string;
+  url: string;
+  status: boolean;
+  createTime: string;
+  updateTime: string;
+}
+
+interface AlertRuleTableType extends TableType {
+  data: RowAlertRuleType[];
+}
+
+declare interface AlertRuleState {
+  tableData: AlertRuleTableType;
+}
+
 declare interface RowServerSlotsType {
   id: number;
   serverId: number;
