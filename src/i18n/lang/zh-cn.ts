@@ -355,6 +355,7 @@ export default {
       extendParams: '扩展参数',
       timeExpressionType: '表达式类型',
       timeExpression: '时间表达式',
+      nextExecuteTime: '下一次执行时间',
       executeStrategy: '执行策略',
       failRetryTimes: '失败重试次数',
       failRetryInterval: '失败重试间隔',

@@ -129,7 +129,7 @@ declare interface RowJobType {
   extendParams: string;
   timeExpressionType: string;
   timeExpression: string;
-
+  nextExecuteTime: string;
   timeExpressionValue: number;
   executeStrategy: number;
   failRetryTimes: number;

@@ -6,42 +6,34 @@
           <el-row>
             <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
               <el-form-item :label="t('message.app.name')" prop="appName">
-                <el-select v-model="searchState.form.appId"  filterable :placeholder="t('message.commonMsg.all')" size="default"
-                           style="width: 90%">
-                  <el-option
-                    v-for="item in appState.list"
-                    :key="item.id"
-                    :label="item.label"
-                    :value="item.id"
-                    @click="onSearch(tableSearchRef)"
-                  />
+                <el-select v-model="searchState.form.appId" filterable :placeholder="t('message.commonMsg.all')"
+                  size="default" style="width: 90%">
+                  <el-option v-for="item in appState.list" :key="item.id" :label="item.label" :value="item.id"
+                    @click="onSearch(tableSearchRef)" />
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
               <el-form-item :label="t('message.job.job.name')" prop="name">
-                <el-input v-model="searchState.form.name" size="default"
-                          style="width: 95%"></el-input>
+                <el-input v-model="searchState.form.name" size="default" style="width: 95%"></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
-              <el-button size="default" type="primary" class="ml10"
-                         @click="onSearch(tableSearchRef)">
+              <el-button size="default" type="primary" class="ml10" @click="onSearch(tableSearchRef)">
                 <el-icon>
-                  <ele-Search/>
+                  <ele-Search />
                 </el-icon>
                 {{ $t('message.commonBtn.query') }}
               </el-button>
-              <el-button size="default" type="primary" class="ml10"
-                         @click="onReset()">
+              <el-button size="default" type="primary" class="ml10" @click="onReset()">
                 <el-icon>
-                  <ele-RefreshRight/>
+                  <ele-RefreshRight />
                 </el-icon>
                 {{ $t('message.commonBtn.reset') }}
               </el-button>
               <el-button size="default" type="success" class="ml10" @click="onOpenAddRole('add')">
                 <el-icon>
-                  <ele-FolderAdd/>
+                  <ele-FolderAdd />
                 </el-icon>
                 {{ $t('message.commonBtn.add') }}
               </el-button>
@@ -49,114 +41,91 @@
           </el-row>
         </el-form>
       </div>
-      <el-table :data="state.tableData.data" v-loading="state.tableData.loading"
-                style="width: 100%">
-        <el-table-column prop="appName" :label="t('message.job.job.application')"
-                         show-overflow-tooltip>
+      <el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
+        <el-table-column prop="appName" :label="t('message.job.job.application')" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="name" :label="t('message.job.job.name')" show-overflow-tooltip>
-        </el-table-column>
+        <el-table-column prop="name" :label="t('message.job.job.name')" show-overflow-tooltip> </el-table-column>
         <el-table-column prop="processorInfo" :label="t('message.job.job.processorInfo')"
-                         show-overflow-tooltip></el-table-column>
-        <el-table-column prop="executeType" :label="t('message.job.job.processorAndExecuteType')"
-                         show-overflow-tooltip>
+          show-overflow-tooltip></el-table-column>
+        <el-table-column prop="executeType" :label="t('message.job.job.processorAndExecuteType')" show-overflow-tooltip>
           <template #default="scope">
             <el-row>[{{ scope.row.processorType }}] {{ scope.row.executeType }}</el-row>
           </template>
         </el-table-column>
-        <el-table-column prop="timeExpression" :label="t('message.job.job.expressionAndType')"
-                         show-overflow-tooltip>
+        <el-table-column prop="timeExpression" :label="t('message.job.job.expressionAndType')" show-overflow-tooltip>
           <template #default="scope">
-            <el-row style="font-weight: bold;">{{ scope.row.timeExpressionType }}</el-row>
+            <el-row style="font-weight: bold">{{ scope.row.timeExpressionType }}</el-row>
             <el-row>{{ scope.row.timeExpression }}</el-row>
+          </template>
+        </el-table-column>
+        <el-table-column prop="nextExecuteTime" :label="t('message.job.job.nextExecuteTime')" show-overflow-tooltip>
+          <template #default="scope">
+            <el-row>{{ scope.row.nextExecuteTime }}</el-row>
           </template>
         </el-table-column>
         <el-table-column prop="status" :label="t('message.job.job.status')" show-overflow-tooltip>
           <template #default="scope">
-            <el-switch
-              v-model="scope.row.status"
-              class="ml-2"
-              size="default"
-              @change="onSwitch($event, scope.row)"
-              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-            />
+            <el-switch v-model="scope.row.status" class="ml-2" size="default" @change="onSwitch($event, scope.row)"
+              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" />
           </template>
         </el-table-column>
         <el-table-column prop="createTime" :label="t('message.job.job.createTime')"
-                         show-overflow-tooltip></el-table-column>
+          show-overflow-tooltip></el-table-column>
         <el-table-column :label="t('message.commonMsg.operation')" width="360">
           <template #default="scope">
-            <el-button type="primary" size="default" @click="onOpenEditRole('update',scope.row)">
+            <el-button type="primary" size="default" @click="onOpenEditRole('update', scope.row)">
               <el-icon>
-                <ele-Edit/>
+                <ele-Edit />
               </el-icon>
               {{ $t('message.commonBtn.update') }}
             </el-button>
             <el-button type="success" size="default" @click="onJumpInstance(scope.row)">
               <el-icon>
-                <ele-Monitor/>
+                <ele-Monitor />
               </el-icon>
               {{ $t('message.commonBtn.instance') }}
             </el-button>
             <el-dropdown split-button type="info" size="default" style="margin-left: 12px"
-                         @command="onMoreCommand($event, scope.row)">
+              @command="onMoreCommand($event, scope.row)">
               {{ $t('message.commonBtn.more') }}
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item command="execute">{{
-                      $t('message.job.job.executeOnce')
-                    }}
-                  </el-dropdown-item>
-                  <el-dropdown-item command="copy">{{
-                      $t('message.commonBtn.copy')
-                    }}
-                  </el-dropdown-item>
-                  <el-dropdown-item command="delete">{{
-                      $t('message.commonBtn.delete')
-                    }}
-                  </el-dropdown-item>
+                  <el-dropdown-item command="execute">{{ $t('message.job.job.executeOnce') }} </el-dropdown-item>
+                  <el-dropdown-item command="copy">{{ $t('message.commonBtn.copy') }} </el-dropdown-item>
+                  <el-dropdown-item command="delete">{{ $t('message.commonBtn.delete') }} </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="onHandleSizeChange"
-        @current-change="onHandleCurrentChange"
-        class="mt15"
-        :pager-count="5"
-        :page-sizes="[10, 20, 30]"
-        v-model:current-page="state.tableData.param.pageNum"
-        background
-        v-model:page-size="state.tableData.param.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="state.tableData.total"
-      >
+      <el-pagination @size-change="onHandleSizeChange" @current-change="onHandleCurrentChange" class="mt15"
+        :pager-count="5" :page-sizes="[10, 20, 30]" v-model:current-page="state.tableData.param.pageNum" background
+        v-model:page-size="state.tableData.param.pageSize" layout="total, sizes, prev, pager, next, jumper"
+        :total="state.tableData.total">
       </el-pagination>
     </div>
-    <NsDialog ref="nsDialogRef" @refresh="getTableData()"/>
-    <JobDrawer ref="JobDrawerRef" @refresh="getTableData()"/>
+    <NsDialog ref="nsDialogRef" @refresh="getTableData()" />
+    <JobDrawer ref="JobDrawerRef" @refresh="getTableData()" />
   </div>
 </template>
 
 <script setup lang="ts" name="systemRole">
-import {defineAsyncComponent, reactive, onMounted, ref} from 'vue';
-import {ElMessageBox, ElMessage, FormInstance} from 'element-plus';
-import {useI18n} from 'vue-i18n';
-import {Local} from '/@/utils/storage';
-import {useRouter} from "vue-router";
-import {useJobApi} from "/@/api/job";
-import {formatDateByTimestamp} from "/@/utils/formatTime";
-import {getAppSelectList} from "/@/utils/data";
-
+import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
+import { ElMessageBox, ElMessage, FormInstance } from 'element-plus';
+import { useI18n } from 'vue-i18n';
+import { Local } from '/@/utils/storage';
+import { useRouter } from 'vue-router';
+import { useJobApi } from '/@/api/job';
+import { formatDateByTimestamp } from '/@/utils/formatTime';
+import { getAppSelectList } from '/@/utils/data';
+import { parseExpression } from 'cron-parser';
 
 // router
 const router = useRouter();
 
-
 // 定义变量内容
-const {t} = useI18n();
+const { t } = useI18n();
 
 // 定义接口
 const jobApi = useJobApi();
@@ -179,8 +148,8 @@ const appState = reactive<any>({
 const searchState = reactive({
   form: {
     appId: '',
-    namespaceId: Local.get("nid"),
-    name: ''
+    namespaceId: Local.get('nid'),
+    name: '',
   },
   rules: {},
 });
@@ -200,7 +169,7 @@ const state = reactive<JobState>({
 const getTableData = async () => {
   state.tableData.loading = true;
   let data = await jobApi.getList({
-    namespaceId: Local.get("nid"),
+    namespaceId: Local.get('nid'),
     appId: searchState.form.appId,
     name: searchState.form.name,
     page: state.tableData.param.pageNum,
@@ -231,7 +200,8 @@ const getTableData = async () => {
       extendParamsType: item['extendParamsType'],
       extendParams: item['extendParams'],
       timeExpressionType: item['timeExpressionType'],
-      timeExpression: item['timeExpression'],
+      timeExpression: item['timeExpressionType'] === 'oneTime' ? formatDateByTimestamp(item['timeExpression']) : item['timeExpression'],
+      nextExecuteTime: formatNextExecuteTime(item['timeExpressionType'], item['timeExpression']),
       timeExpressionValue: item['timeExpressionValue'],
       executeStrategy: item['executeStrategy'],
       failRetryTimes: item['failRetryTimes'],
@@ -239,7 +209,7 @@ const getTableData = async () => {
       concurrency: item['concurrency'],
       status: item['status'] === 1,
       createTime: formatDateByTimestamp(item['createTime']),
-    })
+    });
   });
 
   state.tableData.total = data.total;
@@ -248,11 +218,22 @@ const getTableData = async () => {
   }, 500);
 };
 
+const formatNextExecuteTime = (timeExpressionType: string, timeExpression: number) => {
+  if (timeExpressionType == 'cron') {
+    var interval = parseExpression(timeExpression.toString());
+    return formatDateByTimestamp(interval.next().getTime() / 1000);
+  }
+
+  if (timeExpressionType == 'oneTime') {
+    return '-';
+  }
+};
+
 const onSwitch = async (event: object, row: EmptyObjectType) => {
   const statusValue = event ? 1 : 2;
   await jobApi.updateStatus({
-    "id": row.id,
-    "status": statusValue,
+    id: row.id,
+    status: statusValue,
   });
 };
 
@@ -299,14 +280,14 @@ const onOpenEditRole = (type: string, row: Object) => {
   JobDrawerRef.value.openDrawer(type, searchState.form.appId, row);
 };
 
-const onJumpInstance = ( row: RowJobType) => {
+const onJumpInstance = (row: RowJobType) => {
   router.push({
     path: '/admin/job-instance/list',
     query: {
-      id:row.id,
+      id: row.id,
       appId: row.appId,
-    }
-  })
+    },
+  });
 };
 
 const onDel = (row: RowJobType) => {
@@ -317,14 +298,13 @@ const onDel = (row: RowJobType) => {
   })
     .then(async () => {
       await jobApi.delete({
-        "id": row.id,
+        id: row.id,
       });
 
       await getTableData();
       ElMessage.success(t('message.commonMsg.deleteSuccess'));
     })
-    .catch(() => {
-    });
+    .catch(() => { });
 };
 // 分页改变
 const onHandleSizeChange = (val: number) => {

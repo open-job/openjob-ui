@@ -354,6 +354,7 @@ export default {
       extendParams: 'Extend Params',
       timeExpressionType: 'Expression Type',
       timeExpression: 'Expression',
+      nextExecuteTime: 'Next Execution Time',
       executeStrategy: 'Strategy',
       failRetryTimes: 'Retry Times',
       failRetryInterval: 'Retry Interval',
