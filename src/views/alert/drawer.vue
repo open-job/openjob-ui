@@ -142,15 +142,19 @@ const state = reactive({
   },
   events: [
     {
-      value: 'cron',
+      value: 'job',
       label: '定时任务',
       children: [
         {
-          value: 'cron-1',
+          value: 'job_001',
           label: '定时任务-执行失败',
         },
         {
-          value: 'cron-2',
+          value: 'job_002',
+          label: '定时任务-任务丢弃',
+        },
+        {
+          value: 'job_003',
           label: '定时任务-执行超时',
         },
       ],
@@ -160,12 +164,16 @@ const state = reactive({
       label: '延时任务',
       children: [
         {
-          value: 'delay-1',
+          value: 'delay_001',
           label: '延时任务-执行失败',
         },
         {
-          value: 'delay-2',
+          value: 'delay_002',
           label: '延时任务-执行超时',
+        },
+        {
+          value: 'delay_003',
+          label: '延时任务-任务丢弃',
         },
       ],
     },
