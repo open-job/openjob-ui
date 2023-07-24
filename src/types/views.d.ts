@@ -134,6 +134,8 @@ declare interface RowJobType {
   executeStrategy: number;
   failRetryTimes: number;
   failRetryInterval: number;
+
+  executeTimeout: number;
   concurrency: number;
   status: boolean;
   createTime: string;

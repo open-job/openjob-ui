@@ -362,6 +362,7 @@ export default {
       failRetryTimes: 'Retry Times',
       failRetryInterval: 'Retry Interval',
       concurrency: 'Concurrency',
+      executeTimeout: 'Execute Timeout',
       createTime: 'Create Time',
       processorAndExecuteType: 'Type/Method',
       expressionAndType: 'Type/Expression',

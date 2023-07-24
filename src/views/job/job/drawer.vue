@@ -368,6 +368,17 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <el-row>
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item :label="t('message.job.job.executeTimeout')" prop="failRetryTimes">
+                <el-input-number v-model="state.ruleForm.executeTimeout" :min="0"
+                                 :step="state.ruleForm.timesStep" style="width: 100%"/>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+
+            </el-col>
+          </el-row>
         </el-form>
       </div>
     </template>
@@ -624,6 +635,7 @@ const state = reactive({
     name: '',
     status: true,
     failRetryTimes: 1,
+    executeTimeout: 0,
     failRetryInterval: 2000,
     concurrency: 1,
     executeStrategy: 1,
@@ -714,6 +726,7 @@ const resetJobContent = async (selectAppId: number) => {
   state.ruleForm.shardingParams = '';
   state.ruleForm.executeStrategy = 1;
   state.ruleForm.failRetryTimes = 1;
+  state.ruleForm.executeTimeout = 0;
   state.ruleForm.failRetryInterval = 3000;
   state.ruleForm.concurrency = 1;
 };
@@ -739,6 +752,7 @@ const initJobContent = async (row: RowJobType) => {
   state.ruleForm.failRetryTimes = row.failRetryTimes;
   state.ruleForm.failRetryInterval = row.failRetryInterval;
   state.ruleForm.concurrency = row.concurrency;
+  state.ruleForm.executeTimeout = row.executeTimeout;
   state.ruleForm.processorInfo = row.processorInfo;
 
   onChangeTimeType(row.timeExpressionType);
@@ -851,6 +865,7 @@ const onSubmitRequest = async ()=>{
     executeStrategy: state.ruleForm.executeStrategy,
     failRetryTimes: state.ruleForm.failRetryTimes,
     failRetryInterval: state.ruleForm.failRetryInterval,
+    executeTimeout: state.ruleForm.executeTimeout,
     concurrency: state.ruleForm.concurrency,
     status: (state.ruleForm.status ? 1 : 2),
     shellProcessorInfo: state.ruleForm.shellProcessorInfo,

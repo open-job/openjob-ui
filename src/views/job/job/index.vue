@@ -206,6 +206,7 @@ const getTableData = async () => {
       executeStrategy: item['executeStrategy'],
       failRetryTimes: item['failRetryTimes'],
       failRetryInterval: item['failRetryInterval'],
+      executeTimeout: item['executeTimeout'],
       concurrency: item['concurrency'],
       status: item['status'] === 1,
       createTime: formatDateByTimestamp(item['createTime']),
