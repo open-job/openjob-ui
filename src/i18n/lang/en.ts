@@ -89,8 +89,9 @@ export default {
     systemManager: 'System',
     systemConfiguration: 'Configuration',
     systemSlots: 'Slots',
-    alert: 'Alert',
-    alertRule: 'Alert Rule',
+    alert: 'Alarm',
+    alertRule: 'Alarm Rule',
+    userProfile: 'User Profile',
 
     // 框架默认路由
     home: 'home',

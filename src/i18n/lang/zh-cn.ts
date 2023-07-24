@@ -92,6 +92,7 @@ export default {
     systemSlots: '系统分片',
     alert: '报警管理',
     alertRule: '报警规则',
+    userProfile: '个人信息',
 
     // 框架默认路由
     home: '首页',
