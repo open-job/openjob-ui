@@ -47,7 +47,7 @@
                   :render-after-expand="false"
                   show-checkbox
                   filterable
-                  :default-expanded-keys="['cron', 'delay']"
+                  :default-expanded-keys="['job', 'delay']"
                   style="width: 100%;"
                 />
               </el-form-item>
@@ -71,7 +71,23 @@
 
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item :label="t('message.alert.method')" prop="processorType">
+              <el-form-item :label="t('message.alert.locale')" prop="locale">
+                <el-select v-model="state.ruleForm.locale" class="m-2"
+                           :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
+                  <el-option
+                    v-for="ns in state.localeTypes"
+                    :key="ns.value"
+                    :label="ns.label"
+                    :value="ns.value"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item :label="t('message.alert.method')" prop="method">
                 <el-select v-model="state.ruleForm.method" class="m-2"
                            :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
                   <el-option
@@ -79,6 +95,7 @@
                     :key="ns.value"
                     :label="ns.label"
                     :value="ns.value"
+                    @click="onChangeMethodType(ns.value)"
                   />
                 </el-select>
               </el-form-item>
@@ -90,6 +107,21 @@
               <el-form-item :label="t('message.alert.url')" prop="url">
                 <el-input v-model="state.ruleForm.url" clearable/>
               </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.inputSecret">
+            <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item :label="t('message.alert.secret')" prop="secret">
+                <el-input v-model="state.ruleForm.secret" clearable/>
+              </el-form-item>
+            </el-col>
+            <el-col v-show="state.rowState.btnGenerate" :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-button type="primary" link size="default"
+                         @click="onClickTimeExpression()"
+                         style="margin-left: 10px;margin-top: 6px;">
+                {{t('message.alert.generate')}}
+              </el-button>
             </el-col>
           </el-row>
         </el-form>
@@ -134,6 +166,8 @@ const state = reactive({
   dialogTitle: '',
   rowState: {
     inputProcessor: true,
+    inputSecret: false,
+    btnGenerate: false,
   },
   activeTab: 1,
   drawer: {
@@ -146,15 +180,15 @@ const state = reactive({
       label: '定时任务',
       children: [
         {
-          value: 'job_001',
+          value: 'alarm.job.001',
           label: '定时任务-执行失败',
         },
         {
-          value: 'job_002',
+          value: 'alarm.job.002',
           label: '定时任务-任务丢弃',
         },
         {
-          value: 'job_003',
+          value: 'alarm.job.003',
           label: '定时任务-执行超时',
         },
       ],
@@ -164,19 +198,29 @@ const state = reactive({
       label: '延时任务',
       children: [
         {
-          value: 'delay_001',
+          value: 'alarm.delay.001',
           label: '延时任务-执行失败',
         },
         {
-          value: 'delay_002',
+          value: 'alarm.delay.002',
           label: '延时任务-执行超时',
         },
         {
-          value: 'delay_003',
+          value: 'alarm.delay.003',
           label: '延时任务-任务丢弃',
         },
       ],
     },
+  ],
+  localeTypes: [
+    {
+      value: 'zh_CN',
+      label: '简体中文',
+    },
+    {
+      value: 'en_US',
+      label: 'English',
+    }
   ],
   methodTypes: [
     {
@@ -202,9 +246,23 @@ const state = reactive({
       message: t('message.alert.name'),
       trigger: 'blur'
     },
+    status: {
+      required: true
+    },
+    locale: {
+      required: true
+    },
+    method: {
+      required: true
+    },
     url: {
       required: true,
       message: t('message.alert.url'),
+      trigger: 'blur'
+    },
+    secret: {
+      required: true,
+      message: t('message.alert.secret'),
       trigger: 'blur'
     },
     nsAndApp: {
@@ -218,8 +276,10 @@ const state = reactive({
   ruleForm: {
     id: 0,
     name: "",
+    locale: "zh_CN",
     method: "webhook",
     url: "",
+    secret:"",
     events: [],
     selectApps: [],
     status: true,
@@ -296,9 +356,12 @@ const resetJobContent = async () => {
   state.ruleForm.name = '';
   state.ruleForm.selectApps = []
   state.ruleForm.events = []
+  state.ruleForm.locale = "zh_CN";
   state.ruleForm.method = "webhook";
   state.ruleForm.url = '';
+  state.ruleForm.secret = '';
   state.ruleForm.status = true;
+  onChangeMethodType(state.ruleForm.method);
 };
 
 const initJobContent = async (row: RowAlertRuleType) => {
@@ -308,16 +371,38 @@ const initJobContent = async (row: RowAlertRuleType) => {
   state.ruleForm.selectApps = row.namespaceAppIds
   state.ruleForm.events = row.events
   state.ruleForm.method = row.method;
+  state.ruleForm.locale = row.locale;
   state.ruleForm.url = row.url;
+  state.ruleForm.secret = row.secret;
   state.ruleForm.status = row.status;
+  onChangeMethodType(state.ruleForm.method);
 };
+
+const onChangeMethodType = (type: string) => {
+  if (type == 'wecom') {
+    state.rowState.inputSecret = false;
+    return
+  }
+
+  if (type == 'webhook') {
+    state.rowState.btnGenerate = true;
+  } else {
+    state.rowState.btnGenerate = false;
+  }
+
+  state.rowState.inputSecret = true;
+}
 
 const cancelClick = () => {
   state.drawer.isShow = false
 }
 const confirmClick = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  let validFields = ['name'];
+  let validFields = ['name', 'url'];
+
+  if (state.ruleForm.method != "wecom"){
+    validFields[2] = "secret";
+  }
 
   await formEl.validateField(validFields, (valid: boolean) => {
     if (valid) {
@@ -334,8 +419,10 @@ const onSubmitRequest = async () => {
     namespaceAppIds: state.ruleForm.selectApps,
     events: state.ruleForm.events,
     metrics: [],
+    locale: state.ruleForm.locale,
     method: state.ruleForm.method,
     url: state.ruleForm.url,
+    secret: state.ruleForm.secret,
     status: (state.ruleForm.status ? 1 : 2),
   };
 

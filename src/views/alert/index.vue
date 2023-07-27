@@ -169,8 +169,10 @@ const getTableData = async () => {
       namespaceAppIds: item['namespaceAppIds'],
       events: item['events'],
       metrics: item['metrics'],
+      locale: item['locale'],
       method: item['method'],
       url: item['url'],
+      secret: item['secret'],
       status: item['status'] == 1,
       createTime: formatDateByTimestamp(item['createTime']),
       updateTime: formatDateByTimestamp(item['updateTime'])

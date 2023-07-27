@@ -460,9 +460,12 @@ export default {
     nsAndApp: "Application",
     metrics: "Metric",
     url: "Address",
+    locale: "Language",
+    secret: "Secret",
     status: "Status",
     createTime: "Create Time",
     updateTime: "Update Time",
+    generate: "Generate",
   },
   server: {
     slots: {

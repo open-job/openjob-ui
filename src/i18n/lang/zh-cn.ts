@@ -488,9 +488,12 @@ export default {
     nsAndApp: "报警应用",
     metrics: "报警指标",
     url: "通知地址",
+    locale: "语言",
+    secret: "秘钥",
     status: "状态",
     createTime: "创建时间",
     updateTime: "更新时间",
+    generate: "随机生成",
   },
   server: {
     slots: {

@@ -269,8 +269,12 @@ declare interface RowAlertRuleType {
   namespaceAppIds: [];
   events: [];
   metrics: [];
+
+  locale: string
   method: string;
   url: string;
+
+  secret: string
   status: boolean;
   createTime: string;
   updateTime: string;
