@@ -118,7 +118,7 @@
             </el-col>
             <el-col v-show="state.rowState.btnGenerate" :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-button type="primary" link size="default"
-                         @click="onClickTimeExpression()"
+                         @click="genSecret()"
                          style="margin-left: 10px;margin-top: 6px;">
                 {{t('message.alert.generate')}}
               </el-button>
@@ -341,11 +341,7 @@ const openDrawer = async (type: string, row: RowAlertRuleType) => {
   }
 
   state.isUpdate = true
-  if (type == 'update') {
-    state.dialogTitle = t('message.job.job.updateJobTitle')
-  } else {
-    state.dialogTitle = t('message.job.job.copyJobTitle')
-  }
+  state.dialogTitle = t('message.job.job.updateJobTitle')
 
   // Init content.
   await initJobContent(row);
@@ -384,13 +380,19 @@ const onChangeMethodType = (type: string) => {
     return
   }
 
-  if (type == 'webhook') {
-    state.rowState.btnGenerate = true;
-  } else {
-    state.rowState.btnGenerate = false;
+  state.rowState.btnGenerate = type == 'webhook';
+  state.rowState.inputSecret = true;
+}
+
+const genSecret = () => {
+  let length = 16,
+  charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@!&",
+  secret = "";
+  for (let i = 0, n = charset.length; i < length; ++i) {
+    secret += charset.charAt(Math.floor(Math.random() * n));
   }
 
-  state.rowState.inputSecret = true;
+  state.ruleForm.secret = secret;
 }
 
 const cancelClick = () => {

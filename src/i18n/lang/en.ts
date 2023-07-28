@@ -13,6 +13,7 @@ export default {
     c103: 'Wrong password',
     c104: 'User role not exist',
     c105: 'Verification code invalid',
+    c1001: 'Secret can not be empty',
   },
   commonMsg: {
     emptyInput: "Please enter",
@@ -466,6 +467,8 @@ export default {
     createTime: "Create Time",
     updateTime: "Update Time",
     generate: "Generate",
+    updateTitle: "Update Alarm Rule",
+    addTitle:"Add Alarm Rule",
   },
   server: {
     slots: {

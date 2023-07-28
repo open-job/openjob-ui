@@ -13,6 +13,7 @@ export default {
     c103: '密码错误',
     c104: '用户角色不存在',
     c105: '验证码错误',
+    c1001: '秘钥不能为空',
   },
   commonMsg:{
     emptyInput: '请输入',
@@ -494,6 +495,8 @@ export default {
     createTime: "创建时间",
     updateTime: "更新时间",
     generate: "随机生成",
+    updateTitle: "更新报警规则",
+    addTitle:"新增报警规则",
   },
   server: {
     slots: {
