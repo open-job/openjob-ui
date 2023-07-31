@@ -71,7 +71,7 @@
 
 		<el-dropdown :show-timeout="70" :hide-timeout="50" @command="onHandleCommandClick">
 			<span class="layout-navbars-breadcrumb-user-link">
-				<img :src="userInfos.photo" class="layout-navbars-breadcrumb-user-link-photo mr5" />
+				<img :src="defaultAvatar" class="layout-navbars-breadcrumb-user-link-photo mr5" />
 				{{ userInfos.userName === '' ? 'common' : userInfos.userName }}
 				<el-icon class="el-icon--right">
 					<ele-ArrowDown />
@@ -107,6 +107,8 @@ import { Session, Local } from '/@/utils/storage';
 import { useLoginApi } from '/@/api/login/index';
 import { ArrowDown } from '@element-plus/icons-vue'
 import {useNamespaceApi} from "/@/api/namespace";
+import defaultAvatar from '/@/assets/default-avatar.jpg';
+
 
 
 // 引入 api 请求接口

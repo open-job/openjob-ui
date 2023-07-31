@@ -7,7 +7,7 @@
 					<div class="personal-user">
 						<div class="personal-user-left">
 							<el-upload class="h100 personal-user-left-upload" action="https://jsonplaceholder.typicode.com/posts/" multiple :limit="1">
-								<img src="https://img2.baidu.com/it/u=1978192862,2048448374&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500" />
+                <img :src="defaultAvatar">
 							</el-upload>
 						</div>
 						<div class="personal-user-right">
@@ -17,11 +17,11 @@
 									<el-row>
 										<el-col :xs="24" :sm="12" class="personal-item mb6">
 											<div class="personal-item-label">账号：</div>
-											<div class="personal-item-value">openjob</div>
+											<div class="personal-item-value">{{state.personalForm.username}}</div>
 										</el-col>
 										<el-col :xs="24" :sm="12" class="personal-item mb6">
 											<div class="personal-item-label">身份：</div>
-											<div class="personal-item-value">admin</div>
+											<div class="personal-item-value">{{state.personalForm.type}}</div>
 										</el-col>
 									</el-row>
 								</el-col>
@@ -29,11 +29,11 @@
 									<el-row>
 										<el-col :xs="24" :sm="12" class="personal-item mb6">
 											<div class="personal-item-label">登录IP：</div>
-											<div class="personal-item-value">192.168.1.1</div>
+											<div class="personal-item-value">{{state.personalForm.loginIp}}</div>
 										</el-col>
 										<el-col :xs="24" :sm="12" class="personal-item mb6">
 											<div class="personal-item-label">登录时间：</div>
-											<div class="personal-item-value">2021-02-05 18:47:26</div>
+											<div class="personal-item-value">{{state.personalForm.loginTime}}</div>
 										</el-col>
 									</el-row>
 								</el-col>
@@ -51,22 +51,22 @@
 						<el-row :gutter="35">
 							<el-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18" class="mb20">
 								<el-form-item label="用户昵称">
-									<el-input v-model="state.personalForm.name" placeholder="请输入昵称" clearable></el-input>
+									<el-input v-model="state.personalForm.nickname" clearable></el-input>
 								</el-form-item>
 							</el-col>
               <el-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18" class="mb20">
                 <el-form-item label="安全秘钥">
-                  <el-input v-model="state.personalForm.name" placeholder="请输入昵称" clearable></el-input>
+                  <el-input v-model="state.personalForm.token" clearable></el-input>
                 </el-form-item>
               </el-col>
               <el-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18" class="mb20">
                 <el-form-item label="用户密码">
-                  <el-input v-model="state.personalForm.name" placeholder="请输入昵称" clearable></el-input>
+                  <el-input v-model="state.personalForm.password" show-password clearable></el-input>
                 </el-form-item>
               </el-col>
               <el-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18" class="mb20">
                 <el-form-item label="确认密码">
-                  <el-input v-model="state.personalForm.name" placeholder="请输入昵称" clearable></el-input>
+                  <el-input v-model="state.personalForm.password2" show-password clearable></el-input>
                 </el-form-item>
               </el-col>
 							<el-col :xs="18" :sm="18" :md="24" :lg="24" :xl="24">
@@ -88,22 +88,37 @@
 </template>
 
 <script setup lang="ts" name="personal">
-import { reactive, computed } from 'vue';
-import { formatAxis } from '/@/utils/formatTime';
+import {reactive, computed, onMounted} from 'vue';
+import {formatAxis, formatDateByTimestamp} from '/@/utils/formatTime';
+import defaultAvatar from '/@/assets/default-avatar.jpg';
 import { newsInfoList, recommendList } from './mock';
+import {useUserApi} from "/@/api/user";
+
+var userApi =useUserApi()
 
 // 定义变量内容
-const state = reactive<PersonalState>({
+const state = reactive({
 	newsInfoList,
 	recommendList,
 	personalForm: {
-		name: '',
-		email: '',
-		autograph: '',
-		occupation: '',
-		phone: '',
-		sex: '',
+    username: '',
+    type:'admin',
+    loginIp:'',
+    loginTime:'',
+		nickname: '',
+		token: '',
+		password: '',
+		password2: '',
 	},
+});
+
+onMounted(async () => {
+  let data = await userApi.getUserInfo({});
+  state.personalForm.username = data['username']
+  state.personalForm.nickname = data['nickname']
+  state.personalForm.loginIp = data['loginIp']
+  state.personalForm.loginTime = formatDateByTimestamp(data['loginTime'])
+  state.personalForm.token = data['token']
 });
 
 // 当前时间提示语
@@ -121,7 +136,7 @@ const currentTime = computed(() => {
 		align-items: center;
 		.personal-user-left {
 			width: 100px;
-			height: 130px;
+			height: 100px;
 			border-radius: 3px;
 			:deep(.el-upload) {
 				height: 100%;

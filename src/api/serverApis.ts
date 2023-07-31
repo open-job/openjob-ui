@@ -6,14 +6,16 @@ export const HOME_APIS = {
 }
 
 export const USER_APIS = {
-  login: '/admin/login',
-  logout: '/admin/logout',
-  userInfo: '/admin/user-info', // current login user info
+  login: '/admin/user/login',
+  logout: '/admin/user/logout',
+  userInfo: '/admin/user/user-info',
+  updatePassword: '/admin/user/update-password',
+
   // crud
-  create: '/admin/users/add',
-  detail: '/admin/users/get',
-  update: '/admin/users/update',
-  delete: '/admin/users/delete',
+  create: '/admin/user/add',
+  detail: '/admin/user/get',
+  update: '/admin/user/update',
+  delete: '/admin/user/delete',
 }
 
 export const MENU_APIS = {
