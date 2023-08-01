@@ -298,12 +298,12 @@ const initLineJobChart = async () => {
         symbol: 'circle',
         smooth: true,
         data: data['successData'],
-        lineStyle: {color: '#fe9a8b'},
-        itemStyle: {color: '#fe9a8b', borderColor: '#671498'},
+        lineStyle: {color: '#91cc75'},
+        itemStyle: {color: '#91cc75', borderColor: '#91cc75'},
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#fe9a8bb3'},
-            {offset: 1, color: '#fe9a8b03'},
+            {offset: 0, color: '#91cc75'},
+            {offset: 1, color: '#91cc75'},
           ]),
         },
       },
@@ -314,12 +314,12 @@ const initLineJobChart = async () => {
         symbol: 'circle',
         smooth: true,
         data: data['failData'],
-        lineStyle: {color: '#fe9a8b'},
-        itemStyle: {color: '#fe9a8b', borderColor: '#fe9a8b'},
+        lineStyle: {color: '#ee6666'},
+        itemStyle: {color: '#ee6666', borderColor: '#ee6666'},
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#fe9a8b'},
-            {offset: 1, color: '#fe9a8b'},
+            {offset: 0, color: '#ee6666'},
+            {offset: 1, color: '#ee6666'},
           ]),
         },
       },
@@ -330,12 +330,12 @@ const initLineJobChart = async () => {
         symbol: 'circle',
         smooth: true,
         data: data['runningData'],
-        lineStyle: {color: '#9E87FF'},
-        itemStyle: {color: '#9E87FF', borderColor: '#9E87FF'},
+        lineStyle: {color: '#73c0de'},
+        itemStyle: {color: '#73c0de', borderColor: '#73c0de'},
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#9E87FFb3'},
-            {offset: 1, color: '#9E87FF03'},
+            {offset: 0, color: '#73c0de'},
+            {offset: 1, color: '#73c0de'},
           ]),
         },
       },
@@ -364,7 +364,7 @@ const initPieJobChart = (percentValues : number[]) => {
 	for (var i = 0; i < getname.length; i++) {
 		data.push({ name: getname[i], value: getvalue[i] });
 	}
-	const colorList = ['#51A3FC', '#36C78B', '#FEC279', '#968AF5', '#E790E8'];
+	const colorList = ['#9a60b4', '#73c0de', '#91cc75', '#ee6666', '#ea7ccc'];
 	const option = {
 		backgroundColor: state.charts.bgColor,
 		title: {
@@ -485,12 +485,12 @@ const initLineDelayChart = async () => {
         symbol: 'circle',
         smooth: true,
         data: data['successData'],
-        lineStyle: {color: '#fe9a8b'},
-        itemStyle: {color: '#fe9a8b', borderColor: '#fe9a8b'},
+        lineStyle: {color: '#91cc75'},
+        itemStyle: {color: '#91cc75', borderColor: '#91cc75'},
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#fe9a8bb3'},
-            {offset: 1, color: '#fe9a8b03'},
+            {offset: 0, color: '#91cc75'},
+            {offset: 1, color: '#91cc75'},
           ]),
         },
       },
@@ -501,34 +501,14 @@ const initLineDelayChart = async () => {
         symbol: 'circle',
         smooth: true,
         data: data['failData'],
-        lineStyle: {color: '#9E87FF'},
-        itemStyle: {color: '#9E87FF', borderColor: '#9E87FF'},
+        lineStyle: {color: '#ee6666'},
+        itemStyle: {color: '#ee6666', borderColor: '#ee6666'},
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#9E87FFb3'},
-            {offset: 1, color: '#9E87FF03'},
+            {offset: 0, color: '#ee6666'},
+            {offset: 1, color: '#ee6666'},
           ]),
-        },
-        emphasis: {
-          itemStyle: {
-            color: {
-              type: 'radial',
-              x: 0.5,
-              y: 0.5,
-              r: 0.5,
-              colorStops: [
-                {offset: 0, color: '#9E87FF'},
-                {offset: 0.4, color: '#9E87FF'},
-                {offset: 0.5, color: '#fff'},
-                {offset: 0.7, color: '#fff'},
-                {offset: 0.8, color: '#fff'},
-                {offset: 1, color: '#fff'},
-              ],
-            },
-            borderColor: '#9E87FF',
-            borderWidth: 2,
-          },
-        },
+        }
       },
       {
         name: t('message.home.status.running'),
@@ -537,33 +517,13 @@ const initLineDelayChart = async () => {
         symbol: 'circle',
         smooth: true,
         data: data['runningData'],
-        lineStyle: {color: '#9E87FF'},
-        itemStyle: {color: '#9E87FF', borderColor: '#9E87FF'},
+        lineStyle: {color: '#73c0de'},
+        itemStyle: {color: '#73c0de', borderColor: '#73c0de'},
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#9E87FFb3'},
-            {offset: 1, color: '#9E87FF03'},
+            {offset: 0, color: '#73c0de'},
+            {offset: 1, color: '#73c0de'},
           ]),
-        },
-        emphasis: {
-          itemStyle: {
-            color: {
-              type: 'radial',
-              x: 0.5,
-              y: 0.5,
-              r: 0.5,
-              colorStops: [
-                {offset: 0, color: '#9E87FF'},
-                {offset: 0.4, color: '#9E87FF'},
-                {offset: 0.5, color: '#fff'},
-                {offset: 0.7, color: '#fff'},
-                {offset: 0.8, color: '#fff'},
-                {offset: 1, color: '#fff'},
-              ],
-            },
-            borderColor: '#9E87FF',
-            borderWidth: 2,
-          },
         },
       },
     ],
@@ -592,7 +552,7 @@ const initPieDelayChart = (percentValues : number[]) => {
   for (var i = 0; i < getname.length; i++) {
     data.push({ name: getname[i], value: getvalue[i] });
   }
-  const colorList = ['#51A3FC', '#36C78B', '#FEC279', '#968AF5', '#E790E8'];
+  const colorList = ['#9a60b4', '#73c0de', '#91cc75', '#ee6666', '#ea7ccc'];
   const option = {
     backgroundColor: state.charts.bgColor,
     title: {
