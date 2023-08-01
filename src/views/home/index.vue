@@ -279,7 +279,7 @@ const initLineJobChart = async () => {
     },
     grid: {top: 70, right: 20, bottom: 30, left: 30},
     tooltip: {trigger: 'axis'},
-    legend: {data: [t('message.home.status.success'), t('message.home.status.fail')], right: 0},
+    legend: {data: [t('message.home.status.success'), t('message.home.status.fail'), t('message.home.status.running')], right: 0},
     xAxis: {
       data: data['axisData'],
     },
@@ -299,7 +299,7 @@ const initLineJobChart = async () => {
         smooth: true,
         data: data['successData'],
         lineStyle: {color: '#fe9a8b'},
-        itemStyle: {color: '#fe9a8b', borderColor: '#fe9a8b'},
+        itemStyle: {color: '#fe9a8b', borderColor: '#671498'},
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {offset: 0, color: '#fe9a8bb3'},
@@ -314,6 +314,22 @@ const initLineJobChart = async () => {
         symbol: 'circle',
         smooth: true,
         data: data['failData'],
+        lineStyle: {color: '#fe9a8b'},
+        itemStyle: {color: '#fe9a8b', borderColor: '#fe9a8b'},
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: '#fe9a8b'},
+            {offset: 1, color: '#fe9a8b'},
+          ]),
+        },
+      },
+      {
+        name: t('message.home.status.running'),
+        type: 'line',
+        symbolSize: 6,
+        symbol: 'circle',
+        smooth: true,
+        data: data['runningData'],
         lineStyle: {color: '#9E87FF'},
         itemStyle: {color: '#9E87FF', borderColor: '#9E87FF'},
         areaStyle: {
@@ -321,26 +337,6 @@ const initLineJobChart = async () => {
             {offset: 0, color: '#9E87FFb3'},
             {offset: 1, color: '#9E87FF03'},
           ]),
-        },
-        emphasis: {
-          itemStyle: {
-            color: {
-              type: 'radial',
-              x: 0.5,
-              y: 0.5,
-              r: 0.5,
-              colorStops: [
-                {offset: 0, color: '#9E87FF'},
-                {offset: 0.4, color: '#9E87FF'},
-                {offset: 0.5, color: '#fff'},
-                {offset: 0.7, color: '#fff'},
-                {offset: 0.8, color: '#fff'},
-                {offset: 1, color: '#fff'},
-              ],
-            },
-            borderColor: '#9E87FF',
-            borderWidth: 2,
-          },
         },
       },
     ],
@@ -470,7 +466,7 @@ const initLineDelayChart = async () => {
     },
     grid: {top: 70, right: 20, bottom: 30, left: 30},
     tooltip: {trigger: 'axis'},
-    legend: {data: [t('message.home.status.success'), t('message.home.status.fail')], right: 0},
+    legend: {data: [t('message.home.status.success'), t('message.home.status.fail'), t('message.home.status.running')], right: 0},
     xAxis: {
       data: data['axisData'],
     },
@@ -505,6 +501,42 @@ const initLineDelayChart = async () => {
         symbol: 'circle',
         smooth: true,
         data: data['failData'],
+        lineStyle: {color: '#9E87FF'},
+        itemStyle: {color: '#9E87FF', borderColor: '#9E87FF'},
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: '#9E87FFb3'},
+            {offset: 1, color: '#9E87FF03'},
+          ]),
+        },
+        emphasis: {
+          itemStyle: {
+            color: {
+              type: 'radial',
+              x: 0.5,
+              y: 0.5,
+              r: 0.5,
+              colorStops: [
+                {offset: 0, color: '#9E87FF'},
+                {offset: 0.4, color: '#9E87FF'},
+                {offset: 0.5, color: '#fff'},
+                {offset: 0.7, color: '#fff'},
+                {offset: 0.8, color: '#fff'},
+                {offset: 1, color: '#fff'},
+              ],
+            },
+            borderColor: '#9E87FF',
+            borderWidth: 2,
+          },
+        },
+      },
+      {
+        name: t('message.home.status.running'),
+        type: 'line',
+        symbolSize: 6,
+        symbol: 'circle',
+        smooth: true,
+        data: data['runningData'],
         lineStyle: {color: '#9E87FF'},
         itemStyle: {color: '#9E87FF', borderColor: '#9E87FF'},
         areaStyle: {
