@@ -113,6 +113,7 @@ const editorInit = () => {
         autoClosingQuotes: 'languageDefined', // 是否自动添加结束的单引号 双引号 "always" | "languageDefined" | "beforeWhitespace" | "never"
         scrollBeyondLastLine: false, // 取消代码后面一大段空白
         overviewRulerBorder: false, // 不要滚动条的边框
+        wordWrap: 'on'
       }) :
       editor.setValue(props.value)
 
