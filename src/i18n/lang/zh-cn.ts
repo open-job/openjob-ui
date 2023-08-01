@@ -74,6 +74,16 @@ export default {
     failed: '失败',
     stop: '停止',
   },
+  timeAxis:{
+    t6: '凌晨好',
+    t9: '早上好',
+    t12: '上午好',
+    t14: '中午好',
+    t17: '下午好',
+    t19: '傍晚好',
+    t22: '晚上好',
+    t00: '夜里好',
+  },
   router: {
     // 路由
     dashboard: '首页',
@@ -481,6 +491,21 @@ export default {
       deleteTitle: '你确定要删除延时任务实例',
       stopTitle: '你确定要终止延时任务实例',
     }
+  },
+  adminUser:{
+    userPersonal: '个人信息',
+    identity: '身份',
+    updateTitle: '更新信息',
+    baseTitle: '基本信息',
+    updateBtn: '更新个人信息',
+    nickname: '用户昵称',
+    username: '账号',
+    loginIp: '登录IP',
+    loginTime: '登录时间',
+    token: '安全秘钥',
+    password: '用户密码',
+    password2: '确认密码',
+    pwdNotMatch: '两次密码不一致',
   },
   alert: {
     name: "规则名称",

@@ -91,7 +91,7 @@
                 style="width: 100%">
         <el-table-column prop="id" :label="t('message.job.instance.id')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="jobId" :label="t('message.job.instance.jobId')"
+        <el-table-column prop="jobName" :label="t('message.job.job.name')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" :label="t('message.job.instance.status')"
                          show-overflow-tooltip>
@@ -274,6 +274,7 @@ const getTableData = async () => {
       namespaceId: item['namespaceId'],
       appId: item['appId'],
       jobId: item['jobId'],
+      jobName: item['jobName'],
       processorType: item['processorType'],
       processorInfo: item['processorInfo'],
       executeType: item['executeType'],

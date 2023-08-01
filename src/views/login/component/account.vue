@@ -60,16 +60,15 @@ import { reactive, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import {ElMessage, ElMessageBox} from 'element-plus';
 import { useI18n } from 'vue-i18n';
-import Cookies from 'js-cookie';
-// import md5 from 'js-md5';
+/**
+ * import md5 from 'js-md5';
+ */
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import { initFrontEndControlRoutes } from '/@/router/frontEnd';
 import { initBackEndControlRoutes } from '/@/router/backEnd';
 import { Session } from '/@/utils/storage';
-import { formatAxis } from '/@/utils/formatTime';
 import { NextLoading } from '/@/utils/loading';
-import { TOKEN_NAME, USER_INFO } from '/@/consts';
 import { useLoginApi } from '/@/api/login/index';
 import { useUserInfo } from '/@/stores/userInfo';
 
@@ -109,11 +108,6 @@ const state = reactive({
 	loading: {
 		signIn: false,
 	},
-});
-
-// 时间获取
-const currentTime = computed(() => {
-	return formatAxis(new Date());
 });
 
 // 登录
@@ -175,8 +169,6 @@ const signInSuccess = (isNoPower: boolean | undefined) => {
 		ElMessage.warning('抱歉，您没有登录权限');
 		Session.clear();
 	} else {
-		// 初始化登录成功时间问候语
-		let currentTimeInfo = currentTime.value;
 		// 登录成功，跳到转首页
 		// 如果是复制粘贴的路径，非首页/登录页，那么登录成功后重定向到对应的路径中
 		if (route.query?.redirect) {
@@ -185,12 +177,12 @@ const signInSuccess = (isNoPower: boolean | undefined) => {
 				query: Object.keys(<string>route.query?.params).length > 0 ? JSON.parse(<string>route.query?.params) : '',
 			});
 		} else {
-			router.push('/');
+			router.push('/dashboard');
 		}
 
 		// 登录成功提示
 		const signInText = t('message.signInText');
-		ElMessage.success(`${currentTimeInfo}，${signInText}`);
+		ElMessage.success(`${signInText}`);
 		// 添加 loading，防止第一次进入界面时出现短暂空白
 		NextLoading.start();
 	}

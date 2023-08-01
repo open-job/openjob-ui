@@ -1,4 +1,5 @@
 // 定义内容
+
 export default {
   codeMsg: {
     c200: 'Applications exist in the namespace',
@@ -73,6 +74,16 @@ export default {
     failed: 'Failed',
     stop: 'Stop',
   },
+  timeAxis:{
+    t6: 'Early morning',
+    t9: 'Good morning',
+    t12: 'Late morning',
+    t14: 'Midday',
+    t17: 'Good afternoon',
+    t19: 'Early evening',
+    t22: 'Good evening',
+    t00: 'Good night',
+  },
   router: {
     // 路由
     dashboard: 'Dashboard',
@@ -92,7 +103,7 @@ export default {
     systemSlots: 'Slots',
     alert: 'Alarm',
     alertRule: 'Alarm Rule',
-    userProfile: 'User Profile',
+    userProfile: 'Personal Information',
 
     // 框架默认路由
     home: 'home',
@@ -453,6 +464,21 @@ export default {
       deleteTitle: 'Are you sure to delete delay instance',
       stopTitle: 'Are you sure to stop delay instance',
     }
+  },
+  adminUser:{
+    userPersonal: 'Personal Information',
+    identity: 'Identity',
+    updateTitle: 'Update Information',
+    baseTitle: 'Information',
+    updateBtn: 'Update Personal Information',
+    nickname: 'Nickname',
+    username: 'Username',
+    loginIp: 'Login IP',
+    loginTime: 'Login Time',
+    token: 'Token',
+    password: 'First Password',
+    password2: 'Confirm Password',
+    pwdNotMatch: 'Two passwords do not match',
   },
   alert: {
     name: "Rule Name",

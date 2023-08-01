@@ -17,5 +17,12 @@ export function useUserApi() {
         params,
       });
     },
+    updatePassword: (data: object) => {
+      return request({
+        url: USER_APIS.updatePassword,
+        method: 'post',
+        data,
+      });
+    },
 	};
 }

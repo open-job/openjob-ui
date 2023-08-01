@@ -158,6 +158,7 @@ declare interface RowJobInstanceType {
   namespaceId: number;
   appId: number;
   jobId: number;
+  jobName: string
   processorType: string;
   processorInfo: string;
   executeType: string;
@@ -235,6 +236,8 @@ declare interface RowDelayInstanceType {
   appId: number;
   appName: string;
   delayId: number;
+
+  delayName: string
   taskId: string;
   topic: string;
   delayParams: string;

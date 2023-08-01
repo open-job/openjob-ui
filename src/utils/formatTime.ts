@@ -1,3 +1,5 @@
+import {useI18n} from "vue-i18n";
+
 /**
  * 时间日期转换
  * @param date 当前时间，new Date() 格式
@@ -136,13 +138,16 @@ export function formatPast(param: string | Date, format: string = 'YYYY-mm-dd'):
  * @returns 返回拼接后的时间字符串
  */
 export function formatAxis(param: Date): string {
+  // 定义变量内容
+  const {t} = useI18n();
+
 	let hour: number = new Date(param).getHours();
-	if (hour < 6) return '凌晨好';
-	else if (hour < 9) return '早上好';
-	else if (hour < 12) return '上午好';
-	else if (hour < 14) return '中午好';
-	else if (hour < 17) return '下午好';
-	else if (hour < 19) return '傍晚好';
-	else if (hour < 22) return '晚上好';
-	else return '夜里好';
+	if (hour < 6) return t('message.timeAxis.t6');
+	else if (hour < 9) return t('message.timeAxis.t9');
+	else if (hour < 12) return t('message.timeAxis.t12');
+	else if (hour < 14) return t('message.timeAxis.t14');
+	else if (hour < 17) return t('message.timeAxis.t17');
+	else if (hour < 19) return t('message.timeAxis.t19');
+	else if (hour < 22) return t('message.timeAxis.t22');
+	else return t('message.timeAxis.t00');
 }
