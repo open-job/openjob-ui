@@ -39,12 +39,16 @@
                 style="width: 100%">
         <el-table-column prop="name" :label="t('message.alert.name')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="method" :label="t('message.alert.method')"
+
+        <el-table-column prop="locale" width="120" :label="t('message.alert.locale')"
+                         show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column prop="method" width="120" :label="t('message.alert.method')"
                          show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="url" :label="t('message.alert.url')"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column prop="status" :label="t('message.alert.status')"
+        <el-table-column prop="status" width="120" :label="t('message.alert.status')"
                          show-overflow-tooltip>
           <template #default="scope">
             <el-switch
