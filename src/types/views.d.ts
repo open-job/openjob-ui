@@ -173,6 +173,8 @@ declare interface RowJobInstanceType {
   failRetryInterval: number;
   concurrency: number;
   status: number;
+
+  failStatus: number
   executeTime: string;
   completeTime: string;
   lastReportTime: string;
@@ -243,6 +245,7 @@ declare interface RowDelayInstanceType {
   delayParams: string;
   delayExtra: string;
   status: number;
+  failStatus: number
   executeTime: string
   workerAddress: string
   completeTime: string

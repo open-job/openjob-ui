@@ -97,7 +97,7 @@
                          show-overflow-tooltip>
           <template #default="scope">
             <el-tag class="ml-2" :type="getInstanceStatusInfo(scope.row.status)['tag']">
-              {{ getInstanceStatusInfo(scope.row.status)['label'] }}
+              {{ getInstanceStatusInfo(scope.row.status)['label'] }}{{getFailStatusMessage(scope.row.failStatus)}}
             </el-tag>
           </template>
         </el-table-column>
@@ -169,7 +169,7 @@ import {
   getAppSelectList,
   getInstanceSelectList,
   getShortcuts,
-  getInstanceStatusInfo
+  getInstanceStatusInfo, getFailStatusMessage
 } from "/@/utils/data";
 import {getHeaderNamespaceId} from "/@/utils/header";
 import {useRouter} from "vue-router";
@@ -289,6 +289,7 @@ const getTableData = async () => {
       failRetryInterval: item['failRetryInterval'],
       concurrency: item['concurrency'],
       status: item['status'],
+      failStatus: item['failStatus'],
       workerAddress: item['workerAddress'],
       executeTime: formatDateByTimestamp(item['executeTime']),
       completeTime: formatDateByTimestamp(item['completeTime']),

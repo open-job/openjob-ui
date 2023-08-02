@@ -66,6 +66,12 @@ export default {
     stop: 'Stop',
     cancel: 'Cancel',
   },
+  failStatus:{
+    exception: 'exception',
+    timeout: 'timeout',
+    discard: 'discard',
+    ignore: 'ignore',
+  },
   taskStatus: {
     init: 'Init',
     failover: 'Failover',

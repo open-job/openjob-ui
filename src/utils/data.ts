@@ -207,6 +207,23 @@ export function getInstanceStatusInfo(status: number): Object {
   }
 }
 
+export function getFailStatusMessage(status: number): string {
+  const {t} = i18n.global;
+
+  switch (status) {
+    case 1:
+      return ' (' + t('message.failStatus.exception') + ')'
+    case 5:
+      return ' (' + t('message.failStatus.timeout') + ')'
+    case 10:
+      return ' (' + t('message.failStatus.discard') + ')'
+    case 20:
+      return ' (' + t('message.failStatus.ignore') + ')'
+    default:
+      return ''
+  }
+}
+
 export function getTaskStatusInfo(status: number): Object {
   const {t} = i18n.global;
 

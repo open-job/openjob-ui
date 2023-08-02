@@ -100,7 +100,7 @@
                          show-overflow-tooltip>
           <template #default="scope">
             <el-tag class="ml-2" :type="getTaskStatusInfo(scope.row.status)['tag']">
-              {{ getTaskStatusInfo(scope.row.status)['label'] }}
+              {{ getTaskStatusInfo(scope.row.status)['label'] }}{{getFailStatusMessage(scope.row.failStatus)}}
             </el-tag>
           </template>
         </el-table-column>
@@ -164,7 +164,7 @@ import {
   getAppSelectList,
   getShortcuts,
   getTaskStatusSelectList,
-  getTaskStatusInfo
+  getTaskStatusInfo, getFailStatusMessage
 } from "/@/utils/data";
 import router from "/@/router";
 
@@ -261,6 +261,7 @@ const getTableData = async () => {
       appId: item['appId'],
       appName: item['appName'],
       status: item['status'],
+      failStatus: item['failStatus'],
       delayId: item['delayId'],
       delayName: item['delayName'],
       taskId: item['taskId'],

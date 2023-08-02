@@ -66,6 +66,12 @@ export default {
     stop: '停止',
     cancel: '取消',
   },
+  failStatus:{
+    exception: '异常',
+    timeout: '超时',
+    discard: '丢弃',
+    ignore: '忽略',
+  },
   taskStatus:{
     init: '初始化',
     failover: '故障',
