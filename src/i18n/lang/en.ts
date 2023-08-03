@@ -23,6 +23,7 @@ export default {
     tip: 'TIP',
     deleteSuccess: 'Delete success!',
     updateSuccess: 'Update success!',
+    addSuccess: 'Add success!',
     stopSuccess: 'Kill success!',
     operation: 'Operation',
     stopFail: 'Task instance is not running',

@@ -877,14 +877,14 @@ const onSubmitRequest = async ()=>{
 
   if (state.drawer.type === 'add' || state.drawer.type === 'copy') {
     await jobApi.add(request);
-    ElMessage.success('新增成功');
+    ElMessage.success(t('message.commonMsg.addSuccess'));
     state.drawer.isShow = false;
     emit('refresh');
     return;
   }
 
   await jobApi.update(request);
-  ElMessage.success('更新成功');
+  ElMessage.success(t('message.commonMsg.updateSuccess'));
   state.drawer.isShow = false;
   emit('refresh');
 }

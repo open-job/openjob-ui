@@ -336,12 +336,12 @@ const openDrawer = async (type: string, row: RowAlertRuleType) => {
   if (type === 'add') {
     state.isUpdate = false;
     await resetJobContent();
-    state.dialogTitle = t('message.job.job.addJobTitle')
+    state.dialogTitle = t('message.alert.addTitle')
     return;
   }
 
   state.isUpdate = true
-  state.dialogTitle = t('message.job.job.updateJobTitle')
+  state.dialogTitle = t('message.alert.updateTitle')
 
   // Init content.
   await initJobContent(row);
@@ -430,7 +430,7 @@ const onSubmitRequest = async () => {
 
   if (state.drawer.type === 'add') {
     await alertRuleApi.add(request);
-    ElMessage.success('新增成功');
+    ElMessage.success(t('message.commonMsg.addSuccess'));
     state.drawer.isShow = false;
     emit('refresh');
     return;
@@ -438,7 +438,7 @@ const onSubmitRequest = async () => {
 
   request['id'] = state.ruleForm.id;
   await alertRuleApi.update(request);
-  ElMessage.success('更新成功');
+  ElMessage.success(t('message.commonMsg.updateSuccess'));
   state.drawer.isShow = false;
   emit('refresh');
 }
