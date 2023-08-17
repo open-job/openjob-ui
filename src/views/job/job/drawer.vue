@@ -547,28 +547,28 @@ const state = reactive({
       value: 'kettle',
       label: 'kettle',
     },
-    // {
-    //   value: 'http',
-    //   label: 'http',
-    // }
+    {
+      value: 'http',
+      label: 'http',
+    }
   ],
   executeType: [
     {
       value: 'standalone',
       label: t('message.job.job.executeTypeList.standalone'),
     },
-    // {
-    //   value: 'broadcast',
-    //   label: t('message.job.job.executeTypeList.broadcast'),
-    // },
-    // {
-    //   value: 'mapReduce',
-    //   label: t('message.job.job.executeTypeList.mapReduce'),
-    // },
-    // {
-    //   value: 'sharding',
-    //   label: t('message.job.job.executeTypeList.sharding'),
-    // }
+    {
+      value: 'broadcast',
+      label: t('message.job.job.executeTypeList.broadcast'),
+    },
+    {
+      value: 'mapReduce',
+      label: t('message.job.job.executeTypeList.mapReduce'),
+    },
+    {
+      value: 'sharding',
+      label: t('message.job.job.executeTypeList.sharding'),
+    }
   ],
   executeStrategy: [
     {
@@ -590,14 +590,14 @@ const state = reactive({
       value: 'cron',
       label: t('message.job.job.timeExpressionTypeList.cron'),
     },
-    // {
-    //   value: 'secondDelay',
-    //   label: t('message.job.job.timeExpressionTypeList.secondDelay'),
-    // },
-    // {
-    //   value: 'fixedRate',
-    //   label: t('message.job.job.timeExpressionTypeList.fixedRate'),
-    // },
+    {
+      value: 'secondDelay',
+      label: t('message.job.job.timeExpressionTypeList.secondDelay'),
+    },
+    {
+      value: 'fixedRate',
+      label: t('message.job.job.timeExpressionTypeList.fixedRate'),
+    },
     {
       value: 'oneTime',
       label: t('message.job.job.timeExpressionTypeList.oneTime'),
@@ -901,14 +901,14 @@ const onChangeProcessorType = (type: string) => {
         value: 'standalone',
         label: t('message.job.job.executeTypeList.standalone'),
       },
-      // {
-      //   value: 'broadcast',
-      //   label: t('message.job.job.executeTypeList.broadcast'),
-      // },
-      // {
-      //   value: 'sharding',
-      //   label: t('message.job.job.executeTypeList.sharding'),
-      // }
+      {
+        value: 'broadcast',
+        label: t('message.job.job.executeTypeList.broadcast'),
+      },
+      {
+        value: 'sharding',
+        label: t('message.job.job.executeTypeList.sharding'),
+      }
     ];
   } else if (type == 'kettle') {
     state.rowState.inputProcessor = false;
@@ -922,10 +922,10 @@ const onChangeProcessorType = (type: string) => {
         value: 'standalone',
         label: t('message.job.job.executeTypeList.standalone'),
       },
-      // {
-      //   value: 'broadcast',
-      //   label: t('message.job.job.executeTypeList.broadcast'),
-      // }
+      {
+        value: 'broadcast',
+        label: t('message.job.job.executeTypeList.broadcast'),
+      }
     ];
   } else if (type == 'http') {
     state.rowState.inputProcessor = false;
@@ -939,10 +939,10 @@ const onChangeProcessorType = (type: string) => {
         value: 'standalone',
         label: t('message.job.job.executeTypeList.standalone'),
       },
-      // {
-      //   value: 'broadcast',
-      //   label: t('message.job.job.executeTypeList.broadcast'),
-      // }
+      {
+        value: 'broadcast',
+        label: t('message.job.job.executeTypeList.broadcast'),
+      }
     ];
   } else {
     state.rowState.inputProcessor = true;
@@ -955,18 +955,18 @@ const onChangeProcessorType = (type: string) => {
         value: 'standalone',
         label: t('message.job.job.executeTypeList.standalone'),
       },
-      // {
-      //   value: 'broadcast',
-      //   label: t('message.job.job.executeTypeList.broadcast'),
-      // },
-      // {
-      //   value: 'mapReduce',
-      //   label: t('message.job.job.executeTypeList.mapReduce'),
-      // },
-      // {
-      //   value: 'sharding',
-      //   label: t('message.job.job.executeTypeList.sharding'),
-      // }
+      {
+        value: 'broadcast',
+        label: t('message.job.job.executeTypeList.broadcast'),
+      },
+      {
+        value: 'mapReduce',
+        label: t('message.job.job.executeTypeList.mapReduce'),
+      },
+      {
+        value: 'sharding',
+        label: t('message.job.job.executeTypeList.sharding'),
+      }
     ];
   }
 

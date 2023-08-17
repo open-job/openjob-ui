@@ -46,6 +46,12 @@ export const JOB_INSTANCE_APIS = {
   listProcessorLog: '/admin/job-instance/list-processor-log',
 }
 
+export const JOB_INSTANCE_TASK_APIS = {
+  // list
+  listSecond: '/admin/instance-task/list-second',
+  listChild: '/admin/instance-task/list-child',
+}
+
 export const DELAY_APIS = {
   // list
   list: '/admin/delay/list',

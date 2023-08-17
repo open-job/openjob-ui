@@ -1,5 +1,5 @@
 <template>
-  <el-drawer v-model="state.drawer.isShow" direction="rtl" size="50%" @close="onDrawerClose()">
+  <el-drawer v-model="state.drawer.isShow" direction="rtl" size="76%" @close="onDrawerClose()">
     <template #header>
       <div>
         <h4>任务实例详情</h4>
@@ -19,13 +19,13 @@
         </el-tab-pane>
         <el-tab-pane name="list" label="任务列表">
           <el-table
-            :data="tableData1"
+            :data="state.taskList"
             style="width: 100%"
             size="default"
             row-key="id"
             lazy
             :load="load"
-            :show-header="false"
+            :show-header="true"
             :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
           >
             <el-table-column prop="taskName" label="taskName" />
@@ -50,14 +50,12 @@
     <template #footer>
       <el-pagination
         v-show="state.pageShow"
-        v-model:current-page="currentPage4"
-        v-model:page-size="pageSize4"
+        v-model:current-page="state.pagination.page"
+        v-model:page-size="state.pagination.size"
         :page-sizes="[100, 200, 300, 400]"
-        :small="small"
-        :disabled="disabled"
         background
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="state.pagination.total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         style="margin-left: 12px; padding-bottom: 12px"
@@ -70,7 +68,11 @@
 import {useI18n} from "vue-i18n";
 import {reactive} from "vue";
 import {getInstanceStatusInfo} from "/@/utils/data";
+import {useInstanceTaskApi} from "/@/api/task";
+import {formatDateByTimestamp} from "/@/utils/formatTime";
 const {t} = useI18n();
+
+const instanceTaskApi = useInstanceTaskApi()
 
 // 定义接口
 const state = reactive({
@@ -79,6 +81,11 @@ const state = reactive({
   drawer: {
     isShow: false
   },
+  pagination:{
+    page: 1,
+    size: 20,
+    total: 0,
+  },
   descriptions: {
     column: 6,
     workerAddress: '',
@@ -86,7 +93,9 @@ const state = reactive({
     completeTime: '',
     statusTag: '',
     statusLabel: 'Default',
-  }
+  },
+  jobInstanceId: 0,
+  taskList:<any>[]
 })
 
 const openDrawer = async (row: RowJobInstanceType) => {
@@ -97,13 +106,43 @@ const openDrawer = async (row: RowJobInstanceType) => {
   state.descriptions.statusTag = getInstanceStatusInfo(row.status)['tag'];
   state.descriptions.statusLabel = getInstanceStatusInfo(row.status)['label'];
 
+  state.jobInstanceId = row.id
   state.tabsValue='base'
   state.pageShow = false;
   state.drawer.isShow = true;
 }
 
-const onTabChange = (name: string) => {
+const onTabChange = async (name: string) => {
   if (name == 'list') {
+
+    let data = await instanceTaskApi.getListSecondList({
+      jobInstanceId: state.jobInstanceId,
+      page: 1,
+      size: 20,
+    })
+
+    state.taskList = [];
+    state.pagination.page = data['page']
+    state.pagination.size = data['size']
+    state.pagination.total = data['total']
+    data.list.forEach(function (item: Object) {
+      state.taskList.push({
+        id: item['id'],
+        jobId: item['jobId'],
+        jobInstanceId: item['jobInstanceId'],
+        circleId: item['circleId'],
+        taskId: item['taskId'],
+        workerAddress: item['workerAddress'],
+        taskName: "第"+item['circleId']+"执行",
+        taskStatus: item['status'],
+        createTIme: formatDateByTimestamp(item['createTime']),
+        completeTime: formatDateByTimestamp(item['updateTime']),
+        result: item['result'],
+        childCount: item['childCount'],
+        hasChildren: item['childCount'] > 0,
+      });
+    })
+
     state.pageShow = true;
     return
   }
@@ -111,82 +150,59 @@ const onTabChange = (name: string) => {
 }
 
 
-interface User {
+interface InstanceTask {
   id: number
+  jobId: number
+  jobInstanceId: number
+  circleId: number
+  taskId: string
   workerAddress: string
   taskName: string
   taskStatus: string
   createTIme: string
   completeTime: string
+  // result: string
+  // childCount: number
   hasChildren?: boolean
-  children?: User[]
+  children?: InstanceTask[]
 }
 
-const tableData1: User[] = [
-  {
-    id: 3,
-    workerAddress: '172.20.0.253:25588',
-    taskName: 'wangxiaohu',
-    taskStatus: 'waiting',
-    createTIme: '2023-07-03 20:51:41',
-    completeTime: '2023-07-03 20:51:41',
-    hasChildren: true,
-  },
-  {
-    id: 4,
-    workerAddress: '172.20.0.253:25588',
-    taskName: 'wangxiaohu',
-    taskStatus: 'success',
-    createTIme: '2023-07-03 20:51:41',
-    completeTime: '2023-07-03 20:51:41',
-    hasChildren: true
-  },
-];
-
-const load = (
-  row: User,
+const load = async (
+  row: InstanceTask,
   treeNode: unknown,
-  resolve: (date: User[]) => void
+  resolve: (date: any[]) => void
 ) => {
-  if (row.id==3){
-    resolve([
-      {
-        id: 31,
-        workerAddress: '192.20.0.253:25588',
-        taskName: 'wangxiaohu',
-        taskStatus: '成功',
-        createTIme: '2023-07-03 20:51:41',
-        completeTime: '2023-07-03 20:51:41',
-      }
-    ])
-    return
-  }
+  let data = await instanceTaskApi.getListChildList({
+    taskId: row.taskId,
+    page: 1,
+    size: 20,
+  })
 
-  if (row.id==131){
-    resolve([
-      {
-        id: 311,
-        workerAddress: '192.20.0.253:25588',
-        taskName: 'wangxiaohu',
-        taskStatus: '成功',
-        createTIme: '2023-07-03 20:51:41',
-        completeTime: '2023-07-03 20:51:41',
-      }
-    ])
-    return
-  }
-
-  resolve([
-    {
-      id: 131,
-      workerAddress: '192.20.0.253:25588',
-      taskName: 'wangxiaohu',
-      taskStatus: '成功',
-      createTIme: '2023-07-03 20:51:41',
-      completeTime: '2023-07-03 20:51:41',
-      hasChildren: true,
+  let showData = <any>[];
+  data.list.forEach(function (item: Object) {
+    let taskName = item['taskName']
+    if (item['childCount'] > 0){
+      taskName +=" ["+item['childCount']+"]"
     }
-  ])
+
+    showData.push({
+      id: item['id'],
+      jobId: item['jobId'],
+      jobInstanceId: item['jobInstanceId'],
+      circleId: item['circleId'],
+      taskId: item['taskId'],
+      workerAddress: item['workerAddress'],
+      taskName: taskName,
+      taskStatus: item['status'],
+      createTIme: formatDateByTimestamp(item['createTime']),
+      completeTime: formatDateByTimestamp(item['updateTime']),
+      result: item['result'],
+      childCount: item['childCount'],
+      hasChildren: item['childCount'] > 0,
+    });
+  })
+
+  resolve(showData)
 }
 
 const onDrawerClose = () => {
