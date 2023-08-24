@@ -190,6 +190,27 @@ declare interface JobInstanceState {
   tableData: InstanceTableType;
 }
 
+declare interface InstanceTask {
+  id: number
+  jobId: number
+  jobInstanceId: number
+  circleId: number
+  taskId: string
+  workerAddress: string
+  taskName: string
+  taskStatus: string
+  createTime: string
+  completeTime: string
+  status: number
+  statusTag: string
+  statusLabel: string
+  result: string
+  childCount: number
+  pull: number
+  hasChildren?: boolean
+  children?: InstanceTask[]
+}
+
 /**
  * Delay
  */

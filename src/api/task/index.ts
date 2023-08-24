@@ -27,5 +27,12 @@ export function useInstanceTaskApi() {
         params,
       });
     },
+    getTaskLog: (params?: object) => {
+      return request({
+        url: JOB_INSTANCE_TASK_APIS.listTaskLog,
+        method: 'get',
+        params,
+      });
+    },
   };
 }

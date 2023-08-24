@@ -50,6 +50,7 @@ export const JOB_INSTANCE_TASK_APIS = {
   // list
   listTask: '/admin/instance-task/list',
   listChild: '/admin/instance-task/list-child',
+  listTaskLog: '/admin/instance-task/list-task-log',
 }
 
 export const DELAY_APIS = {

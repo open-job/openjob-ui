@@ -46,12 +46,12 @@
                 </el-tag>
               </template>
             </el-table-column>
-            <el-table-column prop="createTIme" :label="t('message.job.task.createTime')"/>
+            <el-table-column prop="createTime" :label="t('message.job.task.createTime')"/>
             <el-table-column prop="completeTime" :label="t('message.job.task.completeTime')"/>
             <el-table-column prop="result" :label="t('message.job.task.result')" show-overflow-tooltip/>
             <el-table-column fixed="right" :label="t('message.job.task.operation')" width="120">
-              <template #default>
-                <el-button link type="primary" size="small" @click="handleClick">
+              <template #default="scope">
+                <el-button link type="primary" size="small" @click="handleClick(scope.row)">
                   详情
                 </el-button>
                 <el-button link type="danger" size="small">
@@ -78,17 +78,23 @@
       />
     </template>
   </el-drawer>
+
+  <DetailDrawer ref="DetailDrawerRef"/>
 </template>
 
 <script setup lang="ts" name="jobDrawerName">
 import {useI18n} from "vue-i18n";
-import {reactive} from "vue";
+import {defineAsyncComponent, reactive, ref} from "vue";
 import {getInstanceStatusInfo,getTaskStatusInfo} from "/@/utils/data";
 import {useInstanceTaskApi} from "/@/api/task";
 import {formatDateByTimestamp} from "/@/utils/formatTime";
 
 const {t} = useI18n();
 
+// Sharding
+const DetailDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-detail.vue'));
+
+const DetailDrawerRef = ref();
 const instanceTaskApi = useInstanceTaskApi()
 
 // 定义接口
@@ -187,10 +193,11 @@ const getTaskData = async () => {
       taskId: item['taskId'],
       workerAddress: item['workerAddress'],
       taskName: taskName,
+      status: item['status'],
       taskStatus: item['status'],
       statusTag: getTaskStatusInfo(item['status'])['tag'],
       statusLabel: getTaskStatusInfo(item['status'])['label'],
-      createTIme: formatDateByTimestamp(item['createTime']),
+      createTime: formatDateByTimestamp(item['createTime']),
       completeTime: formatDateByTimestamp(item['updateTime']),
       result: item['result'],
       childCount: item['childCount'],
@@ -202,26 +209,6 @@ const getTaskData = async () => {
   state.table.loading = false
 }
 
-
-interface InstanceTask {
-  id: number
-  jobId: number
-  jobInstanceId: number
-  circleId: number
-  taskId: string
-  workerAddress: string
-  taskName: string
-  taskStatus: string
-  createTIme: string
-  completeTime: string
-  statusTag: string
-  statusLabel: string
-  result: string
-  childCount: number
-  pull: number
-  hasChildren?: boolean
-  children?: InstanceTask[]
-}
 
 const load = async (
   row: InstanceTask,
@@ -252,10 +239,11 @@ const load = async (
       taskId: item['taskId'],
       workerAddress: item['workerAddress'],
       taskName: taskName,
+      status: item['status'],
       taskStatus: item['status'],
       statusTag: getTaskStatusInfo(item['status'])['tag'],
       statusLabel: getTaskStatusInfo(item['status'])['label'],
-      createTIme: formatDateByTimestamp(item['createTime']),
+      createTime: formatDateByTimestamp(item['createTime']),
       completeTime: formatDateByTimestamp(item['updateTime']),
       result: item['result'],
       childCount: item['childCount'],
@@ -265,6 +253,10 @@ const load = async (
   })
 
   resolve(showData)
+}
+
+const handleClick = (row: InstanceTask) => {
+  DetailDrawerRef.value.openDrawer(row);
 }
 
 const onDrawerClose = () => {
