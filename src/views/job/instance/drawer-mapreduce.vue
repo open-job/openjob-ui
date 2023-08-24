@@ -2,53 +2,54 @@
   <el-drawer v-model="state.drawer.isShow" direction="rtl" size="76%" @close="onDrawerClose()">
     <template #header>
       <div>
-        <h4>任务实例详情</h4>
+        <h4>{{t('message.job.task.title')}}</h4>
       </div>
     </template>
     <template #default>
       <el-tabs v-model="state.tabsValue" type="border-card" style="border-top: none;height: 100%;"
                @tab-change="onTabChange">
-        <el-tab-pane name="base" label="基本信息">
+        <el-tab-pane name="base" :label="t('message.job.task.base')">
           <el-descriptions column="1" border>
-            <el-descriptions-item label="任务名称">{{ state.descriptions.jobName }}
+            <el-descriptions-item :label="t('message.job.task.taskName')">{{ state.descriptions.jobName }}
             </el-descriptions-item>
-            <el-descriptions-item label="调度节点">{{ state.descriptions.workerAddress }}
+            <el-descriptions-item :label="t('message.job.task.workerAddress')">{{ state.descriptions.workerAddress }}
             </el-descriptions-item>
-            <el-descriptions-item label="任务状态">
+            <el-descriptions-item :label="t('message.job.task.status')">
               <el-tag class="ml-2" :type="state.descriptions.statusTag">
                 {{ state.descriptions.statusLabel }}
               </el-tag>
             </el-descriptions-item>
-            <el-descriptions-item label="创建时间">{{ state.descriptions.createTime }}
+            <el-descriptions-item :label="t('message.job.task.createTime')">{{ state.descriptions.createTime }}
             </el-descriptions-item>
-            <el-descriptions-item label="完成时间">{{ state.descriptions.completeTime }}
+            <el-descriptions-item :label="t('message.job.task.completeTime')">{{ state.descriptions.completeTime }}
             </el-descriptions-item>
           </el-descriptions>
         </el-tab-pane>
-        <el-tab-pane name="list" label="任务列表">
+        <el-tab-pane name="list" :label="t('message.job.task.tasks')">
           <el-table
             :data="state.taskList"
             style="width: 100%"
             size="default"
             row-key="id"
+            v-loading="state.table.loading"
             lazy
             :load="load"
             :show-header="true"
             :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
           >
-            <el-table-column prop="taskName" label="taskName"/>
-            <el-table-column prop="workerAddress" label="workerAddress" show-overflow-tooltip/>
-            <el-table-column prop="taskStatus" label="taskStatus">
+            <el-table-column prop="taskName" :label="t('message.job.task.taskName')"/>
+            <el-table-column prop="workerAddress" :label="t('message.job.task.workerAddress')" show-overflow-tooltip/>
+            <el-table-column prop="taskStatus" :label="t('message.job.task.status')">
               <template #default="scope">
                 <el-tag class="ml-2" :type="scope.row.statusTag">
                   {{ scope.row.statusLabel }}
                 </el-tag>
               </template>
             </el-table-column>
-            <el-table-column prop="createTIme" label="createTIme"/>
-            <el-table-column prop="completeTime" label="completeTime"/>
-            <el-table-column prop="result" label="result" show-overflow-tooltip/>
-            <el-table-column fixed="right" label="操作" width="120">
+            <el-table-column prop="createTIme" :label="t('message.job.task.createTime')"/>
+            <el-table-column prop="completeTime" :label="t('message.job.task.completeTime')"/>
+            <el-table-column prop="result" :label="t('message.job.task.result')" show-overflow-tooltip/>
+            <el-table-column fixed="right" :label="t('message.job.task.operation')" width="120">
               <template #default>
                 <el-button link type="primary" size="small" @click="handleClick">
                   详情
@@ -111,7 +112,11 @@ const state = reactive({
     statusTag: '',
     statusLabel: 'Default',
   },
+  table:{
+    loading: false,
+  },
   jobInstanceId: 0,
+  timeExpressionType: '',
   taskList: <any>[]
 })
 
@@ -125,36 +130,40 @@ const openDrawer = async (row: RowJobInstanceType) => {
   state.descriptions.statusLabel = getInstanceStatusInfo(row.status)['label'];
 
   state.jobInstanceId = row.id
+  state.timeExpressionType = row.timeExpressionType
   state.tabsValue = 'base'
   state.pageShow = false;
+  state.taskList = [];
   state.drawer.isShow = true;
 }
 
 // 分页改变
 const onHandleSizeChange = async (val: number) => {
   state.pagination.size = val;
-  await getCircleData();
+  await getTaskData();
 };
 // 分页改变
 const onHandleCurrentChange = async (val: number) => {
   state.pagination.page = val
-  await getCircleData();
+  await getTaskData();
 };
 
 const onTabChange = async (name: string) => {
   if (name == 'list') {
     state.pagination.page = 1
     state.pagination.size = 20;
-    await getCircleData();
+    await getTaskData();
     state.pageShow = true;
     return
   }
   state.pageShow = false;
 }
 
-const getCircleData = async () => {
-  let data = await instanceTaskApi.getListSecondList({
+const getTaskData = async () => {
+  state.table.loading = true
+  let data = await instanceTaskApi.getListTaskList({
     jobInstanceId: state.jobInstanceId,
+    timeExpressionType: state.timeExpressionType,
     page: state.pagination.page,
     size: state.pagination.size,
   })
@@ -164,6 +173,12 @@ const getCircleData = async () => {
   state.pagination.size = data['size']
   state.pagination.total = data['total']
   data.list.forEach(function (item: Object) {
+
+    let taskName = item['taskName']
+    if (state.timeExpressionType == 'secondDelay') {
+      taskName = t('message.job.task.name1') + item['circleId'] + t('message.job.task.name2')
+    }
+
     state.taskList.push({
       id: item['id'],
       jobId: item['jobId'],
@@ -171,7 +186,7 @@ const getCircleData = async () => {
       circleId: item['circleId'],
       taskId: item['taskId'],
       workerAddress: item['workerAddress'],
-      taskName: "第" + item['circleId'] + "执行",
+      taskName: taskName,
       taskStatus: item['status'],
       statusTag: getTaskStatusInfo(item['status'])['tag'],
       statusLabel: getTaskStatusInfo(item['status'])['label'],
@@ -179,9 +194,12 @@ const getCircleData = async () => {
       completeTime: formatDateByTimestamp(item['updateTime']),
       result: item['result'],
       childCount: item['childCount'],
+      pull: item['pull'],
       hasChildren: item['childCount'] > 0,
     });
   })
+
+  state.table.loading = false
 }
 
 
@@ -198,8 +216,9 @@ interface InstanceTask {
   completeTime: string
   statusTag: string
   statusLabel: string
-  // result: string
-  // childCount: number
+  result: string
+  childCount: number
+  pull: number
   hasChildren?: boolean
   children?: InstanceTask[]
 }
@@ -211,6 +230,9 @@ const load = async (
 ) => {
   let data = await instanceTaskApi.getListChildList({
     taskId: row.taskId,
+    jobInstanceId: row.jobInstanceId,
+    circleId: row.circleId,
+    pull: row.pull,
     page: 1,
     size: 20,
   })
@@ -237,6 +259,7 @@ const load = async (
       completeTime: formatDateByTimestamp(item['updateTime']),
       result: item['result'],
       childCount: item['childCount'],
+      pull: item['pull'],
       hasChildren: item['childCount'] > 0,
     });
   })

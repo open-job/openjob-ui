@@ -13,9 +13,9 @@ import {JOB_INSTANCE_TASK_APIS} from "/@/api/serverApis";
  */
 export function useInstanceTaskApi() {
   return {
-    getListSecondList: (params?: object) => {
+    getListTaskList: (params?: object) => {
       return request({
-        url: JOB_INSTANCE_TASK_APIS.listSecond,
+        url: JOB_INSTANCE_TASK_APIS.listTask,
         method: 'get',
         params,
       });

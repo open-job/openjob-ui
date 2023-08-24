@@ -454,6 +454,22 @@ export default {
       createTime: '创建时间',
       deleteTitle: '你确定要删除实例',
       stopTitle: '你确定要终止任务实例',
+    },
+    task:{
+      name1: "第",
+      name2: "次循环执行",
+      taskName: '任务名称',
+      title: '任务实例详情',
+      base: '基本信息',
+      tasks: '任务列表',
+      workerAddress: '实例地址',
+      createTime: '创建时间',
+      completeTime: '完成时间',
+      result: '运行结果',
+      status: '任务状态',
+      operation: '操作',
+      detail: '详情',
+      stop: '终止',
     }
   },
   delay: {
@@ -497,7 +513,7 @@ export default {
       createTime: '创建时间',
       deleteTitle: '你确定要删除延时任务实例',
       stopTitle: '你确定要终止延时任务实例',
-    }
+    },
   },
   adminUser:{
     userPersonal: '个人信息',

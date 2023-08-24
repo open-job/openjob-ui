@@ -48,7 +48,7 @@ export const JOB_INSTANCE_APIS = {
 
 export const JOB_INSTANCE_TASK_APIS = {
   // list
-  listSecond: '/admin/instance-task/list-second',
+  listTask: '/admin/instance-task/list',
   listChild: '/admin/instance-task/list-child',
 }
 

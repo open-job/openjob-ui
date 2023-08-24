@@ -427,6 +427,22 @@ export default {
       createTime: 'Create Time',
       deleteTitle: 'Are you sure to delete job instance',
       stopTitle: 'Are you sure to stop job instance',
+    },
+    task:{
+      name1: "The",
+      name2: "th execution",
+      taskName: 'Name',
+      title: 'Task Information',
+      base: 'Information',
+      tasks: 'List',
+      workerAddress: 'Address',
+      createTime: 'Create Time',
+      completeTime: 'Complete Time',
+      result: 'Result',
+      status: 'Status',
+      operation: 'Operation',
+      detail: 'Detail',
+      stop: 'Stop',
     }
   },
   delay: {
