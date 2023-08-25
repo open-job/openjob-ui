@@ -152,9 +152,7 @@
       </el-pagination>
     </div>
     <StandaloneDrawer ref="StandaloneDrawerRef" @refresh="getTableData()"/>
-    <BroadcastDrawer ref="BroadcastDrawerRef" @refresh="getBroadcastData()"/>
-    <MapReduceDrawer ref="MapReduceDrawerRef" @refresh="getMapRedceData()"/>
-    <ShardingDrawer ref="ShardingDrawerRef" @refresh="getShardingData()"/>
+    <DistributeDrawer ref="DistributeDrawerRef" @refresh="getDistributeData()"/>
   </div>
 </template>
 
@@ -190,21 +188,14 @@ const tableSearchRef = ref<FormInstance>();
 // 引入组件
 const StandaloneDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-standalone.vue'));
 
-//Broadcast
-const BroadcastDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-broadcast.vue'));
-
-// MapReduce
-const MapReduceDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-mapreduce.vue'));
-
-// Sharding
-const ShardingDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-sharding.vue'));
-
+// Distribute
+const DistributeDrawer = defineAsyncComponent(() => import('/@/views/job/instance/drawer-distribute.vue'));
 
 // 定义变量内容
 const StandaloneDrawerRef = ref();
 const ShardingDrawerRef = ref();
 const BroadcastDrawerRef = ref();
-const MapReduceDrawerRef = ref();
+const DistributeDrawerRef = ref();
 
 const selectState = reactive<any>({
   appSelect: [],
@@ -304,14 +295,9 @@ const getTableData = async () => {
   }, 500);
 };
 
-const getBroadcastData = async () => {
+const getDistributeData = async () => {
 }
 
-const getMapRedceData = async () => {
-}
-
-const getShardingData = async () => {
-}
 
 const onAppChange = async (appId: number, isLoadingData: boolean) => {
   searchState.form.jobId = '';
@@ -361,27 +347,12 @@ const onReset = () => {
 };
 
 const onOpenViewRole = (type: string, row: RowJobInstanceType) => {
-  if (row.executeType == 'standalone') {
+  if (row.executeType == 'standalone' && row.timeExpressionType != 'secondDelay') {
     StandaloneDrawerRef.value.openDrawer(row);
     return
   }
 
-  if (row.executeType == 'broadcast') {
-    BroadcastDrawerRef.value.openDrawer(row);
-    return
-  }
-
-  if (row.executeType == 'mapReduce') {
-    MapReduceDrawerRef.value.openDrawer(row);
-    return
-  }
-
-  if (row.executeType == 'sharding') {
-    ShardingDrawerRef.value.openDrawer(row);
-    return
-  }
-
-  ElMessage.success('Not supported! type=' + row.executeType);
+  DistributeDrawerRef.value.openDrawer(row);
 };
 
 const onStop = (row: RowJobInstanceType) => {

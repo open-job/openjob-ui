@@ -61,7 +61,7 @@
                     :key="ns.value"
                     :label="ns.label"
                     :value="ns.value"
-                    @click="onChangeProcessorType(ns.value)"
+                    @click="onChangeProcessorType(ns.value, 'standalone')"
                   />
                 </el-select>
               </el-form-item>
@@ -699,7 +699,7 @@ const resetJobContent = async (selectAppId: number) => {
   }
 
   onChangeTimeType('cron');
-  onChangeProcessorType('processor');
+  onChangeProcessorType('processor', 'standalone');
 
   state.ruleForm.namespaceId = getHeaderNamespaceId();
   state.ruleForm.appId = selectAppId;
@@ -757,9 +757,7 @@ const initJobContent = async (row: RowJobType) => {
 
   onChangeTimeType(row.timeExpressionType);
 
-  onChangeProcessorType(row.processorType);
-
-  onChangeExecuteType(row.executeType)
+  onChangeProcessorType(row.processorType, row.executeType);
 
   if (row.executeType == 'sharding'){
     state.ruleForm.shardingParams = row.shardingParams
@@ -889,7 +887,7 @@ const onSubmitRequest = async ()=>{
   emit('refresh');
 }
 
-const onChangeProcessorType = (type: string) => {
+const onChangeProcessorType = (type: string, executeType :string) => {
   if (type == 'shell') {
     state.rowState.inputProcessor = false;
     state.rowState.shellProcessor = true;
@@ -970,8 +968,8 @@ const onChangeProcessorType = (type: string) => {
     ];
   }
 
-  state.ruleForm.executeType = 'standalone';
-  onChangeExecuteType("standalone");
+  state.ruleForm.executeType = executeType;
+  onChangeExecuteType(executeType);
 }
 
 const onChangeExecuteType = (type: string) => {
