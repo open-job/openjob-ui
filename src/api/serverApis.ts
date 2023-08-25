@@ -50,6 +50,7 @@ export const JOB_INSTANCE_TASK_APIS = {
   // list
   listTask: '/admin/instance-task/list',
   listChild: '/admin/instance-task/list-child',
+  stopTask: '/admin/instance-task/stop-task',
   listTaskLog: '/admin/instance-task/list-task-log',
 }
 

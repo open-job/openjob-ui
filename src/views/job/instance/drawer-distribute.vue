@@ -52,10 +52,10 @@
             <el-table-column fixed="right" :label="t('message.job.task.operation')" width="120">
               <template #default="scope">
                 <el-button link type="primary" size="small" @click="handleClick(scope.row)">
-                  详情
+                  {{ t('message.job.task.detail') }}
                 </el-button>
-                <el-button link type="danger" size="small">
-                  终止
+                <el-button v-show="scope.row.status === 15" @click="handleStop(scope.row)" link type="danger" size="small">
+                  {{ t('message.job.task.stop') }}
                 </el-button>
               </template>
             </el-table-column>
@@ -88,6 +88,7 @@ import {defineAsyncComponent, reactive, ref} from "vue";
 import {getInstanceStatusInfo,getTaskStatusInfo} from "/@/utils/data";
 import {useInstanceTaskApi} from "/@/api/task";
 import {formatDateByTimestamp} from "/@/utils/formatTime";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const {t} = useI18n();
 
@@ -191,6 +192,7 @@ const getTaskData = async () => {
       jobInstanceId: item['jobInstanceId'],
       circleId: item['circleId'],
       taskId: item['taskId'],
+      dispatchVersion: item['dispatchVersion'],
       workerAddress: item['workerAddress'],
       taskName: taskName,
       status: item['status'],
@@ -237,6 +239,7 @@ const load = async (
       jobInstanceId: item['jobInstanceId'],
       circleId: item['circleId'],
       taskId: item['taskId'],
+      dispatchVersion: item['dispatchVersion'],
       workerAddress: item['workerAddress'],
       taskName: taskName,
       status: item['status'],
@@ -257,6 +260,34 @@ const load = async (
 
 const handleClick = (row: InstanceTask) => {
   DetailDrawerRef.value.openDrawer(row);
+}
+
+const handleStop = (row: InstanceTask) => {
+  ElMessageBox.confirm(t('message.job.instance.stopTitle') + `(${row.taskId})?`, t('message.commonMsg.tip'), {
+    confirmButtonText: t('message.commonBtn.confirm'),
+    cancelButtonText: t('message.commonBtn.cancel'),
+    type: 'warning',
+  })
+    .then(async () => {
+      let data = await instanceTaskApi.stop({
+        jobInstanceId: row.jobInstanceId,
+        dispatchVersion: row.dispatchVersion,
+        circleId: row.circleId,
+        taskId: row.taskId,
+      });
+
+      if (Number(data.type) > 0) {
+        ElMessage.error(t('message.commonMsg.stopFail'));
+        return;
+      }
+
+      setTimeout(async ()=>{
+        await getTaskData();
+      }, 1000)
+      ElMessage.success(t('message.commonMsg.stopSuccess'));
+    })
+    .catch(() => {
+    });
 }
 
 const onDrawerClose = () => {

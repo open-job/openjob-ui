@@ -199,6 +199,7 @@ declare interface InstanceTask {
   circleId: number
   taskId: string
   workerAddress: string
+  dispatchVersion: number
   taskName: string
   taskStatus: string
   createTime: string
