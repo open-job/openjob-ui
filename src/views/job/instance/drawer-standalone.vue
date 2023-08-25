@@ -105,6 +105,7 @@ const loadingLog = async (row: RowJobInstanceType, loading :number) => {
     jobId: row.jobId,
     jobInstanceId: row.id,
     executeType: row.executeType,
+    dispatchVersion: row.dispatchVersion,
     status: row.status,
     time: loadingState.time,
     loading: loading,

@@ -162,6 +162,8 @@ declare interface RowJobInstanceType {
   processorType: string;
   processorInfo: string;
   executeType: string;
+
+  dispatchVersion: number
   paramsType: string;
   params: string;
   extendParamsType: string;

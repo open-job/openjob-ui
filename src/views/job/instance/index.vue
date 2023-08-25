@@ -269,6 +269,7 @@ const getTableData = async () => {
       processorType: item['processorType'],
       processorInfo: item['processorInfo'],
       executeType: item['executeType'],
+      dispatchVersion: item['dispatchVersion'],
       paramsType: item['paramsType'],
       params: item['params'],
       extendParamsType: item['extendParamsType'],
