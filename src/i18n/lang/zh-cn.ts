@@ -462,6 +462,8 @@ export default {
       title: '任务实例详情',
       base: '基本信息',
       tasks: '任务列表',
+      shardingTasks: '任务分片',
+      broadcastTasks: '任务节点',
       workerAddress: '实例地址',
       createTime: '创建时间',
       completeTime: '完成时间',

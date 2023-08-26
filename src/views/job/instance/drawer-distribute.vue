@@ -25,7 +25,7 @@
             </el-descriptions-item>
           </el-descriptions>
         </el-tab-pane>
-        <el-tab-pane name="list" :label="t('message.job.task.tasks')">
+        <el-tab-pane name="list" :label="state.tabListTitle">
           <el-table
             :data="state.taskList"
             style="width: 100%"
@@ -102,6 +102,7 @@ const instanceTaskApi = useInstanceTaskApi()
 const state = reactive({
   tabsValue: 'base',
   pageShow: false,
+  tabListTitle: '',
   drawer: {
     isShow: false
   },
@@ -142,6 +143,15 @@ const openDrawer = async (row: RowJobInstanceType) => {
   state.pageShow = false;
   state.taskList = [];
   state.drawer.isShow = true;
+
+  // Tab list title
+  if (row.executeType == 'sharding') {
+    state.tabListTitle = t('message.job.task.shardingTasks');
+  } else if (row.executeType == 'broadcast') {
+    state.tabListTitle = t('message.job.task.broadcastTasks');
+  } else {
+    state.tabListTitle = t('message.job.task.tasks');
+  }
 }
 
 // 分页改变

@@ -77,6 +77,24 @@
           </el-col>
         </el-row>
 
+        <el-row v-show="state.rowState.shardingParams">
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+            <el-form-item prop="shardingParams">
+              <template #label>
+                {{ $t('message.job.job.shardingParams') }}
+                <el-tooltip class="box-item" effect="dark" placement="top">
+                  <template #content>
+                    {{ $t('message.job.job.shardingParamsLabel.one') }}<br>
+                    {{ $t('message.job.job.shardingParamsLabel.two') }}
+                  </template>
+                  <el-icon style="margin-top: 9px;"><ele-QuestionFilled/></el-icon>
+                </el-tooltip>
+              </template>
+              <el-input type="textarea" rows="3" v-model="state.ruleForm.shardingParams"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <el-row v-show="state.rowState.paramsProcessor">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item :label="t('message.job.job.paramsType')" prop="paramsType">
@@ -141,7 +159,6 @@
 <script setup lang="ts" name="systemRoleDialog">
 import {defineAsyncComponent, reactive, ref} from 'vue';
 import {useI18n} from "vue-i18n";
-import {useAppApi} from "/@/api/app";
 import {FormInstance} from "element-plus";
 import {getAppSelectList} from "/@/utils/data";
 import {useJobApi} from "/@/api/job";
@@ -161,7 +178,7 @@ const emit = defineEmits(['refresh']);
 const appDialogFormRef = ref<FormInstance>();
 const state = reactive({
   rowState:{
-    inputProcessor: true,
+    inputProcessor: false,
     kettleProcessor: false,
     httpProcessor: false,
     shellProcessor: false,
@@ -237,6 +254,7 @@ const state = reactive({
     shellProcessorType: 'unix',
     kettleProcessorInfo: '',
     kettleProcessorType: 'unix',
+    shardingParams: '',
     paramsType: 'text',
     params: '',
     extendParamsType:'text',
@@ -338,48 +356,43 @@ const onExtParamsUpdateContent = (value :string)=>{
   state.ruleForm.extendParams = value;
 }
 
-const initJob = async (row :RowJobType) => {
+const initJob = async (row: RowJobType) => {
+  // Reset
+  state.rowState.inputProcessor = false;
+  state.rowState.shellProcessor = false;
+  state.rowState.kettleProcessor = false;
+  state.rowState.paramsProcessor = false;
+  state.rowState.httpProcessor = false;
+  state.rowState.shardingParams = false;
+
   state.ruleForm.id = row.id;
   state.ruleForm.appId = row.appId;
   state.ruleForm.name = row.name;
   state.ruleForm.processorType = row.processorType;
   state.ruleForm.processorInfo = row.processorInfo;
-  const  type = row.processorType
+  const type = row.processorType
   if (type == 'shell') {
-    state.rowState.inputProcessor = false;
     state.rowState.shellProcessor = true;
-    state.rowState.kettleProcessor = false;
-    state.rowState.paramsProcessor = false;
-    state.rowState.httpProcessor = false;
-
     state.ruleForm.shellProcessorInfo = row.shellProcessorInfo
     state.ruleForm.shellProcessorType = row.shellProcessorType
   } else if (type == 'kettle') {
-    state.rowState.inputProcessor = false;
-    state.rowState.shellProcessor = false;
     state.rowState.kettleProcessor = true;
-    state.rowState.paramsProcessor = false;
-    state.rowState.httpProcessor = false;
-
     state.ruleForm.kettleProcessorType = row.kettleProcessorType
     state.ruleForm.kettleProcessorInfo = row.kettleProcessorInfo
   } else if (type == 'http') {
-    state.rowState.inputProcessor = false;
-    state.rowState.shellProcessor = false;
-    state.rowState.kettleProcessor = false;
-    state.rowState.paramsProcessor = false;
     state.rowState.httpProcessor = true;
   } else {
-    state.rowState.inputProcessor = true;
-    state.rowState.shellProcessor = false;
-    state.rowState.kettleProcessor = false;
-    state.rowState.paramsProcessor = true;
-    state.rowState.httpProcessor = false;
-
-    state.ruleForm.paramsType = row.paramsType;
-    state.ruleForm.params = row.params;
-    state.ruleForm.extendParamsType = row.extendParamsType;
-    state.ruleForm.extendParams = row.extendParams;
+    if (row.executeType == 'sharding') {
+      state.rowState.shardingParams = true;
+      state.ruleForm.shardingParams = row.params
+    } else {
+      state.rowState.inputProcessor = true;
+      state.rowState.paramsProcessor = true;
+      state.ruleForm.paramsType = row.paramsType;
+      state.ruleForm.params = row.params;
+      state.ruleForm.extendParamsType = row.extendParamsType;
+      state.ruleForm.extendParams = row.extendParams;
+    }
   }
 }
 
