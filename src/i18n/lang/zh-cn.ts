@@ -457,7 +457,7 @@ export default {
     },
     task:{
       name1: "第",
-      name2: "次循环执行",
+      name2: "次执行",
       taskName: '任务名称',
       title: '任务实例详情',
       base: '基本信息',
