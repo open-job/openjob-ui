@@ -90,7 +90,7 @@
                   <el-icon style="margin-top: 9px;"><ele-QuestionFilled/></el-icon>
                 </el-tooltip>
               </template>
-              <el-input type="textarea" rows="3" v-model="state.ruleForm.shardingParams"/>
+              <el-input type="textarea" rows="3" v-model="state.ruleForm.params"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -254,8 +254,8 @@ const state = reactive({
     shellProcessorType: 'unix',
     kettleProcessorInfo: '',
     kettleProcessorType: 'unix',
-    shardingParams: '',
     paramsType: 'text',
+    executeType: '',
     params: '',
     extendParamsType:'text',
     extendParams: '',
@@ -364,6 +364,7 @@ const initJob = async (row: RowJobType) => {
   state.rowState.paramsProcessor = false;
   state.rowState.httpProcessor = false;
   state.rowState.shardingParams = false;
+  state.ruleForm.executeType = row.executeType;
 
   state.ruleForm.id = row.id;
   state.ruleForm.appId = row.appId;
@@ -384,7 +385,7 @@ const initJob = async (row: RowJobType) => {
   } else {
     if (row.executeType == 'sharding') {
       state.rowState.shardingParams = true;
-      state.ruleForm.shardingParams = row.params
+      state.ruleForm.params = row.params
     } else {
       state.rowState.inputProcessor = true;
       state.rowState.paramsProcessor = true;

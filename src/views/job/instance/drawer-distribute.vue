@@ -30,7 +30,7 @@
             :data="state.taskList"
             style="width: 100%"
             size="default"
-            row-key="id"
+            row-key="taskId"
             v-loading="state.table.loading"
             lazy
             :load="load"
@@ -202,6 +202,7 @@ const getTaskData = async () => {
       jobInstanceId: item['jobInstanceId'],
       circleId: item['circleId'],
       taskId: item['taskId'],
+      parentTaskId: item['parentTaskId'],
       dispatchVersion: item['dispatchVersion'],
       workerAddress: item['workerAddress'],
       taskName: taskName,
@@ -222,11 +223,15 @@ const getTaskData = async () => {
 }
 
 
+
+let loadMaps = ref(new Map())
 const load = async (
   row: InstanceTask,
   treeNode: unknown,
   resolve: (date: any[]) => void
 ) => {
+  loadMaps.value.set(row.taskId, {row, treeNode, resolve})
+
   let data = await instanceTaskApi.getListChildList({
     taskId: row.taskId,
     jobInstanceId: row.jobInstanceId,
@@ -249,6 +254,7 @@ const load = async (
       jobInstanceId: item['jobInstanceId'],
       circleId: item['circleId'],
       taskId: item['taskId'],
+      parentTaskId: item['parentTaskId'],
       dispatchVersion: item['dispatchVersion'],
       workerAddress: item['workerAddress'],
       taskName: taskName,
@@ -279,19 +285,20 @@ const handleStop = (row: InstanceTask) => {
     type: 'warning',
   })
     .then(async () => {
-      let data = await instanceTaskApi.stop({
+      await instanceTaskApi.stop({
         jobInstanceId: row.jobInstanceId,
         dispatchVersion: row.dispatchVersion,
         circleId: row.circleId,
         taskId: row.taskId,
       });
 
-      if (Number(data.type) > 0) {
-        ElMessage.error(t('message.commonMsg.stopFail'));
-        return;
-      }
-
       setTimeout(async ()=>{
+        // Refresh child list
+        if (loadMaps.value.has(row.parentTaskId)){
+          let rowLoad = loadMaps.value.get(row.parentTaskId);
+          await load(rowLoad.row, rowLoad.treeNode, rowLoad.resolve)
+        }
+
         await getTaskData();
       }, 1000)
       ElMessage.success(t('message.commonMsg.stopSuccess'));
