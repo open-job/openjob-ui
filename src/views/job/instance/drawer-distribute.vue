@@ -97,6 +97,7 @@ const DetailDrawer = defineAsyncComponent(() => import('/@/views/job/instance/dr
 
 const DetailDrawerRef = ref();
 const instanceTaskApi = useInstanceTaskApi()
+const loadMaps = ref(new Map())
 
 // 定义接口
 const state = reactive({
@@ -220,11 +221,15 @@ const getTaskData = async () => {
   })
 
   state.table.loading = false
+
+  // Refresh child list
+  loadMaps.value.forEach((rowLoad, key) => {
+    load(rowLoad.row, rowLoad.treeNode, rowLoad.resolve)
+  });
 }
 
 
 
-let loadMaps = ref(new Map())
 const load = async (
   row: InstanceTask,
   treeNode: unknown,
