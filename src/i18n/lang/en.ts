@@ -15,6 +15,11 @@ export default {
     c104: 'User role not exist',
     c105: 'Verification code invalid',
     c1001: 'Secret can not be empty',
+    c420: 'Response verification status cannot be empty',
+    c421: 'Response json verification key/value cannot be empty',
+    c422: 'Response string verification key/value cannot be empty',
+    c423: 'Interval between task is less than 60 seconds, please use second delay',
+    c406: 'Sharding params invalid',
   },
   commonMsg: {
     emptyInput: "Please enter",
@@ -415,6 +420,33 @@ export default {
       addJobTitle: 'Add Job',
       updateJobTitle: 'Update Job',
       copyJobTitle: 'Copy Job',
+      shardingParamsLabel:{
+        one: 'Format: number=parameter, multiple partitions separated by commas',
+        two: 'Example 0=a,1=b,2=c',
+      },
+      processorInfoLabel:{
+        one: 'Processor or Bean',
+        two: 'Class: io.openjob.xxx.StandaloneProcessor',
+        three: 'Bean: xxxProcessor',
+      },
+      executeTypeLabel: {
+        one:'Standalone: execute on a worker by random',
+        two:'Broadcast: workers execute simultaneously and wait for end',
+        three:'MapReduce: MapReduce mode',
+        four:'Sharding: execute task by sharding',
+      },
+      executeStrategyLabel: {
+        one:'When the execution task exists:',
+        two:'*Discard：Discard after task',
+        three:'*Overlay：Overwrite before task',
+        four:'*Concurrency：concurrent execution of task',
+      },
+      timeExpressionTypeLabel: {
+        one:'Cron: interval must be greater than 60s',
+        two:'SecondDelay: interval must less than 60s',
+        three:'FixRate: rate must be greater than 60s',
+        four:'OneTime: execute only on times',
+      },
     },
     instance: {
       id: 'ID',

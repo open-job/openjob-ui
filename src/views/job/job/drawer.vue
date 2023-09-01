@@ -134,8 +134,116 @@
                     :key="ns.value"
                     :label="ns.label"
                     :value="ns.value"
+                    @click="onChangeHttpMethodType(ns.value)"
                   />
                 </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.httpProcessor && state.rowState.httpProcessorPost">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item label="httpContentType" prop="httpContentType">
+                <el-radio-group v-model="state.ruleForm.httpContentType" >
+                  <el-radio
+                    v-for="t in state.httpContentType"
+                    :key="t.value"
+                    :label="t.label"
+                    @click="onChangeHttpContentType(t.value)"
+                  >
+                    {{t.value}}
+                  </el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.httpProcessor && state.rowState.httpProcessorPost">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item label="httpContentBody" prop="httpContentBody" >
+                <MonacoEditor
+                  ref="JobHttpBodyMonacoEditor"
+                  :editorStyle="state.paramsEditor.editorStyle"
+                  :language="state.ruleForm.httpBodyType"
+                  :value="state.ruleForm.httpBody"
+                  :syncValue="state.syncEditor"
+                  @updateContent="onHttpBodyUpdateContent"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.httpProcessor">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item label="Response" prop="responseMode">
+                <el-select v-model="state.ruleForm.httpResponseMode" class="m-2"
+                           :placeholder="t('message.commonMsg.emptySelect')" style="width: 100%">
+                  <el-option
+                    v-for="ns in state.httpResponseMode"
+                    :key="ns.value"
+                    :label="ns.label"
+                    :value="ns.value"
+                    @click="onChangeHttpResponseMode(ns.value)"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.httpProcessor && state.rowState.httpProcessorStatus ">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item label="HttpStatus" prop="httpStatus">
+                <el-input v-model="state.ruleForm.httpKey"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.httpProcessor && state.rowState.httpProcessorJson">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item label="httpJsonKey" prop="httpJsonKey">
+                <el-input v-model="state.ruleForm.httpKey"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.httpProcessor && state.rowState.httpProcessorJson">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item label="httpJsonValue" prop="httpJsonValue">
+                <el-input v-model="state.ruleForm.httpValue"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.httpProcessor && state.rowState.httpProcessorString">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item label="HttpString" prop="httpString">
+                <el-input v-model="state.ruleForm.httpValue"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.httpProcessor">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item label="timeout" prop="httpTimeout">
+                <el-input v-model="state.ruleForm.httpTimeout"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.httpProcessor">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item label="cookie" prop="httpCookie">
+                <el-input v-model="state.ruleForm.httpCookie" rows="5"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-show="state.rowState.httpProcessor">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+              <el-form-item label="httpExecuteType" prop="httpExecuteType">
+                <el-radio-group v-model="state.ruleForm.httpExecuteType" >
+                  <el-radio v-for="t in state.httpExecuteType" :key="t.value" :label="t.label">{{t.value}}</el-radio>
+                </el-radio-group>
               </el-form-item>
             </el-col>
           </el-row>
@@ -149,7 +257,7 @@
                     <template #content>
                       {{ $t('message.job.job.executeTypeLabel.one') }}<br>
                       {{ $t('message.job.job.executeTypeLabel.two') }}<br>
-                      {{ $t('message.job.job.executeTypeLabel.two') }}<br>
+                      {{ $t('message.job.job.executeTypeLabel.three') }}<br>
                       {{ $t('message.job.job.executeTypeLabel.four') }}<br>
                     </template>
                     <el-icon style="margin-top: 9px;"><ele-QuestionFilled/></el-icon>
@@ -424,6 +532,10 @@ const state = reactive({
     inputProcessor: true,
     kettleProcessor: false,
     httpProcessor: false,
+    httpProcessorPost: false,
+    httpProcessorStatus: true,
+    httpProcessorJson: false,
+    httpProcessorString: false,
     shellProcessor: false,
     shardingParams: false,
     processorParams: true,
@@ -438,7 +550,7 @@ const state = reactive({
     language: 'shell',
   },
   paramsEditor: {
-    editorStyle: 'width: 95%;height: 220px;',
+    editorStyle: 'width: 95%;height: 300px;',
   },
   paramsExtEditor: {
     editorStyle: 'width: 95%;height: 150px;',
@@ -524,6 +636,16 @@ const state = reactive({
       label: 'windows',
     }
   ],
+  httpContentType: [
+    {
+      value: 'application/x-www-form-urlencoded',
+      label: 'application/x-www-form-urlencoded',
+    },
+    {
+      value: 'application/json',
+      label: 'application/json',
+    }
+  ],
   httpMethod: [
     {
       value: 'GET',
@@ -533,6 +655,30 @@ const state = reactive({
       value: 'POST',
       label: 'POST',
     }
+  ],
+  httpResponseMode: [
+    {
+      value: 'status',
+      label: 'HTTP status code',
+    },
+    {
+      value: 'json',
+      label: 'JSON',
+    },
+    {
+      value: 'string',
+      label: 'String',
+    },
+  ],
+  httpExecuteType: [
+    {
+      value: 'server',
+      label: 'server',
+    },
+    {
+      value: 'worker',
+      label: 'worker',
+    },
   ],
   processorType: [
     {
@@ -622,8 +768,17 @@ const state = reactive({
     executeType: 'standalone',
     processorType: 'processor',
     processorInfo: '',
-    httpUrl:'',
+    httpUrl: '',
+    httpTimeout:3,
+    httpCookie: '',
     httpMethod:'GET',
+    httpContentType: 'application/x-www-form-urlencoded',
+    httpBody: '',
+    httpBodyType: 'plaintext',
+    httpResponseMode: 'status',
+    httpKey:'',
+    httpValue:'',
+    httpExecuteType: 'server',
     shellProcessorInfo: '',
     shellProcessorType: 'unix',
     kettleProcessorInfo: '',
@@ -931,7 +1086,6 @@ const onChangeProcessorType = (type: string, executeType :string) => {
     state.rowState.kettleProcessor = false;
     state.rowState.processorParams = false;
     state.rowState.httpProcessor = true;
-
     state.executeType = [
       {
         value: 'standalone',
@@ -970,6 +1124,34 @@ const onChangeProcessorType = (type: string, executeType :string) => {
 
   state.ruleForm.executeType = executeType;
   onChangeExecuteType(executeType);
+}
+
+const onChangeHttpMethodType = (method :string) => {
+  state.rowState.httpProcessorPost = method == "POST";
+}
+
+const onChangeHttpContentType = (type :string) => {
+  if (type == 'application/x-www-form-urlencoded'){
+    state.ruleForm.httpBodyType = 'plaintext';
+  }else if (type == 'application/json'){
+    state.ruleForm.httpBodyType = 'json';
+  }
+}
+
+const onChangeHttpResponseMode = (mode: string) => {
+  if (mode == 'status') {
+    state.rowState.httpProcessorStatus = true;
+    state.rowState.httpProcessorJson = false;
+    state.rowState.httpProcessorString = false;
+  } else if (mode == 'json') {
+    state.rowState.httpProcessorStatus = false;
+    state.rowState.httpProcessorJson = true;
+    state.rowState.httpProcessorString = false;
+  } else if (mode == 'string') {
+    state.rowState.httpProcessorStatus = false;
+    state.rowState.httpProcessorJson = false;
+    state.rowState.httpProcessorString = true;
+  }
 }
 
 const onChangeExecuteType = (type: string) => {
@@ -1063,6 +1245,10 @@ const onChangeKettleType = (type :string)=>{
 
 const onShellUpdateContent = (value :string)=>{
   state.ruleForm.shellProcessorInfo = value;
+}
+
+const onHttpBodyUpdateContent = (value :string)=>{
+  state.ruleForm.httpBody = value;
 }
 
 const onParamsUpdateContent = (value :string)=>{
