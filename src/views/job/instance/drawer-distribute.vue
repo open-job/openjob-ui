@@ -19,6 +19,10 @@
                 {{ state.descriptions.statusLabel }}
               </el-tag>
             </el-descriptions-item>
+            <el-descriptions-item :label="t('message.job.job.executeType')">{{ state.descriptions.executeType }}
+            </el-descriptions-item>
+            <el-descriptions-item :label="t('message.job.job.timeExpressionType')">{{ state.descriptions.timeExpressionType }}
+            </el-descriptions-item>
             <el-descriptions-item :label="t('message.job.task.createTime')">{{ state.descriptions.createTime }}
             </el-descriptions-item>
             <el-descriptions-item :label="t('message.job.task.completeTime')">{{ state.descriptions.completeTime }}
@@ -113,10 +117,12 @@ const state = reactive({
     total: 0,
   },
   descriptions: {
-    column: 6,
+    column: 8,
     jobName: '',
     workerAddress: '',
     createTime: '',
+    executeType: '',
+    timeExpressionType: '',
     completeTime: '',
     statusTag: '',
     statusLabel: 'Default',
@@ -135,6 +141,8 @@ const openDrawer = async (row: RowJobInstanceType) => {
   state.descriptions.workerAddress = row.workerAddress;
   state.descriptions.createTime = row.createTime;
   state.descriptions.completeTime = row.completeTime;
+  state.descriptions.executeType = row.executeType;
+  state.descriptions.timeExpressionType = row.timeExpressionType
   state.descriptions.statusTag = getInstanceStatusInfo(row.status)['tag'];
   state.descriptions.statusLabel = getInstanceStatusInfo(row.status)['label'];
 

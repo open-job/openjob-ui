@@ -89,6 +89,8 @@
       </div>
       <el-table :data="state.tableData.data" v-loading="state.tableData.loading"
                 style="width: 100%">
+        <el-table-column prop="appName" :label="t('message.app.name')"
+                         show-overflow-tooltip></el-table-column>
         <el-table-column prop="id" :label="t('message.job.instance.id')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="jobName" :label="t('message.job.job.name')"
@@ -264,6 +266,7 @@ const getTableData = async () => {
       workflowId: item['workflowId'],
       namespaceId: item['namespaceId'],
       appId: item['appId'],
+      appName: item['appName'],
       jobId: item['jobId'],
       jobName: item['jobName'],
       processorType: item['processorType'],

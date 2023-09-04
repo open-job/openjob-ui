@@ -157,6 +157,8 @@ declare interface RowJobInstanceType {
   workflowId: number
   namespaceId: number;
   appId: number;
+
+  appName: string
   jobId: number;
   jobName: string
   processorType: string;
