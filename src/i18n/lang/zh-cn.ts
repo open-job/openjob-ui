@@ -391,6 +391,7 @@ export default {
       processorAndExecuteType: '类型/方式',
       expressionAndType: '时间类型/表达式',
       deleteTitle: '你确定要删除任务',
+      executeOnceMsg: '执行一次',
       executeTypeList: {
         standalone: '单机',
         broadcast: '广播',

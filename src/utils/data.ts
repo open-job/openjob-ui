@@ -224,6 +224,19 @@ export function getFailStatusMessage(status: number): string {
   }
 }
 
+export function getExecuteOnceMessage(status: number, once: number): string {
+  if (once == 2 || once == null) {
+    return "";
+  }
+
+  const {t} = i18n.global;
+
+  if (status == 5) {
+    return ' (' + t('message.job.job.executeOnceMsg') + ')'
+  }
+  return "";
+}
+
 export function getTaskStatusInfo(status: number): Object {
   const {t} = i18n.global;
 

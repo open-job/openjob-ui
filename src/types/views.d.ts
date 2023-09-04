@@ -173,6 +173,8 @@ declare interface RowJobInstanceType {
   timeExpressionType: string;
   timeExpression: string;
   executeStrategy: number;
+
+  executeOnce: number;
   failRetryTimes: number;
   failRetryInterval: number;
   concurrency: number;

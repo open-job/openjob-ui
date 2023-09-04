@@ -391,6 +391,7 @@ export default {
       processorAndExecuteType: 'Type/Method',
       expressionAndType: 'Type/Expression',
       deleteTitle: 'Are you sure to delete job',
+      executeOnceMsg: 'once',
       executeTypeList: {
         standalone: 'standalone',
         broadcast: 'broadcast',
