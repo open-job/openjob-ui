@@ -90,6 +90,8 @@
       </div>
       <el-table :data="state.tableData.data" v-loading="state.tableData.loading"
                 style="width: 100%">
+        <el-table-column prop="appName" :label="t('message.app.name')"
+                         show-overflow-tooltip></el-table-column>
         <el-table-column prop="taskId" :label="t('message.delay.instance.taskId')"
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="delayName" :label="t('message.delay.job.name')"

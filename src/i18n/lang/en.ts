@@ -20,6 +20,7 @@ export default {
     c422: 'Response string verification key/value cannot be empty',
     c423: 'Interval between task is less than 60 seconds, please use second delay',
     c406: 'Sharding params invalid',
+    c424: 'Interval between rate must be greater than 60s',
   },
   commonMsg: {
     emptyInput: "Please enter",
