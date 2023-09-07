@@ -20,6 +20,7 @@ export default {
     c423: '定时任务执行间隔小 60s，请使用秒级任务',
     c406: '分片参数格式错误',
     c424: '固定频率任务间隔必须大于 60s',
+    c425: '秒级任务间隔必须大于 0s 且小于 60s',
   },
   commonMsg:{
     emptyInput: '请输入',
@@ -449,6 +450,10 @@ export default {
         three:'固定频率：执行频率必须大于 60s',
         four:'一 次 性 ：只执行一次',
       },
+      timeExpressionLabel: {
+        fixedRate: '只支持大于60s',
+        secondDelay: '只支持1-60s'
+      }
     },
     instance: {
       id: '实例ID',

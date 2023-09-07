@@ -388,14 +388,34 @@
           </el-row>
           <el-row v-show="state.rowState.fixedDelay">
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item :label="t('message.job.job.timeExpressionTypeList.secondDelayTitle')" prop="fixedDelay">
+              <el-form-item prop="fixedDelay">
+                <template #label>
+                  {{ $t('message.job.job.timeExpressionTypeList.secondDelayTitle') }}
+                  <el-tooltip class="box-item" effect="dark" placement="top">
+                    <template #content>
+                      {{ $t('message.job.job.timeExpressionLabel.secondDelay') }}
+                    </template>
+                    <el-icon style="margin-top: 9px;"><ele-QuestionFilled/></el-icon>
+                  </el-tooltip>
+                </template>
+
                 <el-input v-model="state.ruleForm.fixedDelay"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row v-show="state.rowState.fixedRate">
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item :label="t('message.job.job.timeExpressionTypeList.fixedRateTitle')" prop="fixedRate">
+              <el-form-item prop="fixedRate">
+                <template #label>
+                  {{ $t('message.job.job.timeExpressionTypeList.fixedRateTitle') }}
+                  <el-tooltip class="box-item" effect="dark" placement="top">
+                    <template #content>
+                      {{ $t('message.job.job.timeExpressionLabel.fixedRate') }}
+                    </template>
+                    <el-icon style="margin-top: 9px;"><ele-QuestionFilled/></el-icon>
+                  </el-tooltip>
+                </template>
+
                 <el-input v-model="state.ruleForm.fixedRate"/>
               </el-form-item>
             </el-col>

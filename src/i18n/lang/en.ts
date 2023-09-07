@@ -18,9 +18,10 @@ export default {
     c420: 'Response verification status cannot be empty',
     c421: 'Response json verification key/value cannot be empty',
     c422: 'Response string verification key/value cannot be empty',
-    c423: 'Interval between task is less than 60 seconds, please use second delay',
+    c423: 'Interval between task is less than 60s, please use second delay',
     c406: 'Sharding params invalid',
     c424: 'Interval between rate must be greater than 60s',
+    c425: 'Interval between second must be greater than 0s and less than 60s',
   },
   commonMsg: {
     emptyInput: "Please enter",
@@ -449,6 +450,10 @@ export default {
         three:'FixRate: rate must be greater than 60s',
         four:'OneTime: execute only on times',
       },
+      timeExpressionLabel: {
+        fixedRate: 'Only supports more than 60s',
+        secondDelay: 'Only supports 1-60s'
+      }
     },
     instance: {
       id: 'ID',
