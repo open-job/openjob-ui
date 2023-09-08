@@ -509,6 +509,7 @@ import {useJobApi} from "/@/api/job";
 import {formatDateByTimestamp, getTimestampByString} from "/@/utils/formatTime";
 import {getAppSelectList} from "/@/utils/data";
 import Breadcrumb from "/@/layout/navBars/breadcrumb/breadcrumb.vue";
+import cronParser from 'cron-parser';
 
 const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
 
@@ -981,7 +982,10 @@ const confirmClick = async (formEl: FormInstance | undefined) => {
 
   await formEl.validateField(validFields,(valid: boolean) => {
     if (valid) {
-     onSubmitRequest();
+      if (!checkCronExpressionIsValid(state.ruleForm.timeExpression)){
+        return;
+      }
+      onSubmitRequest();
     } else {
       return false;
     }
@@ -1205,7 +1209,26 @@ const onChangeTimeType = (type :string)=>{
   }
 }
 
+// use cron-parser
+// refer https://github.com/harrisiirak/cron-parser
+const checkCronExpressionIsValid = (timeExpression: string) => {
+  try {
+    cronParser.parseExpression(timeExpression);
+    return true;
+  } catch (err) {
+    ElMessageBox.alert(t('message.job.job.timeExpressionValidMsg'), t('message.commonMsg.tip'), {
+      type: 'error',
+    })
+    return false;
+  }
+}
+
 const onClickTimeExpression = async () => {
+  
+  if (!checkCronExpressionIsValid(state.ruleForm.timeExpression)){
+      return;
+  }
+
   let data = await jobApi.timeExpression({
     timeExpression: state.ruleForm.timeExpression
   });
