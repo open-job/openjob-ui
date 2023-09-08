@@ -982,8 +982,10 @@ const confirmClick = async (formEl: FormInstance | undefined) => {
 
   await formEl.validateField(validFields,(valid: boolean) => {
     if (valid) {
-      if (!checkCronExpressionIsValid(state.ruleForm.timeExpression)){
-        return;
+      if (state.ruleForm.timeExpressionType == 'cron') {
+        if (!checkCronExpressionIsValid(state.ruleForm.timeExpression)){
+          return;
+        }
       }
       onSubmitRequest();
     } else {
