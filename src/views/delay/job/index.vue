@@ -18,19 +18,19 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+            <el-col :xs="4" :sm="12" :md="4" :lg="4" :xl="4" class="mb20">
               <el-form-item :label="t('message.delay.job.name')" prop="name">
                 <el-input v-model="searchState.form.name" size="default"
                           style="width: 95%"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+            <el-col :xs="4" :sm="12" :md="4" :lg="4" :xl="4" class="mb20">
               <el-form-item :label="t('message.delay.job.topic')" prop="topic">
                 <el-input v-model="searchState.form.topic" size="default"
                           style="width: 95%"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :xs="8" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+            <el-col :xs="4" :sm="12" :md="4" :lg="4" :xl="4" class="mb20">
               <el-button size="default" type="primary" class="ml10"
                          @click="onSearch(tableSearchRef)">
                 <el-icon>
