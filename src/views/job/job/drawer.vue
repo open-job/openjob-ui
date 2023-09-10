@@ -714,10 +714,10 @@ const state = reactive({
       value: 'kettle',
       label: 'kettle',
     },
-    {
-      value: 'http',
-      label: 'http',
-    }
+    // {
+    //   value: 'http',
+    //   label: 'http',
+    // }
   ],
   executeType: [
     {

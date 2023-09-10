@@ -468,7 +468,7 @@ export default {
       stopTitle: 'Are you sure to stop job instance',
     },
     task:{
-      name1: "The",
+      name1: "The ",
       name2: "th execution",
       taskName: 'Name',
       title: 'Task Information',
