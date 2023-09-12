@@ -31,7 +31,7 @@
                 </el-icon>
                 {{ $t('message.commonBtn.reset') }}
               </el-button>
-              <el-button size="default" type="success" class="ml10" @click="onOpenAddRole('add')">
+              <el-button size="default" type="success" class="ml10" @click="onOpenAddJob('add')">
                 <el-icon>
                   <ele-FolderAdd />
                 </el-icon>
@@ -272,8 +272,8 @@ const onMoreCommand = (command: string, row: RowJobType) => {
   }
 };
 
-// 打开新增角色弹窗
-const onOpenAddRole = (type: string) => {
+// 打开新增Job弹窗
+const onOpenAddJob = (type: string) => {
   JobDrawerRef.value.openDrawer(type, searchState.form.appId);
 };
 
