@@ -614,5 +614,51 @@ export default {
       workerKeepDays: '保持工作节点',
       updateTitle: '你确定更新系统参数?',
     }
+  },
+  crontab: {
+    index: {
+      secondTimeUnit: '秒',
+      minuteTimeUnit: '分钟',
+      hourTimeUnit: '小时',
+      dayOfMonthTimeUnit: '日',
+      monthTimeUnit: '月',
+      dayOfWeekTimeUnit: '周',
+    },
+    second: {
+      eachSecond: ' 秒，允许的通配符[, - * /] ',
+      periodStart: '周期从',
+      from: '从',
+      secondsStartEvery: ' 秒开始，每 ',
+      executeOncePerSecond: '秒执行一次',
+      assign: '指定',
+    },
+    minute: {
+      minutesAllowedWildcard: ' 分钟，允许的通配符[, - * /] ',
+      periodStart: '周期从',
+      from: '从',
+      minuteStartEvery: '分钟开始， 每',
+      executeOncePerMinute: '分钟执行一次',
+      assign: '指定',
+    },
+    hour: {
+      hoursAllowedWildcards: ' 小时，允许的通配符[, - * /] ',
+      periodStart: '周期从',
+      from: '从',
+      hourStartEvery: '时开始，每',
+      executeOncePerHour: '小时执行一次',
+      assign: '指定',
+    },
+    day: {
+      dayAllowedWildcard: ' 日，允许的通配符[, - * ? / L W] ',
+      notSpecify: ' 不指定 ',
+      periodStart: '周期从',
+      from: '从',
+      theNumberStartsEvery: '号开始，每',
+      dailyExecution: '日执行一次',
+      eachMonth: '每月',
+      theMostRecentBusinessDay: '号最近的那个工作日',
+      lastDayOfTheMonth: '本月最后一天',
+      assign: '指定',
+    }
   }
 };

@@ -1,42 +1,43 @@
 <template>
   <el-form size="small">
     <el-form-item>
-      <el-radio v-model="radioValue" :label="1"> 日，允许的通配符[, - * ? / L W] </el-radio>
+      <el-radio v-model="radioValue" :label="1">{{ $t('message.crontab.day.dayAllowedWildcard') }}</el-radio>
     </el-form-item>
 
     <el-form-item>
-      <el-radio v-model="radioValue" :label="2"> 不指定 </el-radio>
+      <el-radio v-model="radioValue" :label="2">{{ $t('message.crontab.day.notSpecify') }}</el-radio>
     </el-form-item>
 
     <el-form-item>
       <el-radio v-model="radioValue" :label="3">
-        周期从
-        <el-input-number v-model="cycle01" :min="1" :max="30" /> - <el-input-number v-model="cycle02" :min="cycle01 + 1" :max="31" /> 日
+        {{ $t('message.crontab.day.periodStart') }}
+        <el-input-number v-model="cycle01" :min="1" :max="30" /> - <el-input-number v-model="cycle02" :min="cycle01 + 1" :max="31" /> 
+        {{ $t('message.crontab.index.dayOfMonthTimeUnit') }}
       </el-radio>
     </el-form-item>
 
     <el-form-item>
       <el-radio v-model="radioValue" :label="4">
-        从
-        <el-input-number v-model="average01" :min="1" :max="30" /> 号开始，每
-        <el-input-number v-model="average02" :min="1" :max="31 - average01" /> 日执行一次
+        {{ $t('message.crontab.day.from') }}
+        <el-input-number v-model="average01" :min="1" :max="30" /> {{ $t('message.crontab.day.theNumberStartsEvery') }}
+        <el-input-number v-model="average02" :min="1" :max="31 - average01" /> {{ $t('message.crontab.day.dailyExecution') }}
       </el-radio>
     </el-form-item>
 
     <el-form-item>
       <el-radio v-model="radioValue" :label="5">
-        每月
-        <el-input-number v-model="workday" :min="1" :max="31" /> 号最近的那个工作日
+        {{ $t('message.crontab.day.eachMonth') }}
+        <el-input-number v-model="workday" :min="1" :max="31" /> {{ $t('message.crontab.day.theMostRecentBusinessDay') }}
       </el-radio>
     </el-form-item>
 
     <el-form-item>
-      <el-radio v-model="radioValue" :label="6"> 本月最后一天 </el-radio>
+      <el-radio v-model="radioValue" :label="6"> {{ $t('message.crontab.day.lastDayOfTheMonth') }} </el-radio>
     </el-form-item>
 
     <el-form-item>
       <el-radio v-model="radioValue" :label="7">
-        指定
+        {{ $t('message.crontab.day.assign') }}
         <el-select clearable v-model="checkboxList" placeholder="可多选" multiple :multiple-limit="10">
           <el-option v-for="item in 31" :key="item" :label="item" :value="item" />
         </el-select>
@@ -46,6 +47,8 @@
 </template>
 <script setup>
 import { defineProps, defineEmits, ref, computed, watch, onMounted } from 'vue'
+import {useI18n} from "vue-i18n";
+const {t} = useI18n();
 const emit = defineEmits(['update'])
 const props = defineProps({
   cron: {

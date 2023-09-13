@@ -5,23 +5,23 @@
         <CrontabSecond @update="updateCrontabValue" :check="checkNumber" :cron="crontabValueObj" ref="cronsecond" />
       </el-tab-pane>
 
-      <el-tab-pane label="分钟" v-if="shouldHide('min')">
+      <el-tab-pane :label="t('message.crontab.index.minuteTimeUnit')" v-if="shouldHide('min')">
         <CrontabMin @update="updateCrontabValue" :check="checkNumber" :cron="crontabValueObj" ref="cronmin" />
       </el-tab-pane>
 
-      <el-tab-pane label="小时" v-if="shouldHide('hour')">
+      <el-tab-pane :label="t('message.crontab.index.hourTimeUnit')" v-if="shouldHide('hour')">
         <CrontabHour @update="updateCrontabValue" :check="checkNumber" :cron="crontabValueObj" ref="cronhour" />
       </el-tab-pane>
 
-      <el-tab-pane label="日" v-if="shouldHide('day')">
+      <el-tab-pane :label="t('message.crontab.index.dayOfMonthTimeUnit')" v-if="shouldHide('day')">
         <CrontabDay @update="updateCrontabValue" :check="checkNumber" :cron="crontabValueObj" ref="cronday" />
       </el-tab-pane>
 
-      <el-tab-pane label="月" v-if="shouldHide('month')">
+      <el-tab-pane :label="t('message.crontab.index.monthTimeUnit')" v-if="shouldHide('month')">
         <CrontabMonth @update="updateCrontabValue" :check="checkNumber" :cron="crontabValueObj" ref="cronmonth" />
       </el-tab-pane>
 
-      <el-tab-pane label="周" v-if="shouldHide('week')">
+      <el-tab-pane :label="t('message.crontab.index.dayOfWeekTimeUnit')" v-if="shouldHide('week')">
         <CrontabWeek @update="updateCrontabValue" :check="checkNumber" :cron="crontabValueObj" ref="cronweek" />
       </el-tab-pane>
 
@@ -103,6 +103,7 @@
 
 <script setup>
 import {useI18n} from "vue-i18n";
+const {t} = useI18n();
 import CrontabSecond from './second.vue'
 import CrontabMin from './min.vue'
 import CrontabHour from './hour.vue'
@@ -112,7 +113,6 @@ import CrontabWeek from './week.vue'
 import CrontabYear from './year.vue'
 import CrontabResult from './result.vue'
 import { defineProps, defineEmits, ref, computed, watch, onMounted } from 'vue'
-const {t} = useI18n();
 const emit = defineEmits(['hide', 'fill'])
 const props = defineProps({
   hideComponent: {

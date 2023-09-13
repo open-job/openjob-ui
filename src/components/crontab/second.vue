@@ -1,27 +1,28 @@
 <template>
   <el-form size="small">
     <el-form-item>
-      <el-radio v-model="radioValue" :label="1"> 秒，允许的通配符[, - * /] </el-radio>
+      <el-radio v-model="radioValue" :label="1">{{ $t('message.crontab.second.eachSecond') }}</el-radio>
     </el-form-item>
 
     <el-form-item>
       <el-radio v-model="radioValue" :label="2">
-        周期从
-        <el-input-number v-model="cycle01" :min="0" :max="58" /> - <el-input-number v-model="cycle02" :min="cycle01 + 1" :max="59" /> 秒
+        {{ $t('message.crontab.second.periodStart') }}
+        <el-input-number v-model="cycle01" :min="0" :max="58" /> - <el-input-number v-model="cycle02" :min="cycle01 + 1" :max="59" /> 
+        {{ $t('message.crontab.index.secondTimeUnit') }}
       </el-radio>
     </el-form-item>
 
     <el-form-item>
       <el-radio v-model="radioValue" :label="3">
-        从
-        <el-input-number v-model="average01" :min="0" :max="58" /> 秒开始，每
-        <el-input-number v-model="average02" :min="1" :max="59 - average01" /> 秒执行一次
+        {{ $t('message.crontab.second.from') }}
+        <el-input-number v-model="average01" :min="0" :max="58" />{{ $t('message.crontab.second.secondsStartEvery') }}
+        <el-input-number v-model="average02" :min="1" :max="59 - average01" /> {{ $t('message.crontab.second.executeOncePerSecond') }}
       </el-radio>
     </el-form-item>
 
     <el-form-item>
       <el-radio v-model="radioValue" :label="4">
-        指定
+        {{ $t('message.crontab.second.assign') }}
         <el-select clearable v-model="checkboxList" placeholder="可多选" multiple :multiple-limit="10">
           <el-option v-for="item in 60" :key="item" :label="item - 1" :value="item - 1" />
         </el-select>
@@ -32,6 +33,8 @@
 
 <script setup>
 import { defineProps, defineEmits, ref, computed, watch, onMounted } from 'vue'
+import {useI18n} from "vue-i18n";
+const {t} = useI18n();
 const emit = defineEmits(['update'])
 const props = defineProps({
   cron: {
