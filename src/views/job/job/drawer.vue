@@ -381,8 +381,7 @@
               <el-form-item>
                 <el-button type="primary" plain size="default"
 														@click="handleShowCron()">
-										<!-- {{t('message.job.instance.executeTime')}} -->
-                    Use Generation Tools
+										{{t('message.job.instance.useGenerationTools')}}
 									</el-button>
                 <el-button type="success" plain size="default"
                           @click="onClickTimeExpression()"
@@ -549,8 +548,8 @@
     </template>
   </el-drawer>
 
-  <el-dialog title="Cron表达式生成器" v-model="openCron" append-to-body destroy-on-close>
-    <crontab ref="crontabRef" @hide="openCron = false" @fill="crontabFill" :expression="yzhouExpression"></crontab>
+  <el-dialog :title="t('message.job.instance.cronComponetTitle')" v-model="openCron" append-to-body destroy-on-close>
+    <crontab ref="crontabRef" @hide="openCron = false" @fill="crontabFill" :expression="cronComponentExpression"></crontab>
   </el-dialog>
 
 </template>
@@ -581,7 +580,7 @@ const jobApi = useJobApi();
 const jobFormRef = ref();
 
 // 传入的表达式
-const yzhouExpression = ref('')
+const cronComponentExpression = ref('')
 
 // 是否显示Cron表达式弹出层
 const openCron = ref(false)
@@ -1289,7 +1288,11 @@ const checkCronExpressionIsValid = (timeExpression: string) => {
 }
 
 const handleShowCron = () => {
-  yzhouExpression.value = state.ruleForm.timeExpression
+  if ( state.ruleForm.timeExpression.length > 0 && !checkCronExpressionIsValid(state.ruleForm.timeExpression)){
+    return;
+  }
+
+  cronComponentExpression.value = state.ruleForm.timeExpression
   openCron.value = true
 }
 

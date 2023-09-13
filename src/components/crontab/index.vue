@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-tabs type="border-card">
-      <el-tab-pane label="秒" v-if="shouldHide('second')">
+      <el-tab-pane :label="t('message.crontab.index.secondTimeUnit')" v-if="shouldHide('second')">
         <CrontabSecond @update="updateCrontabValue" :check="checkNumber" :cron="crontabValueObj" ref="cronsecond" />
       </el-tab-pane>
 
@@ -102,6 +102,7 @@
 </template>
 
 <script setup>
+import {useI18n} from "vue-i18n";
 import CrontabSecond from './second.vue'
 import CrontabMin from './min.vue'
 import CrontabHour from './hour.vue'
@@ -111,6 +112,7 @@ import CrontabWeek from './week.vue'
 import CrontabYear from './year.vue'
 import CrontabResult from './result.vue'
 import { defineProps, defineEmits, ref, computed, watch, onMounted } from 'vue'
+const {t} = useI18n();
 const emit = defineEmits(['hide', 'fill'])
 const props = defineProps({
   hideComponent: {

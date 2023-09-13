@@ -460,6 +460,8 @@ export default {
       jobId: '任务ID',
       status: '任务状态',
       workerAddress: '工作节点',
+      cronComponetTitle: 'Cron表达式生成器',
+      useGenerationTools: '使用生成工具',
       executeTime: '执行时间',
       completeTime: '完成时间',
       lastReportTime: '最近上报时间',

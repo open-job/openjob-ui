@@ -460,6 +460,8 @@ export default {
       jobId: 'Job Id',
       status: 'Status',
       workerAddress: 'Worker Address',
+      cronComponetTitle: 'Cron expression generator',
+      useGenerationTools: 'Use Generation Tools',
       executeTime: 'Execute Time',
       completeTime: 'Complete Time',
       lastReportTime: 'Last Report Time',
@@ -611,6 +613,17 @@ export default {
       serverKeepDays: 'Keep Node Days',
       workerKeepDays: 'Keep Worker Days',
       updateTitle: 'Are you sure to update system configuration?',
+    }
+  },
+  crontab: {
+    index: {
+      secondTimeUnit: 'Second',
+      minuteTimeUnit: 'Minute',
+      hourTimeUnit: 'Hour',
+      dayOfMonthTimeUnit: 'Day Of Month',
+      monthTimeUnit: 'Month',
+      dayOfWeekTimeUnit: 'Day Of Week',
+
     }
   }
 };
