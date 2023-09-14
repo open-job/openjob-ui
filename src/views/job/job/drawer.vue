@@ -374,10 +374,14 @@
           </el-row>
           <!-- yzhou -->
           <el-row v-show="state.rowState.timeExpression">
-            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item :label="t('message.job.job.timeExpression')" prop="timeExpression">
-                <el-input v-model="state.ruleForm.timeExpression"/>
-              </el-form-item>
+            <el-col :span="24" class="mb20">
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                <el-form-item :label="t('message.job.job.timeExpression')" prop="timeExpression">
+                  <el-input v-model="state.ruleForm.timeExpression"/>
+                </el-form-item>
+              </el-col>
+            </el-col>
+            <el-col :span="24" class="mb20">
               <el-form-item>
                 <el-button type="primary" plain size="default"
 														@click="handleShowCron()">

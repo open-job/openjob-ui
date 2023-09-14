@@ -1,16 +1,16 @@
 <template>
   <el-form size="small">
     <el-form-item>
-      <el-radio v-model="radioValue" :label="1"> 周，允许的通配符[, - * ? / L #] </el-radio>
+      <el-radio v-model="radioValue" :label="1">{{ $t('message.crontab.week.weekAllowedWildcards') }}</el-radio>
     </el-form-item>
 
     <el-form-item>
-      <el-radio v-model="radioValue" :label="2"> 不指定 </el-radio>
+      <el-radio v-model="radioValue" :label="2"> {{ $t('message.crontab.week.notSpecify') }} </el-radio>
     </el-form-item>
 
     <el-form-item>
       <el-radio v-model="radioValue" :label="3">
-        周期从
+        {{ $t('message.crontab.week.periodStart') }}
         <el-select clearable v-model="cycle01">
           <el-option v-for="(item, index) of weekList" :key="index" :label="item.value" :value="item.key" :disabled="item.key === 7">{{
             item.value
@@ -27,8 +27,8 @@
 
     <el-form-item>
       <el-radio v-model="radioValue" :label="4">
-        第
-        <el-input-number v-model="average01" :min="1" :max="4" /> 周的
+        {{ $t('message.crontab.week.serial') }}
+        <el-input-number v-model="average01" :min="1" :max="4" /> {{ $t('message.crontab.week.periclinal') }}
         <el-select clearable v-model="average02">
           <el-option v-for="item in weekList" :key="item.key" :label="item.value" :value="item.key" />
         </el-select>
@@ -37,7 +37,7 @@
 
     <el-form-item>
       <el-radio v-model="radioValue" :label="5">
-        本月最后一个
+        {{ $t('message.crontab.week.lastOfTheMonth') }}
         <el-select clearable v-model="weekday">
           <el-option v-for="item in weekList" :key="item.key" :label="item.value" :value="item.key" />
         </el-select>
@@ -46,7 +46,7 @@
 
     <el-form-item>
       <el-radio v-model="radioValue" :label="6">
-        指定
+        {{ $t('message.crontab.week.assign') }}
         <el-select class="multiselect" clearable v-model="checkboxList" placeholder="可多选" multiple :multiple-limit="6">
           <el-option v-for="item in weekList" :key="item.key" :label="item.value" :value="item.key" />
         </el-select>

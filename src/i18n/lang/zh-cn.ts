@@ -641,7 +641,7 @@ export default {
       assign: '指定',
     },
     hour: {
-      hoursAllowedWildcards: ' 小时，允许的通配符[, - * /] ',
+      hourAllowedWildcards: ' 小时，允许的通配符[, - * /] ',
       periodStart: '周期从',
       from: '从',
       hourStartEvery: '时开始，每',
@@ -659,6 +659,27 @@ export default {
       theMostRecentBusinessDay: '号最近的那个工作日',
       lastDayOfTheMonth: '本月最后一天',
       assign: '指定',
+    },
+    month: {
+      monthAllowedWildcards: ' 月，允许的通配符[, - * /] ',
+      periodStart: '周期从',
+      from: '从',
+      monthStartEvery: ' 月开始，每 ',
+      executeOncePerMonth: '月执行一次',
+      assign: '指定',
+    },
+    week: {
+      weekAllowedWildcards: ' 周，允许的通配符[, - * ? / L #] ',
+      notSpecify: ' 不指定 ',
+      periodStart: '周期从',
+      serial: '第',
+      periclinal: '周的',
+      lastOfTheMonth: '本月最后一个',
+      assign: '指定',
+    },
+    result: {
+      last5RunningTimes: '最近5次运行时间',
+      inTheCalculationResult: '计算结果中...'
     }
   }
 };

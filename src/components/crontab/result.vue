@@ -1,11 +1,11 @@
 <template>
   <div class="popup-result">
-    <p class="title">最近5次运行时间</p>
+    <p class="title">{{ $t('message.crontab.result.last5RunningTimes') }}</p>
     <ul class="popup-result-scroll">
       <template v-if="isShow">
         <li v-for="item in resultList" :key="item">{{ item }}</li>
       </template>
-      <li v-else>计算结果中...</li>
+      <li v-else>{{ $t('message.crontab.result.inTheCalculationResult') }}</li>
     </ul>
   </div>
 </template>

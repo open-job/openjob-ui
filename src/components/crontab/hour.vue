@@ -1,7 +1,7 @@
 <template>
   <el-form size="small">
     <el-form-item>
-      <el-radio v-model="radioValue" :label="1">{{ $t('message.crontab.hour.hoursAllowedWildcards') }}</el-radio>
+      <el-radio v-model="radioValue" :label="1">{{ $t('message.crontab.hour.hourAllowedWildcards') }}</el-radio>
     </el-form-item>
 
     <el-form-item>
@@ -33,6 +33,8 @@
 
 <script setup>
 import { defineProps, defineEmits, ref, computed, watch, onMounted } from 'vue'
+import {useI18n} from "vue-i18n";
+const {t} = useI18n();
 const emit = defineEmits(['update'])
 const props = defineProps({
   cron: {

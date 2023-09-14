@@ -623,7 +623,63 @@ export default {
       dayOfMonthTimeUnit: 'Day Of Month',
       monthTimeUnit: 'Month',
       dayOfWeekTimeUnit: 'Day Of Week',
-
+    },
+    second: {
+      eachSecond: ' 秒，允许的通配符[, - * /] ',
+      periodStart: '周期从',
+      from: '从',
+      secondsStartEvery: ' 秒开始，每 ',
+      executeOncePerSecond: '秒执行一次',
+      assign: '指定',
+    },
+    minute: {
+      minutesAllowedWildcard: ' 分钟，允许的通配符[, - * /] ',
+      periodStart: '周期从',
+      from: '从',
+      minuteStartEvery: '分钟开始， 每',
+      executeOncePerMinute: '分钟执行一次',
+      assign: '指定',
+    },
+    hour: {
+      hourAllowedWildcards: ' 小时，允许的通配符[, - * /] ',
+      periodStart: '周期从',
+      from: '从',
+      hourStartEvery: '时开始，每',
+      executeOncePerHour: '小时执行一次',
+      assign: '指定',
+    },
+    day: {
+      dayAllowedWildcard: ' 日，允许的通配符[, - * ? / L W] ',
+      notSpecify: ' 不指定 ',
+      periodStart: '周期从',
+      from: '从',
+      theNumberStartsEvery: '号开始，每',
+      dailyExecution: '日执行一次',
+      eachMonth: '每月',
+      theMostRecentBusinessDay: '号最近的那个工作日',
+      lastDayOfTheMonth: '本月最后一天',
+      assign: '指定',
+    },
+    month: {
+      monthAllowedWildcards: ' 月，允许的通配符[, - * /] ',
+      periodStart: '周期从',
+      from: '从',
+      monthStartEvery: ' 月开始，每 ',
+      executeOncePerMonth: '月执行一次',
+      assign: '指定',
+    },
+    week: {
+      weekAllowedWildcards: ' 周，允许的通配符[, - * ? / L #] ',
+      notSpecify: ' 不指定 ',
+      periodStart: '周期从',
+      serial: '第',
+      periclinal: '周的',
+      lastOfTheMonth: '本月最后一个',
+      assign: '指定',
+    },
+    result: {
+      last5RunningTimes: '最近5次运行时间',
+      inTheCalculationResult: '计算结果中...'
     }
   }
 };
