@@ -32,11 +32,11 @@
 
     <div class="popup-main">
       <div class="popup-result">
-        <p class="title">时间表达式</p>
+        <p class="title">{{ $t('message.crontab.index.timeExpression') }}</p>
         <table>
           <thead>
             <th v-for="item of tabTitles" :key="item">{{ item }}</th>
-            <th>Cron 表达式</th>
+            <th>{{ $t('message.crontab.index.cronExpression') }}</th>
           </thead>
           <tbody>
             <td>
@@ -93,9 +93,9 @@
       <CrontabResult :ex="crontabValueString"></CrontabResult>
 
       <div class="pop_btn">
-        <el-button type="primary" @click="submitFill">确定</el-button>
-        <el-button type="warning" @click="clearCron">重置</el-button>
-        <el-button @click="hidePopup">取消</el-button>
+        <el-button type="primary" @click="submitFill">{{ $t('message.crontab.index.okbtn') }}</el-button>
+        <el-button type="warning" @click="clearCron">{{ $t('message.crontab.index.resetbtn') }}</el-button>
+        <el-button @click="hidePopup">{{ $t('message.crontab.index.cancelbtn') }}</el-button>
       </div>
     </div>
   </div>
@@ -124,7 +124,8 @@ const props = defineProps({
     default: ''
   }
 })
-const tabTitles = ref(['秒', '分钟', '小时', '日', '月', '周', '年'])
+const tabTitles = ref([ t('message.crontab.index.secondTimeUnit'), t('message.crontab.index.minuteTimeUnit') , t('message.crontab.index.hourTimeUnit'), 
+t('message.crontab.index.dayOfMonthTimeUnit'), t('message.crontab.index.monthTimeUnit'), t('message.crontab.index.dayOfWeekTimeUnit'), t('message.crontab.index.yearTimeUnit') ])
 const tabActive = ref(0)
 const hideComponent = ref([])
 const expression = ref('')
@@ -143,7 +144,6 @@ const crontabValueString = computed(() => {
 })
 watch(expression, () => resolveExp())
 function shouldHide(key) {
-  debugger;
   return !(hideComponent.value && hideComponent.value.includes(key))
 }
 function resolveExp() {

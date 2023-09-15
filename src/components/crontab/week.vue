@@ -57,6 +57,8 @@
 
 <script setup>
 import { defineProps, defineEmits, ref, computed, watch, onMounted } from 'vue'
+import {useI18n} from "vue-i18n";
+const {t} = useI18n();
 const emit = defineEmits(['update'])
 const props = defineProps({
   cron: {
@@ -85,13 +87,13 @@ const weekday = ref(2)
 const checkboxList = ref([])
 const checkCopy = ref([2])
 const weekList = ref([
-  { key: 1, value: '星期日' },
-  { key: 2, value: '星期一' },
-  { key: 3, value: '星期二' },
-  { key: 4, value: '星期三' },
-  { key: 5, value: '星期四' },
-  { key: 6, value: '星期五' },
-  { key: 7, value: '星期六' }
+  { key: 1, value: t('message.crontab.week.sunday') },
+  { key: 2, value: t('message.crontab.week.monday') },
+  { key: 3, value: t('message.crontab.week.tuesday') },
+  { key: 4, value: t('message.crontab.week.wednesday') },
+  { key: 5, value: t('message.crontab.week.thursday') },
+  { key: 6, value: t('message.crontab.week.friday') },
+  { key: 7, value: t('message.crontab.week.saturday') }
 ])
 const cycleTotal = computed(() => {
   cycle01.value = props.check(cycle01.value, 1, 6)

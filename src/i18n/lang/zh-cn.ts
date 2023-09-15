@@ -623,6 +623,13 @@ export default {
       dayOfMonthTimeUnit: '日',
       monthTimeUnit: '月',
       dayOfWeekTimeUnit: '周',
+      yearTimeUnit: '年',
+      timeExpression: '时间表达式',
+      cronExpression: 'Cron 表达式',
+      okbtn: '确定',
+      resetbtn: '重置',
+      cancelbtn: '取消'
+
     },
     second: {
       eachSecond: ' 秒，允许的通配符[, - * /] ',
@@ -676,6 +683,13 @@ export default {
       periclinal: '周的',
       lastOfTheMonth: '本月最后一个',
       assign: '指定',
+      monday: '星期一',
+      tuesday: '星期二',
+      wednesday: '星期三',
+      thursday: '星期四',
+      friday: '星期五',
+      saturday: '星期六',
+      sunday: '星期日',
     },
     result: {
       last5RunningTimes: '最近5次运行时间',
