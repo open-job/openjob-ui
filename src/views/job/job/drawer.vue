@@ -372,20 +372,54 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <!-- yzhou -->
           <el-row v-show="state.rowState.timeExpression">
-            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item :label="t('message.job.job.timeExpression')" prop="timeExpression">
-                <el-input v-model="state.ruleForm.timeExpression"/>
-              </el-form-item>
+            <el-col :span="24" class="mb20">
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                <el-form-item :label="t('message.job.job.timeExpression')" prop="timeExpression">
+                  <el-input v-model="state.ruleForm.timeExpression"/>
+                </el-form-item>
+              </el-col>
             </el-col>
-            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-button type="success" plain size="default"
-                         @click="onClickTimeExpression()"
-                         style="margin-left: 10px;">
-                {{t('message.job.instance.executeTime')}}
-              </el-button>
+            <el-col :span="24" class="mb20">
+              <el-form-item>
+                <el-button type="primary" plain size="default"
+														@click="handleShowCron()">
+										{{t('message.job.instance.useGenerationTools')}}
+									</el-button>
+                <el-button type="success" plain size="default"
+                          @click="onClickTimeExpression()"
+                          style="margin-left: 10px;">
+                  {{t('message.job.instance.executeTime')}}
+                </el-button>
+              </el-form-item>
+              
+
+              <!-- <el-row>
+                <el-form-item :label="t('message.job.job.timeExpression')" prop="timeExpression">
+                  <el-input v-model="state.ruleForm.timeExpression"/>
+                </el-form-item>
+              </el-row>
+              <el-row>
+                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+									<el-button type="success" plain size="default"
+														@click="onClickTimeExpression()"
+														style="margin-left: 10px;">
+										{{t('message.job.instance.executeTime')}}
+									</el-button>
+                </el-col>
+								<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+									<el-button type="success" plain size="default"
+														@click="onClickTimeExpression()"
+														style="margin-left: 10px;">
+										{{t('message.job.instance.executeTime')}}
+									</el-button>
+                </el-col>
+              </el-row> -->
             </el-col>
           </el-row>
+  
+
           <el-row v-show="state.rowState.fixedDelay">
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item prop="fixedDelay">
@@ -517,6 +551,11 @@
       </div>
     </template>
   </el-drawer>
+
+  <el-dialog :title="t('message.job.instance.cronComponetTitle')" v-model="openCron" append-to-body destroy-on-close>
+    <crontab ref="crontabRef" @hide="openCron = false" @fill="crontabFill" :expression="cronComponentExpression"></crontab>
+  </el-dialog>
+
 </template>
 
 <script setup lang="ts" name="jobDrawerName">
@@ -531,6 +570,7 @@ import {getAppSelectList} from "/@/utils/data";
 import Breadcrumb from "/@/layout/navBars/breadcrumb/breadcrumb.vue";
 import cronParser from 'cron-parser';
 
+const Crontab = defineAsyncComponent(() => import('/@/components/crontab/index.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('/@/components/editor/monaco.vue'));
 
 
@@ -542,6 +582,12 @@ const jobApi = useJobApi();
 
 // 定义变量内容
 const jobFormRef = ref();
+
+// 传入的表达式
+const cronComponentExpression = ref('')
+
+// 是否显示Cron表达式弹出层
+const openCron = ref(false)
 
 // 定义子组件向父组件传值/事件
 const emit = defineEmits(['refresh']);
@@ -1243,6 +1289,19 @@ const checkCronExpressionIsValid = (timeExpression: string) => {
     })
     return false;
   }
+}
+
+const handleShowCron = () => {
+  if ( state.ruleForm.timeExpression.length > 0 && !checkCronExpressionIsValid(state.ruleForm.timeExpression)){
+    return;
+  }
+
+  cronComponentExpression.value = state.ruleForm.timeExpression
+  openCron.value = true
+}
+
+const crontabFill = (value: string) => {
+  state.ruleForm.timeExpression = value
 }
 
 const onClickTimeExpression = async () => {
